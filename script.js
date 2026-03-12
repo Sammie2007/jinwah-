@@ -6,7 +6,7 @@ const chapters = [
     "The Empress Sends Word", 
     "The Third Path", 
     "Elara", 
-    "What the Void Remembers", 
+    "What the Void remembers", 
     "Refusal", 
     "The Faith That Breaks", 
     "Convergence"
@@ -90,37 +90,3 @@ function build() {
 
 // System Launch
 build();
-
-/* --- SOVEREIGN VOICE PROTOCOL --- */
-const voiceBtn = document.getElementById('voice-btn');
-const recognition = (window.SpeechRecognition || window.webkitSpeechRecognition) ? new (window.SpeechRecognition || window.webkitSpeechRecognition)() : null;
-
-if (recognition) {
-    recognition.continuous = false;
-    recognition.lang = 'en-US';
-
-    voiceBtn.onclick = () => {
-        try {
-            recognition.start();
-            voiceBtn.innerHTML = "<i class='fas fa-circle' style='color:red;'></i> [[ LISTENING... ]]";
-        } catch (e) {
-            console.log("Voice Link already active.");
-        }
-    };
-
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        voiceBtn.innerHTML = "<i class='fas fa-microphone'></i> [[ ACTIVATE_VOICE_LINK ]]";
-        alert("VOID_DATA_CAPTURED: " + transcript);
-    };
-
-    recognition.onerror = () => {
-        voiceBtn.innerHTML = "<i class='fas fa-microphone-slash'></i> [[ LINK_FAILED ]]";
-    };
-
-    recognition.onend = () => {
-        voiceBtn.innerHTML = "<i class='fas fa-microphone'></i> [[ ACTIVATE_VOICE_LINK ]]";
-    };
-} else {
-    voiceBtn.style.display = 'none'; 
-}
