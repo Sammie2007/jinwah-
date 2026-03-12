@@ -47,7 +47,6 @@ async function openRead(n, t) {
     body.innerHTML = "<p class='tech-tag'>INITIATING_VOID_ACCESS...</p>";
     window.scrollTo(0,0);
     
-    // Fetch chapter file with safety checks
     try {
         const res = await fetch(`Chapter ${n}.txt`);
         if (res.ok) {
@@ -74,7 +73,6 @@ function build() {
     
     chapters.forEach((t, i) => {
         const n = i + 1;
-        // Main Grid Archive
         const card = document.createElement('div');
         card.className = 'card-premium';
         card.style.cursor = 'pointer';
@@ -82,7 +80,6 @@ function build() {
         card.onclick = () => openRead(n, t);
         list.appendChild(card);
         
-        // Side List Archive
         const item = document.createElement('div');
         item.style.cssText = "padding:12px 0; border-bottom:1px solid var(--br); cursor:pointer;";
         item.innerText = `${n}. ${t}`;
@@ -93,3 +90,37 @@ function build() {
 
 // System Launch
 build();
+
+/* --- SOVEREIGN VOICE PROTOCOL --- */
+const voiceBtn = document.getElementById('voice-btn');
+const recognition = (window.SpeechRecognition || window.webkitSpeechRecognition) ? new (window.SpeechRecognition || window.webkitSpeechRecognition)() : null;
+
+if (recognition) {
+    recognition.continuous = false;
+    recognition.lang = 'en-US';
+
+    voiceBtn.onclick = () => {
+        try {
+            recognition.start();
+            voiceBtn.innerHTML = "<i class='fas fa-circle' style='color:red;'></i> [[ LISTENING... ]]";
+        } catch (e) {
+            console.log("Voice Link already active.");
+        }
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        voiceBtn.innerHTML = "<i class='fas fa-microphone'></i> [[ ACTIVATE_VOICE_LINK ]]";
+        alert("VOID_DATA_CAPTURED: " + transcript);
+    };
+
+    recognition.onerror = () => {
+        voiceBtn.innerHTML = "<i class='fas fa-microphone-slash'></i> [[ LINK_FAILED ]]";
+    };
+
+    recognition.onend = () => {
+        voiceBtn.innerHTML = "<i class='fas fa-microphone'></i> [[ ACTIVATE_VOICE_LINK ]]";
+    };
+} else {
+    voiceBtn.style.display = 'none'; 
+}
