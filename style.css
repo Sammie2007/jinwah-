@@ -1,94 +1,100 @@
-/* --- ENTERPRISE VARS --- */
+/* --- LUMINANCE ENGINE --- */
 :root {
     --bg: #00000a; --tx: #ccc8e0; --ac: #00f0ff; 
-    --cd: rgba(255, 255, 255, 0.03); --br: rgba(0, 240, 255, 0.2);
-    --glow: 0 0 15px rgba(0, 240, 255, 0.4);
+    --cd: rgba(0, 240, 255, 0.03); --br: rgba(0, 240, 255, 0.2);
+    --gl: 0 0 15px var(--ac);
 }
 [data-theme="light"] {
-    --bg: #f5f5fa; --tx: #1a1a2e; --ac: #0077ff; 
-    --cd: #ffffff; --br: #dddddd;
-    --glow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --bg: #fdfdfd; --tx: #0a0a20; --ac: #0066ff; 
+    --cd: #ffffff; --br: #cccccc;
+    --gl: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* --- CORE ARCHITECTURE --- */
-* { box-sizing: border-box; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+* { box-sizing: border-box; transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
 html { scroll-behavior: smooth; }
 body { 
     background: var(--bg); color: var(--tx); 
     font-family: 'Cormorant Garamond', serif; 
-    margin: 0; line-height: 1.7; overflow-x: hidden;
+    margin: 0; line-height: 1.8; overflow-x: hidden;
 }
 
-/* THE PADDING FIX (No more edge creep) */
-.container { width: 90%; max-width: 1100px; margin: 0 auto; }
+/* CONTAINER (Fixes Edge Creep) */
+.wrap { width: 90%; max-width: 1000px; margin: 0 auto; }
 
-/* --- HEADER & NAV --- */
-.main-header { 
+/* SLEEK NAV WITH FURNITURE */
+.sleek-nav { 
     background: var(--bg); border-bottom: 1px solid var(--br); 
-    position: sticky; top: 0; z-index: 100; height: 75px; 
+    position: sticky; top: 0; z-index: 500; height: 70px; 
+    backdrop-filter: blur(10px);
 }
-.header-flex { display: flex; justify-content: space-between; align-items: center; height: 100%; }
-.nav-left { display: flex; align-items: center; gap: 20px; }
-.logo-img { height: 45px; filter: drop-shadow(var(--glow)); }
+.nav-flex { display: flex; justify-content: space-between; align-items: center; height: 100%; }
+.nav-brand { display: flex; align-items: center; gap: 15px; }
+.brand-name { font-family: 'Cinzel Decorative'; font-size: 1.3rem; color: var(--ac); text-shadow: var(--gl); letter-spacing: 2px; }
+.nav-furniture { font-family: 'Share Tech Mono'; font-size: 0.6rem; opacity: 0.4; }
 
-/* --- WHATSAPP FAB --- */
-.fab-whatsapp {
-    position: fixed; bottom: 30px; right: 30px; 
-    width: 60px; height: 60px; background: #25D366; 
-    color: #fff; border-radius: 50%; display: flex; 
-    align-items: center; justify-content: center; 
-    font-size: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-    z-index: 500; cursor: pointer; text-decoration: none;
-}
-.fab-whatsapp:hover { transform: scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+/* MENU BUTTON */
+.menu-btn { background: none; border: none; display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+.menu-btn span { width: 20px; height: 2px; background: var(--ac); box-shadow: var(--gl); }
 
-/* --- SIDEBAR ENGINE --- */
-.sidebar { 
+/* SIDEBAR & OVERLAY */
+.side { 
     position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; 
     background: var(--bg); border-right: 1px solid var(--br); z-index: 1000;
-    padding: 30px; transition: transform 0.4s;
+    padding: 30px; transition: 0.5s;
 }
-.sidebar.active { transform: translateX(320px); }
-.overlay { 
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-    background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); 
-    display: none; z-index: 900; 
+.side.active { transform: translateX(320px); }
+.ov { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: none; z-index: 900; }
+.ov.active { display: block; }
+.side-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.side-group label { display: block; font-family: 'Share Tech Mono'; font-size: 0.7rem; opacity: 0.5; margin-bottom: 15px; }
+.side-group a { display: block; padding: 10px 0; color: var(--tx); text-decoration: none; border-bottom: 1px solid var(--br); font-size: 1.1rem; }
+
+/* HERO (Bold Cyberpunk Jinwah) */
+.hero { height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+.glitch-txt { font-family: 'Cinzel Decorative'; font-size: 5rem; margin: 0; color: var(--ac); text-shadow: var(--gl); }
+.mono-label { font-family: 'Share Tech Mono'; font-size: 0.8rem; letter-spacing: 6px; opacity: 0.6; }
+.void-line { width: 60px; height: 1px; background: var(--ac); margin: 25px auto; box-shadow: var(--gl); }
+.hero-summary { max-width: 600px; margin: 0 auto 40px; font-style: italic; font-size: 1.3rem; }
+
+/* BUTTONS */
+.btn-void { 
+    display: inline-block; padding: 15px 40px; background: transparent; 
+    border: 1px solid var(--ac); color: var(--ac); font-family: 'Share Tech Mono'; 
+    text-decoration: none; font-weight: bold; cursor: pointer; box-shadow: var(--gl);
 }
-.overlay.active { display: block; }
+.btn-void:hover { background: var(--ac); color: #000; }
+.btn-void-full { width: 100%; border: 1px solid var(--ac); background: var(--ac); color: #000; padding: 18px; font-family: 'Share Tech Mono'; cursor: pointer; }
 
-/* --- HERO --- */
-.hero { height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-.void-glow { color: var(--ac); text-shadow: 0 0 10px var(--ac); font-family: 'Cinzel Decorative'; margin: 0; }
-h1.void-glow { font-size: 4rem; }
-.mono-label { font-family: 'Share Tech Mono'; letter-spacing: 6px; opacity: 0.7; }
-.divider { width: 50px; height: 2px; background: var(--ac); margin: 20px auto; box-shadow: var(--glow); }
-
-/* --- COMPACT GRID ENGINE --- */
-.book-grid, .chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-.book-card { background: var(--cd); border: 1px solid var(--br); border-radius: 12px; overflow: hidden; }
-.cover-img { height: 320px; background-size: cover; background-position: center; position: relative; }
-.cover-overlay { 
-    position: absolute; top:0; left:0; width:100%; height:100%; 
-    background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center;
+/* GRIDS */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+.card-premium { background: var(--cd); border: 1px solid var(--br); border-radius: 4px; overflow: hidden; text-decoration: none; color: inherit; }
+.card-premium:hover { border-color: var(--ac); box-shadow: var(--gl); transform: translateY(-5px); }
+.card-img { height: 350px; background-size: cover; background-position: center; position: relative; }
+.card-over { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
     opacity: 0; color: var(--ac); font-family: 'Share Tech Mono'; 
 }
-.book-card:hover .cover-overlay { opacity: 1; }
-.book-body { padding: 25px; }
+.card-premium:hover .card-over { opacity: 1; }
+.card-body { padding: 25px; }
 
-/* --- BUTTONS --- */
-.btn-main { 
-    display: inline-block; padding: 15px 35px; background: var(--ac); color: #000; 
-    text-decoration: none; font-family: 'Share Tech Mono'; font-weight: bold; 
-    border-radius: 4px; box-shadow: var(--glow); border: none; cursor: pointer;
-}
-.btn-main:hover { transform: translateY(-3px); box-shadow: 0 0 25px var(--ac); }
+/* SECTIONS */
+.sec { padding: 6rem 0; }
+.glow { color: var(--ac); text-shadow: var(--gl); font-family: 'Cinzel Decorative'; margin-bottom: 40px; border-bottom: 1px solid var(--br); display: inline-block; padding-bottom: 10px; }
+.mono { font-family: 'Share Tech Mono'; font-size: 0.8rem; opacity: 0.6; }
 
-.sec { padding: 5rem 0; }
-.sec-title { border-bottom: 1px solid var(--ac); display: inline-block; padding-bottom: 10px; margin-bottom: 30px; }
+/* FOOTER */
+.footer { border-top: 1px solid var(--br); padding: 5rem 0 3rem; text-align: center; }
+.f-links { margin-bottom: 25px; }
+.f-links a { margin: 0 15px; color: var(--ac); text-decoration: none; font-family: 'Share Tech Mono'; font-size: 0.8rem; }
+.mono-copy { font-size: 0.7rem; opacity: 0.4; font-family: 'Share Tech Mono'; }
 
-/* --- MOBILE TWEAKS --- */
+/* READER */
+.read-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--br); margin-bottom: 40px; }
+.rb-body { padding: 20px 0; font-size: 1.2rem; line-height: 2; }
+
 @media (max-width: 768px) {
-    h1.void-glow { font-size: 2.8rem; }
-    .sec { padding: 3rem 0; }
-    .book-grid { grid-template-columns: 1fr; }
+    .glitch-txt { font-size: 3rem; }
+    .sec { padding: 4rem 0; }
 }
