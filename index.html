@@ -3,123 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Jinwah: Voidheart | Enterprise HQ</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    
+    <title>JINWAH | Enterprise HQ</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Share+Tech+Mono&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <a href="https://wa.me/2349031804979" class="fab-whatsapp" target="_blank" aria-label="Chat on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <aside id="sidebar" class="sidebar">
-        <div class="sidebar-top">
-            <span class="brand-text">VOICE OF VOID</span>
-            <button class="icon-btn" onclick="toggleNav()">×</button>
+    <div id="ov" class="ov" onclick="nav()"></div>
+    <aside id="side" class="side">
+        <div class="side-head">
+            <span class="mono">SYSTEM.NAV</span>
+            <button onclick="nav()" class="close">×</button>
         </div>
-        <nav class="sidebar-nav">
-            <div class="nav-group">
-                <label>THE ARCHIVE</label>
-                <div id="side-chapters"></div>
+        <div class="side-content">
+            <div class="side-group">
+                <label>VOID ARCHIVE</label>
+                <div id="side-chaps"></div>
             </div>
-            <div class="nav-group">
-                <label>ENTERPRISE</label>
-                <a href="#about" onclick="toggleNav()">The Authors</a>
-                <a href="#library" onclick="toggleNav()">Multiverse</a>
-                <a href="mailto:sammiefreakinmutant@gmail.com">Contact Sales</a>
+            <div class="side-group">
+                <label>CHANNELS</label>
+                <a href="mailto:sammiefreakinmutant@gmail.com">Transmit Email</a>
+                <a href="https://wa.me/2349031804979" target="_blank">WhatsApp Link</a>
+                <a href="tel:+2349031804979">Voice Channel</a>
             </div>
-        </nav>
+        </div>
     </aside>
-    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 
-    <header class="main-header">
-        <div class="container header-flex">
-            <div class="nav-left">
-                <button class="menu-trigger" onclick="toggleNav()">
-                    <span></span><span></span><span></span>
-                </button>
-                <a href="#home" class="logo-wrap">
-                    <img src="https://img.icons8.com/nolan/96/v.png" alt="Logo" class="logo-img">
-                </a>
+    <nav class="sleek-nav">
+        <div class="wrap nav-flex">
+            <div class="nav-brand">
+                <button onclick="nav()" class="menu-btn"><span></span><span></span></button>
+                <span class="brand-name">JINWAH</span>
+                <span class="nav-furniture">[ LIVE_LINK ]</span>
             </div>
-            <button class="theme-toggle" id="theme-toggle">◑</button>
+            <div class="nav-ctrl">
+                <button onclick="th()" class="th-btn">◑</button>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main id="hub">
-        <section id="home" class="hero container">
-            <div class="hero-inner">
-                <h1 class="void-glow">JINWAH</h1>
-                <p class="mono-label">VOIDHEART SAGA</p>
-                <div class="divider"></div>
-                <p class="hero-desc">"One hybrid holds the key to the Void. Jinwah must forge the path that breaks the cycle forever."</p>
-                <a href="#archive" class="btn-main">OPEN ARCHIVE</a>
+    <main id="main-ui">
+        <section id="home" class="hero wrap">
+            <div class="hero-box">
+                <h1 class="glitch-txt">JINWAH</h1>
+                <p class="mono-label">VOIDHEART SAGA // ALPHA_0.1</p>
+                <div class="void-line"></div>
+                <p class="hero-summary">"One hybrid holds the key to the Void. Jinwah must forge the path that breaks the cycle forever."</p>
+                <a href="#archive" class="btn-void">INITIATE ARCHIVE</a>
             </div>
         </section>
 
-        <section id="library" class="sec container">
-            <h2 class="sec-title">THE MULTIVERSE</h2>
-            <div class="book-grid">
-                <div class="book-card">
-                    <a href="http://wbnv.in/a/a6jh2j9" target="_blank" class="cover-link">
-                        <div class="cover-img" style="background-image: url('https://images.unsplash.com/photo-1542332213-31f87348057f?w=600');">
-                            <div class="cover-overlay">READ ON WEBNOVEL</div>
-                        </div>
-                    </a>
-                    <div class="book-body">
-                        <h3>Demon Slayer: Redemption</h3>
-                        <p>After Muzan's fall, a new threat arises. Tanjiro and Nezuko face ancient trials.</p>
-                        <a href="http://wbnv.in/a/a6jh2j9" target="_blank" class="btn-text">VIEW NOVEL →</a>
+        <section id="archive" class="sec wrap">
+            <div class="sec-head">
+                <h2 class="glow">VOIDHEART_ARCHIVE</h2>
+                <span class="mono">10_CHAPTERS</span>
+            </div>
+            <div id="main-list" class="grid"></div>
+        </section>
+
+        <section id="library" class="sec wrap">
+            <h2 class="glow">THE MULTIVERSE</h2>
+            <div class="grid">
+                <a href="http://wbnv.in/a/a6jh2j9" target="_blank" class="card-premium">
+                    <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1542332213-31f87348057f?w=600')">
+                        <div class="card-over">VIEW WEBNOVEL</div>
                     </div>
-                </div>
-                <div class="book-card">
-                    <a href="http://wbnv.in/a/f9j2m96" target="_blank" class="cover-link">
-                        <div class="cover-img" style="background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600');">
-                            <div class="cover-overlay">READ ON WEBNOVEL</div>
-                        </div>
-                    </a>
-                    <div class="book-body">
+                    <div class="card-body">
+                        <h3>Demon Slayer: Redemption</h3>
+                        <p>After Muzan's fall, a new threat arises in Ravenscroft.</p>
+                    </div>
+                </a>
+                <a href="http://wbnv.in/a/f9j2m96" target="_blank" class="card-premium">
+                    <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600')">
+                        <div class="card-over">VIEW WEBNOVEL</div>
+                    </div>
+                    <div class="card-body">
                         <h3>Fading Into You</h3>
                         <p>In a world of silence, Emily and Riley find a love worth risking everything for.</p>
-                        <a href="http://wbnv.in/a/f9j2m96" target="_blank" class="btn-text">VIEW NOVEL →</a>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
-        <section id="archive" class="sec container">
-            <h2 class="sec-title">VOID ARCHIVE</h2>
-            <div id="main-archive" class="chapter-grid"></div>
-        </section>
-
-        <section id="about" class="sec container">
+        <section id="about" class="sec wrap">
             <div class="about-card">
-                <h2 class="sec-title">THE CREATORS</h2>
-                <p>The <strong>Sammie & Sultan Enterprise</strong> represents a world-class collaboration between visionaries fascinated by novel reading and digital architecture.</p>
+                <h2 class="glow">THE CREATORS</h2>
+                <p>The <strong>Sammie & Sultan Enterprise</strong> is a world-class collaboration between two visionaries fascinated by novel reading and digital architecture.</p>
             </div>
         </section>
 
-        <footer class="footer container">
-            <div class="footer-links">
-                <a href="mailto:sammiefreakinmutant@gmail.com">Sales</a>
-                <a href="https://wa.me/2349031804979">Support</a>
-                <a href="tel:+2349031804979">Call</a>
+        <section id="contact" class="sec wrap">
+            <h2 class="glow">TRANSMIT</h2>
+            <div class="contact-grid">
+                <form name="author-contact" method="POST" data-netlify="true" class="v-form">
+                    <input type="text" name="name" placeholder="IDENT_NAME" required>
+                    <textarea name="msg" rows="4" placeholder="MESSAGE_DATA..." required></textarea>
+                    <button type="submit" class="btn-void-full">SEND_SIGNAL</button>
+                </form>
             </div>
-            <p class="copyright">© 2026 Sammie & Sultan Enterprise.</p>
+        </section>
+
+        <footer class="footer wrap">
+            <div class="f-links">
+                <a href="mailto:sammiefreakinmutant@gmail.com">EMAIL</a>
+                <a href="https://wa.me/2349031804979">WHATSAPP</a>
+                <a href="tel:+2349031804979">VOICE</a>
+            </div>
+            <p class="mono-copy">© 2026 SAMMIE & SULTAN ENTERPRISE</p>
         </footer>
     </main>
 
-    <section id="reader" class="reader-view" style="display:none">
-        <div class="container">
-            <button class="btn-back" onclick="exitReader()">← BACK TO HUB</button>
-            <h1 id="rt" class="void-glow"></h1>
-            <article id="rb" class="content-body"></article>
+    <section id="reader" class="read-ui" style="display:none">
+        <div class="wrap">
+            <div class="read-nav">
+                <button onclick="back()" class="btn-void">← HUB</button>
+                <span id="rs" class="mono">STATUS: READING</span>
+            </div>
+            <h1 id="rt" class="glow"></h1>
+            <article id="rb" class="rb-body"></article>
         </div>
     </section>
 
