@@ -1,17 +1,17 @@
 /* --- LUMINANCE ENGINE --- */
 :root {
     --bg: #00000a; --tx: #ccc8e0; --ac: #00f0ff; 
-    --cd: rgba(0, 240, 255, 0.03); --br: rgba(0, 240, 255, 0.2);
+    --cd: rgba(0, 240, 255, 0.04); --br: rgba(0, 240, 255, 0.2);
     --gl: 0 0 15px var(--ac);
 }
 [data-theme="light"] {
-    --bg: #fdfdfd; --tx: #0a0a20; --ac: #0066ff; 
-    --cd: #ffffff; --br: #cccccc;
-    --gl: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --bg: #ffffff; --tx: #050510; --ac: #0077ff; 
+    --cd: #f4f4f9; --br: #cccccc;
+    --gl: 0 5px 20px rgba(0, 119, 255, 0.2);
 }
 
-/* --- CORE ARCHITECTURE --- */
-* { box-sizing: border-box; transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
+/* --- CORE RESET --- */
+* { box-sizing: border-box; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 html { scroll-behavior: smooth; }
 body { 
     background: var(--bg); color: var(--tx); 
@@ -19,57 +19,62 @@ body {
     margin: 0; line-height: 1.8; overflow-x: hidden;
 }
 
-/* CONTAINER (Fixes Edge Creep) */
-.wrap { width: 90%; max-width: 1000px; margin: 0 auto; }
+/* CONTAINER (90% Width Lockdown) */
+.wrap { width: 90%; max-width: 1050px; margin: 0 auto; }
 
-/* SLEEK NAV WITH FURNITURE */
+/* SLEEK NAV ENGINE */
 .sleek-nav { 
-    background: var(--bg); border-bottom: 1px solid var(--br); 
-    position: sticky; top: 0; z-index: 500; height: 70px; 
-    backdrop-filter: blur(10px);
+    background: var(--bg); border-bottom: 2px solid var(--br); 
+    position: sticky; top: 0; z-index: 500; height: 75px; 
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
 }
 .nav-flex { display: flex; justify-content: space-between; align-items: center; height: 100%; }
-.nav-brand { display: flex; align-items: center; gap: 15px; }
-.brand-name { font-family: 'Cinzel Decorative'; font-size: 1.3rem; color: var(--ac); text-shadow: var(--gl); letter-spacing: 2px; }
-.nav-furniture { font-family: 'Share Tech Mono'; font-size: 0.6rem; opacity: 0.4; }
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.nav-divider { width: 1px; height: 25px; background: var(--br); }
+.brand-text { font-family: 'Cinzel Decorative'; font-size: 1.5rem; color: var(--ac); text-shadow: var(--gl); letter-spacing: 3px; font-weight: bold; }
 
-/* MENU BUTTON */
-.menu-btn { background: none; border: none; display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
-.menu-btn span { width: 20px; height: 2px; background: var(--ac); box-shadow: var(--gl); }
+.nav-center-furniture { display: flex; gap: 15px; }
+.tech-tag { font-family: 'Share Tech Mono'; font-size: 0.6rem; color: var(--ac); opacity: 0.6; padding: 2px 8px; border: 1px solid var(--br); }
+
+/* UI TRIGGER BUTTONS */
+.menu-trigger { background: none; border: none; display: flex; flex-direction: column; gap: 6px; cursor: pointer; }
+.menu-trigger span { width: 22px; height: 2px; background: var(--ac); box-shadow: var(--gl); }
+.th-btn { background: none; border: none; color: var(--tx); font-size: 1.6rem; cursor: pointer; }
 
 /* SIDEBAR & OVERLAY */
 .side { 
     position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; 
     background: var(--bg); border-right: 1px solid var(--br); z-index: 1000;
-    padding: 30px; transition: 0.5s;
+    padding: 30px; transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
 }
 .side.active { transform: translateX(320px); }
 .ov { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: none; z-index: 900; }
 .ov.active { display: block; }
-.side-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-.side-group label { display: block; font-family: 'Share Tech Mono'; font-size: 0.7rem; opacity: 0.5; margin-bottom: 15px; }
-.side-group a { display: block; padding: 10px 0; color: var(--tx); text-decoration: none; border-bottom: 1px solid var(--br); font-size: 1.1rem; }
+.close-btn { background: none; border: none; color: var(--tx); font-size: 2rem; cursor: pointer; }
 
-/* HERO (Bold Cyberpunk Jinwah) */
+/* CYBERPUNK HERO */
 .hero { height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-.glitch-txt { font-family: 'Cinzel Decorative'; font-size: 5rem; margin: 0; color: var(--ac); text-shadow: var(--gl); }
-.mono-label { font-family: 'Share Tech Mono'; font-size: 0.8rem; letter-spacing: 6px; opacity: 0.6; }
-.void-line { width: 60px; height: 1px; background: var(--ac); margin: 25px auto; box-shadow: var(--gl); }
-.hero-summary { max-width: 600px; margin: 0 auto 40px; font-style: italic; font-size: 1.3rem; }
+.glitch-txt { font-family: 'Cinzel Decorative'; font-size: 5rem; margin: 0; color: var(--ac); text-shadow: var(--gl); letter-spacing: 5px; }
+.mono-label { font-family: 'Share Tech Mono'; font-size: 0.8rem; letter-spacing: 6px; opacity: 0.7; }
+.void-line { width: 60px; height: 2px; background: var(--ac); margin: 25px auto; box-shadow: var(--gl); }
+.hero-desc { max-width: 600px; margin: 0 auto 40px; font-style: italic; font-size: 1.3rem; }
 
-/* BUTTONS */
+/* ACTION UI */
 .btn-void { 
     display: inline-block; padding: 15px 40px; background: transparent; 
     border: 1px solid var(--ac); color: var(--ac); font-family: 'Share Tech Mono'; 
     text-decoration: none; font-weight: bold; cursor: pointer; box-shadow: var(--gl);
 }
-.btn-void:hover { background: var(--ac); color: #000; }
-.btn-void-full { width: 100%; border: 1px solid var(--ac); background: var(--ac); color: #000; padding: 18px; font-family: 'Share Tech Mono'; cursor: pointer; }
+.btn-void-full { width: 100%; border: 1px solid var(--ac); background: var(--ac); color: #000; padding: 18px; font-family: 'Share Tech Mono'; cursor: pointer; font-weight: bold; }
 
-/* GRIDS */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+/* SECTIONS & GRIDS */
+.sec { padding: 6rem 0; }
+.glow { color: var(--ac); text-shadow: var(--gl); font-family: 'Cinzel Decorative'; margin-bottom: 40px; display: inline-block; border-bottom: 1px solid var(--br); padding-bottom: 10px; }
+.grid-engine { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+
+/* PREMIUM CARDS */
 .card-premium { background: var(--cd); border: 1px solid var(--br); border-radius: 4px; overflow: hidden; text-decoration: none; color: inherit; }
-.card-premium:hover { border-color: var(--ac); box-shadow: var(--gl); transform: translateY(-5px); }
+.card-premium:hover { border-color: var(--ac); box-shadow: var(--gl); transform: translateY(-8px); }
 .card-img { height: 350px; background-size: cover; background-position: center; position: relative; }
 .card-over { 
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
@@ -79,10 +84,15 @@ body {
 .card-premium:hover .card-over { opacity: 1; }
 .card-body { padding: 25px; }
 
-/* SECTIONS */
-.sec { padding: 6rem 0; }
-.glow { color: var(--ac); text-shadow: var(--gl); font-family: 'Cinzel Decorative'; margin-bottom: 40px; border-bottom: 1px solid var(--br); display: inline-block; padding-bottom: 10px; }
-.mono { font-family: 'Share Tech Mono'; font-size: 0.8rem; opacity: 0.6; }
+/* HIGH-PERFORMANCE READER */
+.read-ui { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+    background: var(--bg); color: var(--tx); z-index: 2000; overflow-y: auto; 
+    padding: 40px 0;
+}
+.read-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br); padding-bottom: 20px; margin-bottom: 40px; }
+.rb-body { padding: 20px 0; font-size: 1.25rem; line-height: 2.2; padding-bottom: 80px; }
+.read-footer { margin-top: 50px; border-top: 1px solid var(--br); padding-top: 40px; }
 
 /* FOOTER */
 .footer { border-top: 1px solid var(--br); padding: 5rem 0 3rem; text-align: center; }
@@ -90,11 +100,8 @@ body {
 .f-links a { margin: 0 15px; color: var(--ac); text-decoration: none; font-family: 'Share Tech Mono'; font-size: 0.8rem; }
 .mono-copy { font-size: 0.7rem; opacity: 0.4; font-family: 'Share Tech Mono'; }
 
-/* READER */
-.read-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--br); margin-bottom: 40px; }
-.rb-body { padding: 20px 0; font-size: 1.2rem; line-height: 2; }
-
 @media (max-width: 768px) {
     .glitch-txt { font-size: 3rem; }
     .sec { padding: 4rem 0; }
+    .nav-center-furniture { display: none; }
 }
