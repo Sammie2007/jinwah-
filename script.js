@@ -1,75 +1,73 @@
-/* --- NOVEL ARCHIVE --- */
+/* --- ARCHIVE DATA --- */
 const chapters = ["The Awakening Void", "Eyes of the Ossuary", "Disciples of Burning Light", "The Empress Sends Word", "The Third Path"];
 
-/* --- NAVIGATION CORE --- */
-function toggleNav() {
-    document.getElementById('sidebar').classList.toggle('active');
-    document.getElementById('overlay').classList.toggle('active');
+/* --- UI COMPONENTS --- */
+const side = document.getElementById('side');
+const ov = document.getElementById('ov');
+const hub = document.getElementById('main-ui');
+const read = document.getElementById('reader');
+
+/* --- NAVIGATION --- */
+function nav() {
+    side.classList.toggle('active');
+    ov.classList.toggle('active');
 }
 
-/* --- THEME ENGINE --- */
-const themeToggle = document.getElementById('theme-toggle');
-themeToggle.onclick = () => {
+/* --- THEME SYSTEM --- */
+function th() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const newTheme = isDark ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('enterprise-theme', newTheme);
-};
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('jinwah-theme', next);
+}
 
-// Persistence
-const savedTheme = localStorage.getItem('enterprise-theme') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
+// Persist Theme
+document.documentElement.setAttribute('data-theme', localStorage.getItem('jinwah-theme') || 'dark');
 
 /* --- READER SYSTEM --- */
-function openNovel(num, title) {
-    document.getElementById('hub').style.display = 'none';
-    const reader = document.getElementById('reader');
-    reader.style.display = 'block';
-    
-    document.getElementById('rt').innerText = title;
+function openRead(n, t) {
+    hub.style.display = 'none';
+    read.style.display = 'block';
+    document.getElementById('rt').innerText = t;
     const body = document.getElementById('rb');
-    body.innerHTML = "<p class='mono-label'>CONSULTING THE VOID ARCHIVE...</p>";
+    body.innerHTML = "<p class='mono'>INITIATING_VOID_ACCESS...</p>";
     
-    fetch(`Chapter ${num}.txt`)
-        .then(res => res.ok ? res.text() : "The Void remains silent (File not found).")
-        .then(text => {
-            body.innerHTML = text.split('\n').map(p => `<p>${p}</p>`).join('');
+    fetch(`Chapter ${n}.txt`)
+        .then(res => res.ok ? res.text() : "ACCESS_DENIED: DATA_NOT_FOUND")
+        .then(txt => {
+            body.innerHTML = txt.split('\n').map(p => `<p>${p}</p>`).join('');
         })
-        .catch(() => body.innerText = "Connection lost to archive.");
-        
+        .catch(() => body.innerText = "LINK_FAILURE");
     window.scrollTo(0,0);
 }
 
-function exitReader() {
-    document.getElementById('reader').style.display = 'none';
-    document.getElementById('hub').style.display = 'block';
+function back() {
+    read.style.display = 'none';
+    hub.style.display = 'block';
     window.scrollTo(0,0);
 }
 
-/* --- BUILD INTERFACE --- */
+/* --- INTERFACE BUILDER --- */
 function build() {
-    const mainList = document.getElementById('main-archive');
-    const sideList = document.getElementById('side-chapters');
+    const list = document.getElementById('main-list');
+    const sideList = document.getElementById('side-chaps');
     
     chapters.forEach((t, i) => {
         const n = i + 1;
-        // Chapter Cards
+        // Main Cards
         const card = document.createElement('div');
-        card.className = 'book-card';
+        card.className = 'card-premium';
         card.style.cursor = 'pointer';
-        card.innerHTML = `<div class="book-body"><h3>Chapter ${n}</h3><p>${t}</p><button class="btn-main">READ</button></div>`;
-        card.onclick = () => openNovel(n, t);
-        mainList.appendChild(card);
+        card.innerHTML = `<div class="card-body"><span class="mono">CH_${n}</span><h3>${t}</h3><p>Consult the chronicle of the Voidheart.</p></div>`;
+        card.onclick = () => openRead(n, t);
+        list.appendChild(card);
         
-        // Sidebar Links
-        const link = document.createElement('div');
-        link.className = 'side-link';
-        link.style.padding = "10px 0";
-        link.style.borderBottom = "1px solid var(--br)";
-        link.style.cursor = "pointer";
-        link.innerText = `${n}. ${t}`;
-        link.onclick = () => { openNovel(n, t); toggleNav(); };
-        sideList.appendChild(link);
+        // Side Links
+        const item = document.createElement('div');
+        item.className = 'side-group';
+        item.innerHTML = `<div style="padding:10px 0; border-bottom:1px solid var(--br); cursor:pointer;">${n}. ${t}</div>`;
+        item.onclick = () => { openRead(n, t); nav(); };
+        sideList.appendChild(item);
     });
 }
 
