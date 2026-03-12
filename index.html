@@ -1,121 +1,63 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Jinwah: Voidheart | Official Archive</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@300;400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-:root { --bg:#00000a; --text:#ccc8e0; --accent:#00f0ff; --border:rgba(0,240,255,0.1); --card-bg:rgba(0,240,255,0.02); }
-body { background:var(--bg); color:var(--text); font-family:'Cormorant Garamond', serif; margin:0; line-height: 1.6; }
-nav { padding:1.5rem; border-bottom:1px solid var(--border); text-align:center; position: sticky; top: 0; background: rgba(0,0,10,0.95); backdrop-filter: blur(10px); z-index: 100; }
-.logo { font-family:'Cinzel Decorative'; color:var(--accent); text-decoration:none; letter-spacing:3px; font-size:1.4rem; text-shadow: 0 0 10px var(--accent); }
-#main-ui, #reader-ui { padding:2rem; max-width:800px; margin:0 auto; }
-.tabs { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2.5rem; }
-.tab-btn { background: none; border: 1px solid var(--border); color: var(--text); padding: 0.6rem 1rem; font-family: 'Share Tech Mono'; cursor: pointer; font-size: 0.7rem; transition: 0.3s; letter-spacing: 1px; }
-.tab-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,240,255,0.05); }
-.card { border:1px solid var(--border); padding:1.2rem; margin-bottom:1rem; cursor:pointer; background:var(--card-bg); display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
-.card:hover { border-color:var(--accent); transform: translateX(5px); }
-.btn { background:none; border:1px solid var(--accent); color:var(--accent); padding:0.6rem 1.2rem; font-family:'Share Tech Mono'; cursor:pointer; text-transform:uppercase; font-size: 0.7rem; }
-#content-body { font-size:1.3rem; line-height:1.9; white-space: pre-wrap; font-weight:300; margin-top:2rem; }
-h3 { margin: 0; font-family: 'Share Tech Mono'; font-size: 0.9rem; letter-spacing: 1px; color: #fff; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jinwah: Voidheart | Official </title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-<nav><a href="index.html" class="logo">VOIDHEART</a></nav>
+    <nav>
+        <a href="index.html" class="logo">VOIDHEART</a>
+        <button class="theme-toggle" id="theme-btn">LIGHT / DARK</button>
+    </nav>
 
-<div id="main-ui">
-  <div class="tabs">
-    <button id="tab-chapters" class="tab-btn active" onclick="switchTab('chapters')">THE ARCHIVE</button>
-    <button id="tab-codex" class="tab-btn" onclick="switchTab('codex')">WORLD CODEX</button>
-  </div>
-  <div id="list-container"></div>
-</div>
+    <main id="main-ui">
+        <header class="hero">
+            <h1>JINWAH</h1>
+            <p class="subtitle">THE VOIDHEART SAGA</p>
+        </header>
 
-<div id="reader-ui" style="display:none;">
-  <button class="btn" onclick="closeReader()">← Return</button>
-  <h1 id="reader-title" style="font-family:'Cinzel Decorative'; font-size: 1.8rem; margin-top: 2.5rem; color: #fff;"></h1>
-  <div id="content-body">Consulting the Void...</div>
-</div>
+        <section class="archive-section">
+            <h2 class="section-title">THE ARCHIVE</h2>
+            <div id="chapter-list" class="card-grid">
+                </div>
+        </section>
 
-<script>
-const data = {
-  chapters: [
-    "The Awakening Void", "Eyes of the Ossuary", "Disciples of Burning Light", 
-    "The Empress Sends Word", "The Third Path", "Elara", 
-    "What the Void Remembers", "Refusal", "The Faith That Breaks", "Convergence"
-  ],
-  codex: [
-    { id: "Jinwah", title: "Jinwah: The Voidheart" },
-    { id: "Elara", title: "Elara: The Light-Bearer" },
-    { id: "Ossuary", title: "The Voidan Ossuary" },
-    { id: "Empress", title: "The Court of Death" }
-  ]
-};
+        <section class="contact-section">
+            <h2 class="section-title">CONTACT THE AUTHOR</h2>
+            <form name="author-contact" method="POST" data-netlify="true" class="contact-form">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <textarea name="message" placeholder="Message to the Author..." required></textarea>
+                <button type="submit" class="btn">TRANSMIT</button>
+            </form>
+        </section>
 
-let currentTab = 'chapters';
+        <footer>
+            <p>© 2026 Sammie. Built in the Void.</p>
+        </footer>
+    </main>
 
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('tab-chapters').classList.toggle('active', tab === 'chapters');
-  document.getElementById('tab-codex').classList.toggle('active', tab === 'codex');
-  renderMenu();
-}
+    <section id="reader-ui" style="display:none;">
+        <div class="reader-container">
+            <button class="btn" id="back-btn">← BACK TO ARCHIVE</button>
+            <h1 id="reader-title"></h1>
+            <div id="content-body">Consulting the Void...</div>
 
-function renderMenu() {
-  const container = document.getElementById('list-container');
-  container.innerHTML = '';
-  
-  if (currentTab === 'chapters') {
-    data.chapters.forEach((title, i) => {
-      const card = createCard(`CHAPTER ${i+1}`, title, () => openItem(`Chapter ${i+1}`, title, 'chapters'));
-      container.appendChild(card);
-    });
-  } else {
-    data.codex.forEach(item => {
-      const card = createCard("CODEX", item.title, () => openItem(item.id, item.title, 'lore'));
-      container.appendChild(card);
-    });
-  }
-}
+            <div class="comments-section">
+                <h2 class="section-title">COMMENTS</h2>
+                <div id="giscus-container"></div>
+            </div>
+        </div>
+    </section>
 
-function createCard(label, sub, action) {
-  const div = document.createElement('div');
-  div.className = 'card';
-  div.onclick = action;
-  div.innerHTML = `<div><h3>${label}</h3><span style="font-size:0.8rem; opacity:0.6">${sub}</span></div> <span style="color:var(--accent)">→</span>`;
-  return div;
-}
-
-async function openItem(fileName, title, folder) {
-  document.getElementById('main-ui').style.display = 'none';
-  document.getElementById('reader-ui').style.display = 'block';
-  document.getElementById('reader-title').innerText = title;
-  const content = document.getElementById('content-body');
-  content.innerText = "Consulting the Void...";
-
-  // FORGIVING FETCH: Handles the space in "Chapter 4 .txt"
-  let paths = folder === 'chapters' ? [`${fileName}.txt`, `${fileName} .txt`] : [`lore/${fileName}.txt`];
-  
-  for (let path of paths) {
-    try {
-      let res = await fetch(path);
-      if (res.ok) {
-        content.innerText = await res.text();
-        window.scrollTo(0,0);
-        return;
-      }
-    } catch(e) {}
-  }
-  content.innerText = "Error: This fragment is missing from the Repository. Please ensure the file exists on GitHub.";
-}
-
-function closeReader() {
-  document.getElementById('main-ui').style.display = 'block';
-  document.getElementById('reader-ui').style.display = 'none';
-}
-
-renderMenu();
-</script>
+    <script src="script.js"></script>
 </body>
 </html>
