@@ -1,75 +1,76 @@
-/* --- CHAPTERS --- */
+/* --- NOVEL ARCHIVE --- */
 const chapters = ["The Awakening Void", "Eyes of the Ossuary", "Disciples of Burning Light", "The Empress Sends Word", "The Third Path"];
 
-const mainUI = document.getElementById('main-ui');
-const readerUI = document.getElementById('reader-ui');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-
-/* --- SIDEBAR ENGINE --- */
-function toggleSidebar() {
-    sidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
+/* --- NAVIGATION CORE --- */
+function toggleNav() {
+    document.getElementById('sidebar').classList.toggle('active');
+    document.getElementById('overlay').classList.toggle('active');
 }
 
-document.getElementById('menu-toggle').onclick = toggleSidebar;
-document.getElementById('sidebar-close').onclick = toggleSidebar;
-overlay.onclick = toggleSidebar;
+/* --- THEME ENGINE --- */
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.onclick = () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('enterprise-theme', newTheme);
+};
 
-/* --- ARCHIVE RENDERER --- */
-function renderArchive() {
-    const mainList = document.getElementById('chapter-list');
-    const sideList = document.getElementById('sidebar-chapter-list');
+// Persistence
+const savedTheme = localStorage.getItem('enterprise-theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
+/* --- READER SYSTEM --- */
+function openNovel(num, title) {
+    document.getElementById('hub').style.display = 'none';
+    const reader = document.getElementById('reader');
+    reader.style.display = 'block';
+    
+    document.getElementById('rt').innerText = title;
+    const body = document.getElementById('rb');
+    body.innerHTML = "<p class='mono-label'>CONSULTING THE VOID ARCHIVE...</p>";
+    
+    fetch(`Chapter ${num}.txt`)
+        .then(res => res.ok ? res.text() : "The Void remains silent (File not found).")
+        .then(text => {
+            body.innerHTML = text.split('\n').map(p => `<p>${p}</p>`).join('');
+        })
+        .catch(() => body.innerText = "Connection lost to archive.");
+        
+    window.scrollTo(0,0);
+}
+
+function exitReader() {
+    document.getElementById('reader').style.display = 'none';
+    document.getElementById('hub').style.display = 'block';
+    window.scrollTo(0,0);
+}
+
+/* --- BUILD INTERFACE --- */
+function build() {
+    const mainList = document.getElementById('main-archive');
+    const sideList = document.getElementById('side-chapters');
     
     chapters.forEach((t, i) => {
-        const num = i + 1;
-        // Main Cards
+        const n = i + 1;
+        // Chapter Cards
         const card = document.createElement('div');
-        card.className = 'book-card-premium';
-        card.innerHTML = `<div class="book-details"><h3>Chapter ${num}</h3><p>${t}</p><button class="btn-small">READ</button></div>`;
-        card.onclick = () => openChapter(num, t);
+        card.className = 'book-card';
+        card.style.cursor = 'pointer';
+        card.innerHTML = `<div class="book-body"><h3>Chapter ${n}</h3><p>${t}</p><button class="btn-main">READ</button></div>`;
+        card.onclick = () => openNovel(n, t);
         mainList.appendChild(card);
         
-        // Sidebar List
-        const item = document.createElement('div');
-        item.className = 'side-chapter';
-        item.style.padding = "12px 0";
-        item.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
-        item.innerText = `${num}. ${t}`;
-        item.onclick = () => { openChapter(num, t); toggleSidebar(); };
-        sideList.appendChild(item);
+        // Sidebar Links
+        const link = document.createElement('div');
+        link.className = 'side-link';
+        link.style.padding = "10px 0";
+        link.style.borderBottom = "1px solid var(--br)";
+        link.style.cursor = "pointer";
+        link.innerText = `${n}. ${t}`;
+        link.onclick = () => { openNovel(n, t); toggleNav(); };
+        sideList.appendChild(link);
     });
 }
 
-async function openChapter(num, title) {
-    mainUI.style.display = 'none';
-    readerUI.style.display = 'block';
-    document.getElementById('reader-title').innerText = title;
-    document.getElementById('reading-status').innerText = `CHAPTER ${num}`;
-    window.scrollTo(0,0);
-    
-    const body = document.getElementById('content-body');
-    body.innerText = "Accessing the Void Archive...";
-    
-    // Fetch from repository
-    try {
-        const res = await fetch(`Chapter ${num}.txt`);
-        if (res.ok) body.innerText = await res.text();
-        else body.innerText = "This chapter is currently shielded by the Void (File not found).";
-    } catch (e) {
-        body.innerText = "Archive Connection Error.";
-    }
-}
-
-document.getElementById('back-btn').onclick = () => {
-    readerUI.style.display = 'none';
-    mainUI.style.display = 'block';
-};
-
-/* --- THEME TOGGLE --- */
-document.getElementById('theme-btn').onclick = () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-};
-
-renderArchive();
+build();
