@@ -1,72 +1,74 @@
-/* --- THEME DEFINITIONS --- */
-:root {
-    --bg: #fdfdfd; --text: #1a1a1a; --accent: #0088cc; 
-    --card-bg: #f5f5f5; --border: #ddd; --shadow: rgba(0,0,0,0.05);
-}
-[data-theme="dark"] {
-    --bg: #00000a; --text: #ccc8e0; --accent: #00f0ff; 
-    --card-bg: rgba(0,240,255,0.02); --border: rgba(0,240,255,0.1); --shadow: rgba(0,0,0,0.5);
-}
+/* Add these to your style.css */
 
-/* --- GLOBAL STYLES --- */
-body { 
-    background: var(--bg); color: var(--text); 
-    font-family: 'Cormorant Garamond', serif; margin: 0; 
-    transition: background 0.4s ease, color 0.4s ease;
-    overflow-x: hidden;
+.hero {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, rgba(0,0,10,0.8), var(--bg)), url('assets/hero-bg.jpg');
+    background-size: cover;
+    text-align: center;
 }
 
-/* --- NAVIGATION --- */
-nav { 
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.2rem 2rem; border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; background: var(--bg); z-index: 1000;
-    backdrop-filter: blur(10px);
-}
-.logo { 
-    font-family: 'Cinzel Decorative'; color: var(--accent); 
-    text-decoration: none; font-size: 1.3rem; letter-spacing: 2px;
-    text-shadow: 0 0 15px var(--accent);
+.synopsis-box {
+    max-width: 600px;
+    margin: 2rem auto;
+    font-style: italic;
+    font-size: 1.2rem;
+    opacity: 0.8;
+    line-height: 1.6;
 }
 
-/* --- HERO SECTION --- */
-.hero { text-align: center; padding: 5rem 1rem; animation: fadeIn 1.5s ease; }
-.hero h1 { font-family: 'Cinzel Decorative'; font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; }
-.subtitle { letter-spacing: 5px; opacity: 0.6; font-size: 0.9rem; }
-
-/* --- GRID & CARDS --- */
-.section-title { 
-    font-family: 'Cinzel Decorative'; border-bottom: 1px solid var(--accent); 
-    padding-bottom: 10px; margin: 4rem 0 2rem 0; font-size: 1rem; letter-spacing: 3px;
-}
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-.card { 
-    border: 1px solid var(--border); padding: 2rem; background: var(--card-bg); 
-    cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative; overflow: hidden;
-}
-.card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px var(--shadow); }
-
-/* --- READER STYLES --- */
-.reader-container { max-width: 750px; margin: 0 auto; padding: 4rem 1.5rem; }
-#reader-title { font-family: 'Cinzel Decorative'; font-size: 2.5rem; margin-bottom: 2rem; }
-#content-body { font-size: 1.35rem; line-height: 2; white-space: pre-wrap; font-weight: 300; }
-
-/* --- BUTTONS & FORMS --- */
-.btn, .theme-toggle { 
-    background: none; border: 1px solid var(--accent); color: var(--accent); 
-    padding: 10px 20px; font-family: 'Share Tech Mono'; cursor: pointer; 
-    text-transform: uppercase; font-size: 0.75rem; transition: 0.3s;
-}
-.btn:hover, .theme-toggle:hover { background: var(--accent); color: var(--bg); }
-
-.contact-form { display: flex; flex-direction: column; gap: 15px; max-width: 500px; margin: 0 auto; }
-.contact-form input, .contact-form textarea { 
-    padding: 15px; background: var(--card-bg); border: 1px solid var(--border); 
-    color: var(--text); font-family: 'Cormorant Garamond'; font-size: 1.1rem;
+.btn-primary {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-family: 'Share Tech Mono';
+    letter-spacing: 2px;
+    transition: 0.3s;
 }
 
-/* --- ANIMATIONS --- */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.btn-primary:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 20px var(--accent);
+}
 
-footer { text-align: center; padding: 5rem 0; opacity: 0.5; font-size: 0.8rem; letter-spacing: 1px; }
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-family: 'Share Tech Mono';
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.nav-links a:hover { opacity: 1; color: var(--accent); }
+
+.author-container {
+    background: var(--card-bg);
+    padding: 3rem;
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+/* Reader Nav for mobile */
+.reader-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+}
