@@ -107,11 +107,11 @@ function injectVoidheartSEO() {
     });
     document.head.appendChild(schemaScript);
 
-    // 2. Inject the Logo (Favicon) for the browser tab and Google Search
+    // 2. Inject the Logo pointing to the file you created
     const favicon = document.createElement('link');
     favicon.rel = 'icon';
-    favicon.type = 'image/png';
-    favicon.href = 'logo.png'; // MUST match the filename of your logo image exactly
+    favicon.type = 'image/svg+xml';
+    favicon.href = 'logo.svg'; // Points perfectly to your logo.svg file
     document.head.appendChild(favicon);
 }
 
