@@ -42,6 +42,9 @@ async function openRead(n, t) {
     hub.style.display = 'none';
     read.style.display = 'block';
     
+    // SEO UPGRADE: Change the browser title dynamically for the chapter
+    document.title = `Chapter ${n}: ${t} | Jinwah: Voidheart`;
+    
     document.getElementById('rt').innerText = t;
     const body = document.getElementById('rb');
     body.innerHTML = "<p class='tech-tag'>INITIATING_VOID_ACCESS...</p>";
@@ -64,6 +67,9 @@ function back() {
     read.style.display = 'none';
     hub.style.display = 'block';
     window.scrollTo(0,0);
+    
+    // SEO UPGRADE: Restore the main site title when going back to the hub
+    document.title = "Jinwah: Voidheart | Official Dark Fantasy Webnovel";
 }
 
 /* --- INTERFACE BUILDER --- */
@@ -88,5 +94,27 @@ function build() {
     });
 }
 
+/* --- SEO & BRANDING INJECTION --- */
+function injectVoidheartSEO() {
+    // 1. Inject the Site Name for Google
+    const schemaScript = document.createElement('script');
+    schemaScript.type = 'application/ld+json';
+    schemaScript.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Jinwah: Voidheart",
+      "url": "https://jinwah.netlify.app/"
+    });
+    document.head.appendChild(schemaScript);
+
+    // 2. Inject the Logo (Favicon) for the browser tab and Google Search
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/png';
+    favicon.href = 'logo.png'; // MUST match the filename of your logo image exactly
+    document.head.appendChild(favicon);
+}
+
 // System Launch
 build();
+injectVoidheartSEO();
