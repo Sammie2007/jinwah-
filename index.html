@@ -1,1454 +1,166 @@
 <!DOCTYPE html>
-```html
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="VOIDHEART — a dark-fantasy reading experience. The chronicle of Jinwah Voidheart, the hybrid who should not exist.">
-<meta name="theme-color" content="#0a0b0e" id="metaTheme">
-<title>VOIDHEART — The Jinwah Chronicles</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Ccircle%20cx='16'%20cy='16'%20r='13'%20fill='none'%20stroke='%23a78bfa'%20stroke-width='2'/%3E%3Cpath%20d='M16%203a13%2013%200%20010%2026z'%20fill='%23a78bfa'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-/* ============================================================
-   VOIDHEART READER — dual-theme engine
-   Dark: "Goth Smooth" · Light: "Gloss Clean"
-   ============================================================ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-:root{
-  color-scheme:dark;
-  --rail:302px;
-  --topbar-h:62px;
-  --fs:18px;
-  --lh:1.8;
-
-  /* surfaces */
-  --bg:#0a0b0e;
-  --bg-tint-a:#161228;
-  --bg-tint-b:#0d1a26;
-  --glass:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
-  --glass-strong:linear-gradient(165deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
-  --brd:rgba(151,142,255,.14);
-  --brd-soft:rgba(255,255,255,.07);
-  --shadow:0 24px 60px -22px rgba(0,0,0,.65);
-
-  /* ink */
-  --ink:#c9cdd9;
-  --ink-dim:#8d92a4;
-  --ink-hi:#f3f5fc;
-
-  /* accents */
-  --accent:#a78bfa;
-  --accent2:#67e8f9;
-  --gold:#d9ba80;
-  --glow:rgba(167,139,250,.32);
-  --grad-accent:linear-gradient(100deg,var(--accent),var(--accent2));
-
-  /* misc */
-  --scrim:rgba(4,5,9,.62);
-  --orb-o:.55;
-  --noise-o:.05;
-  --vig:radial-gradient(120% 120% at 50% 40%,transparent 55%,rgba(0,0,0,.55) 100%);
-  --sel:rgba(167,139,250,.32);
-  --kbd-bg:rgba(255,255,255,.06);
+    <meta name="google-site-verification" content="omaQrVzKI8Fj4mqHz9KgfdpzOh-ESxNH5_Ml3fXHrQc" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>JINWAH | Enterprise Sovereign</title>
+    
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Jinwah Voidheart",
+  "description": "The official web reader and archive for Jinwah: Voidheart, featuring immersive dark fantasy lore and AI integration.",
+  "url": "https://jinwah.netlify.app/"
 }
-[data-theme="light"]{
-  color-scheme:light;
-  --bg:#edeff4;
-  --bg-tint-a:#ffffff;
-  --bg-tint-b:#f7f2e8;
-  --glass:linear-gradient(165deg,rgba(255,255,255,.94),rgba(255,255,255,.68));
-  --glass-strong:linear-gradient(165deg,#ffffff,rgba(255,255,255,.82));
-  --brd:rgba(76,63,140,.16);
-  --brd-soft:rgba(15,23,42,.08);
-  --shadow:0 18px 44px -20px rgba(51,65,85,.28);
-
-  --ink:#39435c;
-  --ink-dim:#69718a;
-  --ink-hi:#131a2c;
-
-  --accent:#6a4bd6;
-  --accent2:#0e93b8;
-  --gold:#a87c2c;
-  --glow:rgba(106,75,214,.22);
-  --grad-accent:linear-gradient(100deg,var(--accent),var(--accent2));
-
-  --scrim:rgba(20,26,45,.35);
-  --orb-o:.16;
-  --noise-o:.035;
-  --vig:none;
-  --sel:rgba(106,75,214,.22);
-  --kbd-bg:rgba(15,23,42,.06);
-}
-
-html{scroll-behavior:smooth}
-body{
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
-  background:
-    radial-gradient(1100px 720px at 78% -12%,var(--bg-tint-a) 0%,transparent 58%),
-    radial-gradient(950px 700px at -12% 112%,var(--bg-tint-b) 0%,transparent 55%),
-    var(--bg);
-  color:var(--ink);
-  min-height:100vh;
-  overflow-x:hidden;
-  transition:background .6s ease,color .45s ease;
-}
-::selection{background:var(--sel)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
-
-/* ---------- ambient cosmos ---------- */
-.cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.cosmos::before{ /* film grain */
-  content:'';position:absolute;inset:0;opacity:var(--noise-o);
-  background-image:url("data:image/svg+xml;utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.8'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'%20opacity='0.55'/%3E%3C/svg%3E");
-}
-.cosmos::after{content:'';position:absolute;inset:0;background:var(--vig)}
-.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:var(--orb-o);will-change:transform}
-.orb.a{width:520px;height:520px;top:-160px;right:-120px;background:radial-gradient(circle,rgba(124,92,246,.5),transparent 70%);animation:drift 30s ease-in-out infinite alternate}
-.orb.b{width:460px;height:460px;bottom:-180px;left:-140px;background:radial-gradient(circle,rgba(56,189,248,.42),transparent 70%);animation:drift 38s ease-in-out infinite alternate-reverse}
-.orb.c{width:340px;height:340px;top:38%;left:52%;background:radial-gradient(circle,rgba(217,186,128,.2),transparent 70%);animation:drift 46s ease-in-out infinite alternate}
-@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,-50px) scale(1.12)}}
-.star{position:absolute;border-radius:50%;background:#fff;opacity:var(--o,.5);animation:twinkle var(--dur,4s) ease-in-out var(--del,0s) infinite alternate}
-@keyframes twinkle{from{opacity:var(--o,.5)}to{opacity:calc(var(--o,.5)*.12)}}
-[data-theme="light"] .star{display:none}
-
-/* ---------- progress ---------- */
-#progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:95;background:transparent}
-#progress i{display:block;height:100%;background:var(--grad-accent);transform-origin:left;transform:scaleX(0);box-shadow:0 0 12px var(--glow)}
-
-/* ---------- topbar ---------- */
-.topbar{
-  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);z-index:80;
-  display:flex;align-items:center;gap:14px;padding:0 18px;
-  background:var(--glass);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
-  border-bottom:1px solid var(--brd-soft);
-  transition:background .6s ease,border-color .6s ease;
-}
-.icon-btn{
-  width:40px;height:40px;border-radius:12px;border:1px solid var(--brd-soft);
-  background:transparent;color:var(--ink-dim);cursor:pointer;display:grid;place-items:center;
-  transition:color .3s,border-color .3s,background .3s,transform .25s;
-  position:relative;flex:none;
-}
-.icon-btn:hover{color:var(--ink-hi);border-color:var(--brd);background:var(--kbd-bg);transform:translateY(-1px)}
-.icon-btn svg{width:19px;height:19px}
-.burger{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:5px}
-.burger span{display:block;width:17px;height:1.6px;border-radius:2px;background:currentColor;transition:transform .35s cubic-bezier(.6,.05,.2,1),opacity .25s,width .35s}
-.burger span:nth-child(2){width:12px;margin-right:auto;margin-left:2.5px}
-body.nav-open .burger span:nth-child(1){transform:translateY(6.6px) rotate(45deg)}
-body.nav-open .burger span:nth-child(2){opacity:0}
-body.nav-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45deg)}
-
-.brand{display:flex;align-items:center;gap:11px;min-width:0}
-.sigil{width:30px;height:30px;color:var(--accent);flex:none;transition:transform .8s cubic-bezier(.2,.8,.2,1),filter .4s;filter:drop-shadow(0 0 8px var(--glow))}
-.brand:hover .sigil{transform:rotate(180deg)}
-.wordmark{font-family:'Cinzel',serif;font-weight:700;font-size:15px;letter-spacing:.34em;color:var(--ink-hi);white-space:nowrap}
-.wordmark em{font-style:normal;background:var(--grad-accent);-webkit-background-clip:text;background-clip:text;color:transparent}
-.crumb{
-  margin-left:10px;padding-left:16px;border-left:1px solid var(--brd-soft);
-  font-size:12px;letter-spacing:.06em;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:34vw;
-}
-.crumb b{color:var(--accent);font-weight:600;margin-right:8px;font-family:'Cinzel',serif}
-.top-actions{margin-left:auto;display:flex;align-items:center;gap:9px}
-
-/* theme toggle */
-#themeBtn{overflow:hidden}
-#themeBtn .ico{position:absolute;inset:0;display:grid;place-items:center;transition:transform .55s cubic-bezier(.5,-.3,.3,1.4),opacity .4s}
-#themeBtn .ico svg{width:18px;height:18px}
-[data-theme="dark"] #themeBtn .ico-sun{transform:rotate(0) scale(1);opacity:1}
-[data-theme="dark"] #themeBtn .ico-moon{transform:rotate(-120deg) scale(.4);opacity:0}
-[data-theme="light"] #themeBtn .ico-sun{transform:rotate(120deg) scale(.4);opacity:0}
-[data-theme="light"] #themeBtn .ico-moon{transform:rotate(0) scale(1);opacity:1}
-
-/* ---------- sidebar rail ---------- */
-.sidebar{
-  position:fixed;top:var(--topbar-h);left:0;bottom:0;width:var(--rail);z-index:70;
-  display:flex;flex-direction:column;
-  background:var(--glass);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);
-  border-right:1px solid var(--brd-soft);
-  transform:translateX(-103%);
-  transition:transform .5s cubic-bezier(.3,.8,.25,1),background .6s ease,border-color .6s ease;
-}
-body.nav-open .sidebar{transform:translateX(0);box-shadow:var(--shadow)}
-.side-head{display:flex;align-items:center;gap:10px;padding:18px 18px 12px}
-.side-head .tag{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim)}
-.side-head .icon-btn{margin-left:auto;width:34px;height:34px}
-.searchwrap{padding:4px 16px 14px;position:relative}
-.searchwrap svg{position:absolute;left:29px;top:50%;transform:translateY(calc(-50% + 3px));width:15px;height:15px;color:var(--ink-dim);pointer-events:none}
-#navFilter{
-  width:100%;padding:10px 12px 10px 36px;border-radius:11px;font:500 13px 'Inter';
-  color:var(--ink-hi);background:var(--kbd-bg);border:1px solid var(--brd-soft);outline:none;
-  transition:border-color .3s,background .3s;
-}
-#navFilter::placeholder{color:var(--ink-dim)}
-#navFilter:focus{border-color:var(--brd)}
-.nav-scroll{flex:1;overflow-y:auto;padding:2px 10px 18px}
-.grp{margin-top:16px}
-.grp-label{display:flex;align-items:center;gap:8px;padding:6px 10px;font:600 10px 'Inter';letter-spacing:.26em;text-transform:uppercase;color:var(--ink-dim)}
-.grp-label::after{content:'';flex:1;height:1px;background:var(--brd-soft)}
-.grp-label i{font-style:normal;color:var(--accent);letter-spacing:0}
-.ni{
-  display:flex;align-items:center;gap:11px;padding:9px 11px;margin:2px 0;border-radius:10px;
-  color:var(--ink);text-decoration:none;border:1px solid transparent;position:relative;
-  transition:background .3s,color .3s,transform .3s,border-color .3s;
-}
-.ni:hover{background:var(--kbd-bg);transform:translateX(4px)}
-.ni .nn{
-  flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
-  font-family:'Cinzel',serif;font-size:11px;font-weight:600;color:var(--accent);
-  border:1px solid var(--brd-soft);background:var(--kbd-bg);transition:all .3s;
-}
-.ni .nt{font:500 13.5px 'Inter';letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ni.active{background:var(--glass-strong);border-color:var(--brd)}
-.ni.active::before{content:'';position:absolute;left:-1px;top:20%;bottom:20%;width:2px;border-radius:2px;background:var(--grad-accent);box-shadow:0 0 10px var(--glow)}
-.ni.active .nn{border-color:transparent;background:var(--grad-accent);color:#0b0c12;box-shadow:0 0 14px var(--glow)}
-[data-theme="light"] .ni.active .nn{color:#fff}
-.ni.hide{display:none}
-.nores{display:none;padding:18px 12px;font:500 13px 'Inter';color:var(--ink-dim);text-align:center}
-.side-foot{padding:13px 18px;border-top:1px solid var(--brd-soft);font:500 10.5px 'Inter';letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);display:flex;justify-content:space-between;gap:8px}
-.side-foot b{color:var(--accent);font-weight:600}
-.scrim{position:fixed;inset:0;z-index:65;background:var(--scrim);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .45s}
-body.nav-open .scrim{opacity:1;pointer-events:auto}
-
-/* ---------- stage / reader ---------- */
-.stage{position:relative;z-index:1;transition:margin-left .5s cubic-bezier(.3,.8,.25,1)}
-.reader{max-width:724px;margin:0 auto;padding:calc(var(--topbar-h) + 54px) 26px 90px;transition:max-width .5s cubic-bezier(.3,.8,.25,1)}
-body.measure-wide .reader{max-width:884px}
-
-.prose{position:relative}
-.prose.pre>*{opacity:0}
-.prose.in>*{animation:rise .75s cubic-bezier(.16,.7,.2,1) both;animation-delay:var(--d,0ms)}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-
-.kicker{
-  display:flex;align-items:center;gap:12px;
-  font:700 11px 'Inter';letter-spacing:.4em;text-transform:uppercase;
-  background:var(--grad-accent);-webkit-background-clip:text;background-clip:text;color:transparent;
-  margin-bottom:20px;
-}
-.kicker::after{content:'';flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,var(--brd),transparent)}
-h1.title{
-  font-family:'Cinzel',serif;font-weight:700;font-size:clamp(30px,4.6vw,46px);line-height:1.14;letter-spacing:.015em;
-  background:linear-gradient(180deg,var(--ink-hi) 20%,var(--ink-dim) 130%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  text-shadow:0 0 42px var(--glow);
-  margin-bottom:12px;
-}
-.subtitle{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:clamp(16px,2vw,19px);color:var(--ink-dim);margin-bottom:26px}
-.orn{display:flex;align-items:center;gap:14px;margin:6px 0 22px}
-.orn::before,.orn::after{content:'';height:1px;flex:1}
-.orn::before{background:linear-gradient(90deg,transparent,var(--brd))}
-.orn::after{background:linear-gradient(90deg,var(--brd),transparent)}
-.orn i{width:9px;height:9px;flex:none;background:var(--grad-accent);transform:rotate(45deg);box-shadow:0 0 16px var(--glow)}
-.meta{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font:600 11px 'Inter';letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:44px}
-.meta b{color:var(--accent);font-weight:600}
-.meta .dot{width:3px;height:3px;border-radius:50%;background:var(--brd)}
-
-.prose p{
-  font-family:'EB Garamond',Georgia,'Times New Roman',serif;
-  font-size:var(--fs);line-height:var(--lh);
-  color:var(--ink);margin-bottom:1.15em;text-align:justify;hyphens:auto;-webkit-hyphens:auto;
-  transition:color .45s ease;
-}
-.prose:not(.lore) > p:first-of-type::first-letter{
-  float:left;font-family:'Cinzel',serif;font-weight:600;
-  font-size:3.35em;line-height:.82;padding:.08em .13em 0 0;
-  color:var(--accent);text-shadow:0 0 26px var(--glow);
-}
-.fin{display:flex;align-items:center;justify-content:center;gap:16px;margin:58px 0 8px;color:var(--accent)}
-.fin::before,.fin::after{content:'';width:74px;height:1px}
-.fin::before{background:linear-gradient(90deg,transparent,var(--brd))}
-.fin::after{background:linear-gradient(90deg,var(--brd),transparent)}
-.fin span{font-size:15px;text-shadow:0 0 14px var(--glow);animation:pulse 3.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
-
-.anote{
-  margin-top:34px;padding:14px 18px;border-left:2px solid var(--accent);
-  background:var(--kbd-bg);border-radius:0 12px 12px 0;
-  font-family:'EB Garamond',serif;font-style:italic;font-size:calc(var(--fs) - 2px);color:var(--ink-dim);
-}
-.anote span{display:block;font:700 10px 'Inter';letter-spacing:.3em;text-transform:uppercase;font-style:normal;color:var(--accent);margin-bottom:6px}
-
-/* codex plates */
-.chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:30px}
-.chips span{
-  padding:5px 13px;border-radius:999px;border:1px solid var(--brd);
-  font:600 10px 'Inter';letter-spacing:.22em;text-transform:uppercase;color:var(--accent2);
-  background:var(--kbd-bg);
-}
-.plate{
-  position:relative;padding:34px 32px 26px;border:1px solid var(--brd);border-radius:16px;
-  background:var(--glass);box-shadow:var(--shadow);
-}
-.plate::before,.plate::after{content:'';position:absolute;width:26px;height:26px;border:1px solid var(--accent)}
-.plate::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:16px}
-.plate::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:16px}
-.plate p:first-of-type::first-letter{font-size:1em;float:none;padding:0;color:inherit;text-shadow:none}
-.archiveline{margin-top:22px;font:600 10.5px 'Inter';letter-spacing:.24em;text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:10px}
-.archiveline::before{content:'❖';color:var(--accent);letter-spacing:0}
-
-/* ---------- pager ---------- */
-.pager{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:64px}
-.pg{
-  display:flex;flex-direction:column;gap:5px;padding:17px 20px;border-radius:15px;text-decoration:none;
-  border:1px solid var(--brd-soft);background:var(--glass);
-  transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,background .4s,box-shadow .3s;
-  min-width:0;
-}
-.pg:hover{transform:translateY(-3px);border-color:var(--brd);box-shadow:var(--shadow)}
-.pg small{font:600 10px 'Inter';letter-spacing:.28em;text-transform:uppercase;color:var(--ink-dim)}
-.pg strong{font-family:'EB Garamond',serif;font-weight:600;font-size:16.5px;color:var(--ink-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pg.next{text-align:right;align-items:flex-end}
-.pg.ghost{opacity:.35;pointer-events:none}
-
-/* ---------- footer ---------- */
-.site-foot{margin-top:74px;padding-top:26px;border-top:1px solid var(--brd-soft);display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;justify-content:space-between}
-.site-foot p{font:500 12px 'Inter';color:var(--ink-dim);letter-spacing:.04em}
-.keys{display:flex;gap:8px;flex-wrap:wrap}
-.keys kbd{
-  font:600 10.5px 'Inter';letter-spacing:.08em;color:var(--ink-dim);
-  background:var(--kbd-bg);border:1px solid var(--brd-soft);border-bottom-width:2px;
-  border-radius:6px;padding:4px 8px;
-}
-
-/* ---------- settings popover ---------- */
-.pop{
-  position:fixed;top:calc(var(--topbar-h) + 10px);right:16px;z-index:90;width:272px;
-  padding:18px;border-radius:16px;border:1px solid var(--brd);
-  background:var(--glass-strong);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
-  box-shadow:var(--shadow);
-  transform-origin:top right;transform:scale(.92) translateY(-8px);opacity:0;pointer-events:none;
-  transition:transform .35s cubic-bezier(.2,.9,.25,1.2),opacity .3s;
-}
-.pop.open{transform:none;opacity:1;pointer-events:auto}
-.pop h3{font:700 10px 'Inter';letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0}
-.row + .row{border-top:1px dashed var(--brd-soft)}
-.row label{font:500 12.5px 'Inter';color:var(--ink);letter-spacing:.02em}
-.stepper{display:flex;align-items:center;gap:7px}
-.stepper button{
-  width:28px;height:28px;border-radius:9px;border:1px solid var(--brd-soft);cursor:pointer;
-  background:var(--kbd-bg);color:var(--ink);font:600 15px 'Inter';line-height:1;display:grid;place-items:center;
-  transition:all .25s;
-}
-.stepper button:hover:not(:disabled){border-color:var(--brd);color:var(--accent);transform:translateY(-1px)}
-.stepper button:disabled{opacity:.32;cursor:default}
-.stepper output{min-width:38px;text-align:center;font:600 12px 'Inter';font-variant-numeric:tabular-nums;color:var(--accent);letter-spacing:.04em}
-.seg{display:flex;border:1px solid var(--brd-soft);border-radius:10px;overflow:hidden;background:var(--kbd-bg)}
-.seg button{
-  border:0;background:transparent;color:var(--ink-dim);cursor:pointer;
-  font:600 10.5px 'Inter';letter-spacing:.12em;text-transform:uppercase;padding:7px 13px;transition:all .3s;
-}
-.seg button.on{background:var(--grad-accent);color:#0b0c12}
-[data-theme="light"] .seg button.on{color:#fff}
-
-/* ---------- resume chip & toast ---------- */
-#resume{
-  position:fixed;right:22px;bottom:22px;z-index:75;display:flex;align-items:center;gap:10px;
-  padding:11px 17px;border-radius:999px;border:1px solid var(--brd);cursor:pointer;
-  background:var(--glass-strong);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  color:var(--ink);font:600 12px 'Inter';letter-spacing:.04em;box-shadow:var(--shadow);
-  transition:transform .3s,opacity .4s,border-color .3s;
-}
-#resume:hover{transform:translateY(-2px);border-color:var(--accent)}
-#resume i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--glow);animation:pulse 2s infinite}
-#resume[hidden]{display:none}
-#toast{
-  position:fixed;left:50%;bottom:30px;z-index:99;transform:translateX(-50%) translateY(16px);
-  padding:11px 22px;border-radius:999px;border:1px solid var(--brd);
-  background:var(--glass-strong);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  color:var(--ink-hi);font:600 12.5px 'Inter';letter-spacing:.06em;box-shadow:var(--shadow);
-  opacity:0;pointer-events:none;transition:opacity .4s,transform .45s cubic-bezier(.2,.9,.25,1.2);
-  white-space:nowrap;
-}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast b{background:var(--grad-accent);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
-
-/* ---------- scrollbars ---------- */
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--brd);border-radius:99px;border:3px solid transparent;background-clip:content-box}
-::-webkit-scrollbar-thumb:hover{background:var(--accent);background-clip:content-box;border:3px solid transparent}
-.nav-scroll::-webkit-scrollbar{width:6px}
-
-/* ---------- responsive ---------- */
-@media(min-width:1160px){
-  .sidebar{transform:translateX(0)}
-  .stage{margin-left:var(--rail)}
-  body.rail-off .sidebar{transform:translateX(-103%);box-shadow:none}
-  body.rail-off .stage{margin-left:0}
-  .side-head .icon-btn.close{display:none}
-}
-@media(max-width:1159.9px){.side-head .icon-btn.railtoggle-hide{display:none}}
-@media(max-width:900px){.crumb{display:none}}
-@media(max-width:620px){
-  .reader{padding-left:18px;padding-right:18px}
-  .wordmark{letter-spacing:.22em;font-size:13px}
-  .pager{grid-template-columns:1fr}
-  .pg.next{text-align:left;align-items:flex-start}
-  #resume{right:14px;bottom:14px}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .prose.pre>*{opacity:1}
-}
-@media print{
-  .topbar,.sidebar,.scrim,.cosmos,#progress,.pager,#resume,#toast,.pop,.keys{display:none!important}
-  body{background:#fff;color:#000}
-  .stage{margin:0!important}
-}
-</style>
-<script>
-/* Apply persisted theme before first paint — prevents flash */
-(function(){try{
-  var t=localStorage.getItem('vh:theme');
-  if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}
-}catch(e){}})();
 </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Share+Tech+Mono&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ══════════ AMBIENT COSMOS ══════════ -->
-<div class="cosmos" aria-hidden="true">
-  <div class="orb a"></div>
-  <div class="orb b"></div>
-  <div class="orb c"></div>
-  <div id="stars"></div>
-</div>
+    <div id="ov" class="ov" onclick="nav()"></div>
+    <aside id="side" class="side">
+        <div class="side-head">
+            <span class="mono-furniture">// SYSTEM.NAV_SECURED</span>
+            <button onclick="nav()" class="close-btn">×</button>
+        </div>
+        <div class="side-content">
+            <div class="side-group">
+                <label>FULL ARCHIVE [10_DATA_SETS]</label>
+                <div id="side-chaps"></div>
+            </div>
+            <div class="side-group">
+                <label>CHANNELS</label>
+                <a href="mailto:sammiefreakinmutant@gmail.com">Transmit Email</a>
+                <a href="https://wa.me/2349031804979" target="_blank">WhatsApp Data</a>
+                <a href="tel:+2349031804979">Voice Channel</a>
+            </div>
+        </div>
+    </aside>
 
-<div id="progress" aria-hidden="true"><i></i></div>
-
-<!-- ══════════ TOPBAR ══════════ -->
-<header class="topbar">
-  <button class="icon-btn burger" id="menuBtn" aria-label="Toggle contents" title="Contents (C)">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="brand">
-    <svg class="sigil" viewBox="0 0 32 32" aria-hidden="true">
-      <circle cx="16" cy="16" r="12.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <path d="M16 3.5a12.5 12.5 0 010 25z" fill="currentColor"/>
-      <circle cx="22.4" cy="9.6" r="1.5" fill="var(--accent2)"/>
-    </svg>
-    <span class="wordmark">VOID<em>HEART</em></span>
-    <span class="crumb" id="crumb"></span>
-  </div>
-  <div class="top-actions">
-    <button class="icon-btn" id="setBtn" aria-label="Reading settings" title="Reading settings">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <path d="M4 7h8M17.3 7H20M4 17h4M12.8 17H20"/>
-        <circle cx="15" cy="7" r="2.3"/><circle cx="10.5" cy="17" r="2.3"/>
-      </svg>
-    </button>
-    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme (T)">
-      <span class="ico ico-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7"/></svg></span>
-      <span class="ico ico-moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20.6 13.2A8.4 8.4 0 1110.8 3.4a6.8 6.8 0 009.8 9.8z"/></svg></span>
-    </button>
-  </div>
-</header>
-
-<div class="scrim" id="scrim"></div>
-
-<!-- ══════════ SIDEBAR ══════════ -->
-<aside class="sidebar" id="sidebar" aria-label="Table of contents">
-  <div class="side-head">
-    <span class="tag">The Chronicle</span>
-    <button class="icon-btn close" id="closeBtn" aria-label="Close contents">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-  </div>
-  <div class="searchwrap">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>
-    <input id="navFilter" type="text" placeholder="Filter chapters…" autocomplete="off" spellcheck="false">
-  </div>
-  <nav class="nav-scroll" id="navList"></nav>
-  <div class="side-foot"><span><b>10</b> chapters</span><span><b>3</b> codex</span><span>∞ void</span></div>
-</aside>
-
-<!-- ══════════ STAGE ══════════ -->
-<main class="stage">
-  <div class="reader">
-    <article id="article" class="prose" tabindex="-1"></article>
-    <nav class="pager" aria-label="Chapter navigation">
-      <a class="pg prev" id="pgPrev" href="#"><small>← Previous</small><strong></strong></a>
-      <a class="pg next" id="pgNext" href="#"><small>Next →</small><strong></strong></a>
+    <nav class="sleek-nav">
+        <div class="wrap nav-flex">
+            <div class="nav-left">
+                <button onclick="nav()" class="menu-trigger">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="nav-divider"></div>
+                <span class="brand-text">JINWAH</span>
+            </div>
+            <div class="nav-center-furniture">
+                <span class="tech-tag">ID: 234-SM-SULTAN</span>
+                <span class="tech-tag">STATUS: ONLINE</span>
+            </div>
+            <div class="nav-right">
+                <button onclick="th()" class="th-btn" id="theme-icon">◑</button>
+            </div>
+        </div>
     </nav>
-    <footer class="site-foot">
-      <p>VOIDHEART · a single-file reading experience — forged in obsidian &amp; porcelain.</p>
-      <div class="keys"><kbd>← →</kbd> chapters <kbd>T</kbd> theme <kbd>C</kbd> contents</div>
-    </footer>
-  </div>
-</main>
 
-<button id="resume" hidden><i></i><span id="resumeTxt">Continue reading</span></button>
+    <main id="main-ui">
+        <section id="home" class="hero wrap">
+            <div class="hero-box">
+                <h1 class="glitch-txt">JINWAH</h1>
+                <p class="mono-label">VOIDHEART SAGA // FULL_ARCHIVE_DEPLOYED</p>
+                <div class="void-line"></div>
+                <p class="hero-desc">"One hybrid holds the key to the Void. Jinwah must forge the path that breaks the cycle forever."</p>
+                <a href="#ai-archive" class="btn-void">CONSULT THE CORE</a>
+            </div>
+        </section>
+
+        <section id="archive" class="sec wrap">
+            <div class="sec-header">
+                <h2 class="glow">VOIDHEART_ARCHIVE</h2>
+                <div class="header-line"></div>
+            </div>
+            <div id="main-list" class="grid-engine"></div>
+        </section>
+
+        <section id="ai-archive" class="sec wrap">
+            <div class="sec-header">
+                <h2 class="glow">SOVEREIGN_CORE_AI</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="ai-container" style="width: 100%; border: 1px solid var(--br); border-radius: 4px; overflow: hidden; background: var(--cd);">
+                <iframe 
+                    id="ai-iframe"
+                    src="https://jinwah-jinwah.hf.space?embed=true" 
+                    width="100%" 
+                    height="700px" 
+                    frameborder="0"
+                    loading="lazy"
+                    allow="gyroscope; accelerometer; clipboard-write;"
+                    style="display: block;">
+                </iframe>
+            </div>
+            <p class="tech-tag" style="margin-top: 15px; text-align: center;">
+                [[ STATUS: CONNECTED_TO_VOID_ARCHIVE ]]
+            </p>
+        </section>
+
+        <section id="library" class="sec wrap">
+            <div class="sec-header">
+                <h2 class="glow">THE MULTIVERSE</h2>
+            </div>
+            <div class="grid-engine">
+                <a href="http://wbnv.in/a/a6jh2j9" target="_blank" class="card-premium">
+                    <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1542332213-31f87348057f?w=600')">
+                        <div class="card-over">EXTERNAL_ACCESS</div>
+                    </div>
+                    <div class="card-body">
+                        <h3>Demon Slayer: Redemption</h3>
+                        <p>After Muzan's fall, a new threat arises in Ravenscroft.</p>
+                    </div>
+                </a>
+                <a href="http://wbnv.in/a/f9j2m96" target="_blank" class="card-premium">
+                    <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600')">
+                        <div class="card-over">EXTERNAL_ACCESS</div>
+                    </div>
+                    <div class="card-body">
+                        <h3>Fading Into You</h3>
+                        <p>In a world of silence, Emily and Riley find a love worth risking everything for.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="about" class="sec wrap">
+            <div class="about-card">
+                <h2 class="glow">THE CREATORS</h2>
+                <p>The <strong>Sammie & Sultan Enterprise</strong> is a world-class collaboration between two visionaries fascinated by novel reading and digital architecture.</p>
+            </div>
+        </section>
+
+        <footer class="footer wrap">
+            <div class="f-links">
+                <a href="mailto:sammiefreakinmutant@gmail.com">TRANSMIT</a>
+                <a href="https://wa.me/2349031804979">CONNECT</a>
+                <a href="tel:+2349031804979">VOICE</a>
+            </div>
+            <p class="mono-copy">© 2026 SAMMIE & SULTAN ENTERPRISE</p>
+        </footer>
+    </main>
+
+    <section id="reader" class="read-ui" style="display:none">
+        <div class="wrap">
+            <div class="read-nav">
+                <button onclick="back()" class="btn-void">← RETURN</button>
+                <span id="rs" class="mono-furniture">STATUS: READING_DATA</span>
+            </div>
+            <h1 id="rt" class="glow"></h1>
+            <article id="rb" class="rb-body"></article>
+            <div class="read-footer">
+                <button onclick="back()" class="btn-void-full">EXIT ARCHIVE</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script> 
 
-<!-- ══════════ SETTINGS POPOVER ══════════ -->
-<div class="pop" id="pop" role="dialog" aria-label="Reading settings">
-  <h3>Reading Room</h3>
-  <div class="row">
-    <label for="fsVal">Type size</label>
-    <div class="stepper">
-      <button id="fsMinus" aria-label="Decrease text size">−</button>
-      <output id="fsVal">18</output>
-      <button id="fsPlus" aria-label="Increase text size">+</button>
-    </div>
-  </div>
-  <div class="row">
-    <label for="lhVal">Leading</label>
-    <div class="stepper">
-      <button id="lhMinus" aria-label="Decrease line height">−</button>
-      <output id="lhVal">1.80</output>
-      <button id="lhPlus" aria-label="Increase line height">+</button>
-    </div>
-  </div>
-  <div class="row">
-    <label>Measure</label>
-    <div class="seg" role="group" aria-label="Text measure">
-      <button id="mBook" class="on">Book</button>
-      <button id="mWide">Wide</button>
-    </div>
-  </div>
-</div>
-
-<div id="toast" role="status" aria-live="polite"></div>
-
-<noscript><p style="position:fixed;inset:auto 0 0 0;padding:14px;text-align:center;font-family:sans-serif;background:#1a1330;color:#cfc6ff;z-index:999">This reader requires JavaScript to unfold the chronicle.</p></noscript>
-
-<script>
-'use strict';
-/* ════════════════════════════════════════════════════════════
-   VOIDHEART — application core
-   ════════════════════════════════════════════════════════════ */
-const $  = s => document.querySelector(s);
-const $$ = s => Array.from(document.querySelectorAll(s));
-const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const FALLBACK = 'prologue';
-
-/* ─────────────── THE MANUSCRIPT ─────────────── */
-const BOOK = [
-
-/* —— PROLOGUE —— */
-{id:'prologue',kind:'front',num:'✦',tag:'Prologue',title:'The Fracture of Gods',sub:'Before the fracture, there was only dawn.',
-text:`In the beginning, there were gods. But the gods broke.
-
-Some held to their purity, becoming the cold, radiant Lights. Others fell, consumed by the dark energy of the Void... they became the Voidans.
-
-One name predates the fracture, whispered in both fear and awe: DÈÆ.TH. The first to embrace the Void. The first to turn from the light. To the Voidans, he is not a god. He is the god.
-
-Their war tore reality apart. Humanity was left to survive in the ashes, hiding in shelters of steel and scrap, living under skies where their gods still fight.
-
-From the chaos, an impossibility was born. A child of both worlds. Half Voidan. Half human. A hybrid who should not exist.
-
-His name is Jinwah Voidheart.
-
-Some see a key. Others, a catastrophe. But no one knows which side he will choose... Or if he will choose his own.`},
-
-/* —— CHAPTER ONE —— */
-{id:'ch1',kind:'chapter',num:'I',tag:'Chapter One',title:'The Rain That Wasn’t Real',sub:'Shelter-7 · the under-market',
-text:`The rain over Shelter-7 wasn’t real. It fell in perfect intervals, a digital simulation piped through cracked domes, programmed to remind mortals what storms used to feel like. Still, it made the under-market smell of ozone and damp metal, the scent of life pretending not to be synthetic.
-
-Holographic carp swam through the air above the stalls, their translucent scales flickering between advertisement scripts for recycled tech and vat-grown noodles. Beneath that shifting light, Jinwah Voidheart kept his head down, hood drawn low, another ghost moving through the press of bodies.
-
-He’d taken his favorite disguise—unremarkable. Slender, dark-haired, quiet-eyed, the kind of face that dissolved from memory the moment someone looked away. He stopped at a stall layered in old fiber cables and salvaged data chips. The woman behind it, Elara, had one organic eye and one glass one that whirred softly as it refocused.
-
-“Just the converter I reserved,” Jinwah said, voice calm but tired.
-
-Elara smiled, all crow’s-feet and solder burns. “You and your machines. Always fixing things no one cares to keep running.” She slid a corroded power converter across the counter. “Clean pull. Tested it myself.”
-
-He traded her a few scratched credit chits and gave a small, genuine smile. “You’re a lifesaver.”
-
-For a moment the guarded anonymity fell away, replaced by a quiet warmth. It was his small rebellion—the choice to be kind in a world built on control. He wasn’t fighting wars or gods tonight. He was just being human.
-
-Then the market went silent.
-
-Not quiet—muted. A sudden pressure drop, the simulation itself faltering. The rain froze mid-fall, suspended pixels trembling in the air before vanishing. Holograms winked out. Neon signs died.
-
-A single shaft of light—cold, pure, merciless—cut down through the shelter’s ceiling.
-
-Jinwah felt it before he saw it. The chill that crawled along his nerves, hunting the part of him that wasn’t supposed to exist. The Lights.
-
-Crowds collapsed to their knees, half in worship, half in terror. Jinwah stayed standing. That small defiance felt louder than a scream.
-
-Three figures descended through the radiant breach, walking where mortals dared not look. Their armor gleamed white and gold, each step burning away grime that had clung for decades. At their head strode a woman with hair like molten fire and eyes of weaponized grace.
-
-Aurora Starblade. A Disciple of RESURRECTION. A zealot.
-
-“Jinwah Voidheart,” she said, her voice melodic steel. “Your vigil is over. The Light calls you home.”
-
-He kept his hands visible, palms up. “Wrong person. I’m a technician.”
-
-Aurora’s lips curved into a pitying smile. “We know what you are—the last hybrid of the old blood. A flaw in the divine plan that has become our most precious asset.”
-
-The title hit harder than any blade. Around them, the crowd stared, the name Voidheart whispering through the silence like contagion.
-
-“Asset?” he echoed.
-
-“You can reproduce.”
-
-The word hung, sterile and cruel.
-
-“The Lights cannot. You are not a man. You are a key.”
-
-Her two companions drew their weapons, humming with sanctified power. Jinwah’s heartbeat slammed in his chest. For a heartbeat, he almost surrendered—until the memory of being hunted since birth burned through the fear.
-
-“No,” he whispered.
-
-Aurora inclined her head. “That was not a request.”
-
-The Disciples moved. Too fast. Too perfect.
-
-His “no” became a roar.
-
-The human mask shattered.
-
-It wasn’t flesh that broke—it was reality bending. His skin split like glass under pressure, revealing a storm beneath: swirling dark nebula, circuits of shadow threading across his limbs. His eyes imploded into black holes that reflected nothing. The Void strain—the curse that should have killed him—rose like a crown.
-
-The nearest Disciple froze mid-step, awe curdling into fear.
-
-Jinwah slammed a palm against the ground.
-
-The world unmade itself.
-
-No explosion, no fire—just absence. Light folded in, stalls collapsing silently as their molecules forgot how to exist. The Disciples were hurled backward, armor cracking, divine glow flickering like broken code. Aurora threw up a shield of holy radiance; it warped under the pressure, her composure finally cracking into something human—terror.
-
-He saw her face through the rippling dark, and for an instant hated what he saw reflected there. Monster.
-
-The thought gutted him.
-
-Then the noise returned—screams, alarms, collapsing steel. Jinwah stumbled back, horror slicing through the haze. Elara crouched behind her counter, her human eye wide with disbelief.
-
-He ran.
-
-Through smoke and dying neon, through ruptured circuits and fleeing bodies. The digital rain rebooted above him, falling again in stuttering bursts as if the world itself was confused.
-
-By the time he burst from Shelter-7 into the open industrial wastelands, real rain was falling—acidic, heavy, unfiltered. His lungs burned. He didn’t stop running until the lights of the city blurred behind him.
-
-At the edge of the territories stood a decaying monorail station, its pylons gnawed by rust and time. He collapsed inside, every breath shaking. The Void energy receded, leaving him hollowed and raw.
-
-“She was right,” said a voice.
-
-Jinwah jerked upright. A figure stood in the far shadows, robes black and motionless despite the wind. No reflection in the puddles. No signature in his senses.
-
-“Who are you?” Jinwah rasped.
-
-The hooded envoy stepped forward, voice calm, deliberate. “She said you would come to this place tonight. We have been waiting.”
-
-“‘She?’”
-
-“The one who saw you when the gods did not.”
-
-A pause, then words that felt like prophecy.
-
-“The Empress of Death offers you sanctuary, Jinwah Voidheart. And answers.”
-
-The storm outside thickened, drowning the world in gray.
-
-He looked at his trembling hands—human again, yet stained by something infinite—and realized the war had already found him.`},
-
-/* —— CHAPTER TWO —— */
-{id:'ch2',kind:'chapter',num:'II',tag:'Chapter Two',title:'The Throat of the World',sub:'Into the Grey Zones',
-text:`The envoy’s face remained a cavern of shadow beneath his hood, but his presence was heavy, a gravitational pull that made the oxygen in the station feel thin.
-
-Jinwah didn't move. His hands were shaking—not from the cold, but from the phantom sensation of the market stalls dissolving under his touch. The "sweetness" he’d spent twenty years cultivating felt like a shattered porcelain mask.
-
-"Answers?" Jinwah echoed, his voice cracking. "The only answer I want is how to stop it. How to turn it off."
-
-The envoy tilted his head. It was a bird-like, predatory movement. "You speak of your gift as if it were a disease. The Lights see a key. We see a legacy. You cannot 'turn off' the Void, Jinwah. It is not a lamp. It is the ocean, and you are currently drowning because you refuse to swim."
-
-"I killed people today," Jinwah whispered, looking at the grime on the station floor. "I didn't mean to. I just... I didn't want them to touch me."
-
-"The price of divinity is often paid in mortal coin," the envoy said coldly. He stepped out of the shadows, revealing robes that seemed woven from smoke and obsidian. "Come. The Disciples are not fools. Aurora Starblade is already weaving a net of light across this sector. If you stay here, you will become a specimen in a golden cage."
-
-Jinwah looked back toward the distant glow of Shelter-7. He thought of Elara and her whirring glass eye. He thought of the life he’d built out of scrap and quiet kindness. It was gone. The "Light" had burned it to ash the moment they spoke his name.
-
-He stood up, his legs feeling like lead. "Where are we going?"
-
-"To the Grey Zones," the envoy replied, turning toward the rusted monorail tracks that disappeared into the fog. "To the throat of the world."
-
-The journey was a blur of muted colors and mechanical groans. They traveled via a "Shadow-Skiff"—a low-profile transport that hummed with a frequency so low it made Jinwah’s teeth ache. It stayed within the deep canyons of the industrial waste, avoiding the sweeping sky-beams of the Council’s surveillance drones.
-
-High above, Jinwah saw the glittering spires of the High Cities, where the Lights lived in eternal noon. Down here, the world was an endless twilight of rust and acidic mist.
-
-"Why me?" Jinwah asked after an hour of silence. "There have been other hybrids. They all die. Why did I survive the strain?"
-
-The envoy didn't look back from the controls. "Hybrids die because they are accidents. Biological glitches. You, however, were an investment."
-
-Jinwah’s blood ran cold. "An investment by who?"
-
-"The Empress does not speak to investments through intermediaries," the envoy said. "But ask yourself: why would a half-human heart beat in time with the Void? Why would the entropy that dissolves all things find a home in your marrow? You weren't born, Jinwah. You were negotiated."
-
-Before Jinwah could press further, the Skiff banked sharply. The ground beneath them seemed to open up—not a hole, but a massive, jagged fissure that glowed with a faint, violet luminescence.
-
-This was the entrance to The Ossuary, the subterranean stronghold of the DEÆ.TH-allied faction. As they descended, the scale of the place became apparent. It wasn't a cave; it was an architecture of bone. Massive ribs of some prehistoric, divine beast formed the arches of the tunnels, reinforced by black steel and pulsing conduits of dark energy.
-
-The Skiff docked at a platform crawling with figures. These weren't the "pure" warriors of the Light. They were grim, scarred, and diverse. He saw Voidans with skin like cracked basalt and humans with heavy cybernetic augmentations.
-
-The moment Jinwah stepped off the Skiff, the air changed. The "Void strain" in his chest, usually a sharp, stinging needle, suddenly felt... quiet. Like a tuning fork finding its match.
-
-"Wait here," the envoy commanded.
-
-Jinwah stood alone on the platform, his human form feeling fragile in the face of so much darkness. Then, a shadow detached itself from the ceiling above him.
-
-It dropped silently, landing with the grace of a cat. It was a woman, her body wrapped in shifting, translucent fabrics that blurred her silhouette. Her skin was pale, almost translucent, and her eyes were a sharp, piercing emerald.
-
-"So," she said, circling him with a predatory curiosity. Her voice was like velvet over gravel. "This is the miracle boy. The one who can make more of us."
-
-Jinwah recoiled. "I'm not a miracle. And I'm not a breeder."
-
-She laughed, a short, sharp sound. "Relax, kid. I'm Vesper Blackwood. I’m the one who has to keep you alive while the Empress decides if you’re a weapon or a messiah."
-
-She stopped in front of him, her gaze scanning the "unremarkable" face he still wore.
-
-"You look like a tech-slug from the shelters," she noted, reaching out to flick a piece of dust off his shoulder. "But I saw the footage from Shelter-7. You’ve got a lot of ghosts inside you, Jinwah. Try not to let them out until I tell you to."
-
-"I don't want to hurt anyone else," Jinwah said firmly.
-
-Vesper’s expression softened, just a fraction. It wasn't kindness—it was recognition. "In this world, sweetheart, 'not wanting to hurt anyone' is the fastest way to get everyone you love killed. Come on. The Empress is waiting in the Inner Circle. She’s been dreaming about you for twenty years. It’d be rude to keep a goddess waiting."
-
-She turned and began walking into the heart of the bone-city. Jinwah looked back at the Skiff, then at his hands. He took a breath, adjusted his hood, and followed her into the dark.`},
-
-/* —— CHAPTER THREE —— */
-{id:'ch3',kind:'chapter',num:'III',tag:'Chapter Three',title:'The Bone-Chorale',sub:'An architecture of bone & whisper',
-text:`If the shelters were a lie told in neon and pixels, the Ossuary was a truth written in calcium and shadow.
-
-As Jinwah followed Vesper Blackwood deeper into the subterranean throat of the world, the air changed. It lost the artificial ozone crispness of Shelter-7’s recycled atmosphere. Here, it tasted of ancient dust, cold minerals, and a faint, metallic tang that Jinwah realized, with a shiver, was the scent of dried blood and old magic.
-
-He felt small. Not just because of the scale of the caverns—which were vast enough to house entire skyscraper-tier cities—but because of the weight of the history pressed into the walls.
-
-"Don't stop," Vesper’s voice drifted back to him, flickering like a stuttering video feed as her light-bending robes interacted with the violet glow of the conduits. "The floor is more sentient than it looks."
-
-Jinwah looked down. The ground beneath his boots wasn't stone. It was a mosaic of polished, dark ivory. Thousands of fragments of bone, fused together by obsidian grout, formed a path that hummed beneath his feet. He felt a sickening lurch in his stomach—the "sweet and humane" part of him recoiled at the macabre architecture—but his "other" half, the part that had roared to life in the market, felt a terrifying sense of recognition.
-
-He saw the inhabitants of the dark.
-
-Groups of Voidans stood in the hollowed-out alcoves of the rib-arches. Some were massive, their skin like cooling lava, cracked and glowing with internal heat. Others were spindly, their limbs elongated into graceful, deadly points. They didn't talk; they seemed to communicate in low-frequency vibrations that Jinwah felt in his marrow rather than heard in his ears.
-
-There were humans, too. But they weren't like the cowering vendors of the market. These were soldiers of the shadow—men and women with limbs replaced by matte-black hydraulics, their eyes swapped for glowing violet lenses that tracked his movement with predatory hunger.
-
-I am a prize to them, Jinwah realized, his heart hammering against his ribs. A breeding stock. A weapon. An investment.
-
-The thought made him feel cold, an icy dread that pooled in his gut. He was twenty years old, and he’d spent his life trying to be "good." He’d fixed broken machines, shared his rations with Elara, and tried to forget the name Voidheart. Now, he was walking through a graveyard built for living gods, being led toward a woman who had "dreamed of him" before he was even born.
-
-Then, they reached the Great Rib-Gate.
-
-It was the skeleton of a titan, its massive spine forming a bridge across a lake of liquid shadow. As they crossed, Jinwah looked over the edge. He didn't see water. He saw the Void—a churning, infinite blackness that seemed to swallow the light from Vesper’s robes.
-
-At that moment, the "Void strain" in his chest—the sharp, stinging pain he’d lived with since childhood—did something it had never done before.
-
-It opened.
-
-The branching dark circuits on his arms didn't manifest, but he felt the energy stir beneath his skin. It wasn't a tear anymore; it was a sigh. For the first time in his life, the pressure inside him matched the pressure outside him.
-
-The silence was gone. In its place was the Bone-Chorale—a million whispers echoing from the walls, the floor, the very air. They weren't speaking words, but intentions. Hunger. Grief. Ancient, cold fury.
-
-"It's quieted down, hasn't it?" Vesper asked, stopping at the threshold of the Inner Circle. She didn't turn around, but her silhouette seemed sharper against the violet gloom.
-
-"How did you know?" Jinwah gasped, clutching his chest.
-
-"Because the first time I came here, I thought I was going deaf," she said, finally turning. Her emerald eyes were wide, reflecting the liquid shadow below. "The Void doesn't hate you, Jinwah. It just wants to be reunited with you. That's what you're feeling. Homeostasis."
-
-"I don't want this to be home," he said, his voice a desperate whisper. "I want to go back to the rain. Even the fake rain."
-
-Vesper stepped closer, her shifting robes brushing against his human sleeve. For a second, her face was clear—pale, scarred, and weary.
-
-"There is no 'back,' kid. Aurora Starblade made sure of that. You've escaped the Light, but you haven't escaped the war. You’re just finally seeing the other side of the blade."
-
-She gestured toward the massive, obsidian doors at the end of the bridge. They were carved with the likeness of a figure staring into a sun that was being eaten by a serpent.
-
-"Behind those doors is the Empress," Vesper said, her voice dropping to a low, respectful rasp. "She is the childhood friend of DÈÆ.TH. She is the prophecy-keeper. She is going to look at you and see every version of the future that ends in blood."
-
-Jinwah looked at the doors. He felt like a lamb being led into the den of a wolf, but a lamb that had accidentally swallowed a star.
-
-"What do I do?" he asked.
-
-"You survive," Vesper said, the light-bending fabric of her cloak beginning to flicker again as she stepped toward the door. "And for gods' sake, Jinwah... try to stay 'humane' for as long as you can. It’s the only thing that’s going to make her curious enough not to kill you immediately."
-
-The obsidian doors began to grind open, and a wave of absolute, terrifying silence spilled out. Jinwah took a breath, felt the nebula stirring in his blood, and stepped into the presence of Death.`},
-
-/* —— CHAPTER FOUR —— */
-{id:'ch4',kind:'chapter',num:'IV',tag:'Chapter Four',title:'The Empress of Death',sub:'Three futures burn in the violet dark',
-text:`The silence behind the obsidian doors wasn’t the absence of sound; it was the presence of something so vast that sound died in its wake.
-
-As the doors ground shut behind Jinwah, the Bone-Chorale of the outer city vanished. He was left in a chamber of absolute, velvety darkness, broken only by a single, vertical sliver of violet light that seemed to fall from infinity.
-
-Jinwah felt like an ant standing on the edge of a black hole. His throat was a desert of dry fear. Every instinct he’d honed over twenty years of "humane" living screamed at him to turn, to claw at the stone doors, to run back into the acidic rain of the shelters.
-
-Then, she moved.
-
-She didn't descend from a throne. She didn't appear in a flash of light. She simply shifted within the shadows, a silhouette that seemed to be woven from the very fabric of the night. Her skin was the color of starlight on ice, and her hair flowed behind her like a river of ink, defying gravity.
-
-The Empress of Death.
-
-She stood before him, and the weight of her gaze felt like physical pressure on his chest. Jinwah’s knees buckled. He didn't fall to worship; he fell because his body forgot how to support its own weight under the gravity of her history. This was the woman who had walked beside DÈÆ.TH when the world was young. She had seen the first god break.
-
-"You are trembling," she said. Her voice wasn't loud, but it resonated in the hollows of his bones.
-
-"I'm... I'm scared," Jinwah whispered, the truth stripped from him by the sheer honesty of the room.
-
-"Good," she murmured, stepping into the sliver of violet light. Her eyes were not emerald like Vesper’s; they were twin eclipses—perfect circles of void surrounded by a thin, burning ring of white fire. "Fear is the only thing that keeps the humane from becoming the monstrous. DÈÆ.TH lost his fear. That was his first mistake."
-
-She reached out, her fingers hovering inches from his cheek. Jinwah felt a pulse of cold energy leap from her skin to his. His internal Void strain surged, the nebula skin flickering across his jawline in a desperate, involuntary reflex.
-
-"I have dreamed of your heartbeat for two decades, Jinwah," she said. "I have watched the threads of time fray around the moment of your birth. Usually, the path of a soul is a single, iron rail. For a hybrid, a glitch in the system, I expected to see two. A fork in the road."
-
-She pulled her hand back, and the violet light in the room began to churn, projecting images onto the darkness like a spectral cinema.
-
-"Look," she commanded.
-
-Jinwah saw a vision of himself clad in white and gold. He stood atop a spire in the High Cities, his eyes glowing with a sterile, blinding radiance. Beneath him, thousands of hybrids marched in perfect, lobotomized unison. "The Path of Light," the Empress whispered. "You become the brood-stallion of the gods. A gilded cage where your humanity is surgically removed, and your power is harvested to create a new, controlled order. You live forever, but you never breathe again."
-
-The image shifted, dissolving into smoke and blood. Jinwah saw himself again, but this time his form was monstrous. He was a titan of shifting nebulae, treading over the ruins of Shelter-7. The stars above were winking out, one by one. "The Path of the Void," she said, her voice heavy with ancient grief. "You become the second coming of DÈÆ.TH. You finish the war by finishing the world. You find the peace of the grave, and you take everyone with you."
-
-Jinwah felt a sob catch in his throat. The horror of both futures was a physical weight. "I don't want either. I just wanted to fix converters. I just wanted to be... just me."
-
-The Empress leaned in closer, her eclipse-eyes searching his.
-
-"That is why the threads are broken, Jinwah. For the first time in an eternity, I saw a third."
-
-The spectral light flickered. It didn't form a clear image. It was a glitch—a static of violet and human-flesh tones, a blur of motion that defied the Empress’s prophetic sight.
-
-"The Third Path," she breathed, and for the first time, Jinwah heard something like wonder in her voice. "It is unclear. It is a mystery even to me. It is a path where the hybrid does not choose the Light or the Void, but creates something entirely new. A path where the 'sweetness' you cling to becomes a weapon, not a weakness."
-
-She straightened, the violet light vanishing, leaving them in the heavy dark once more.
-
-"The choice is yours, Jinwah Voidheart. I will give you sanctuary. I will give you teachers like Vesper and Khaos. But I cannot give you your destiny. You are the only thing in this universe that is truly, terrifyingly free."
-
-Jinwah looked at his hands. In the dark, the circuits of dark energy were still glowing faintly, a map of power he didn't ask for. He was terrified—more than he had ever been in the market—but beneath the fear, a small, stubborn ember of the "technician" stirred.
-
-He didn't know how to be a god or a monster. But he knew how to fix things.
-
-"What happens if I fail?" he asked.
-
-The Empress turned away, her silhouette merging back into the shadows. "Then the Third Path closes, and the world chooses for you. And trust me, Jinwah... the world is not as humane as you are."`},
-
-/* —— CHAPTER FIVE —— */
-{id:'ch5',kind:'chapter',num:'V',tag:'Chapter Five',title:'Unmaking',sub:'The flight of a frightened god',
-text:`"I don't want your paths."
-
-Jinwah’s voice was small, but it cut through the heavy silence of the Empress’s chamber like a blade. He was shaking, his hands balled into fists so tight his knuckles were white.
-
-The Empress narrowed her eclipse-eyes. "You speak as if you have a choice, little hybrid. The Light is hunting you. The Void is claiming you. There is no middle ground."
-
-"I want to be human!" Jinwah suddenly shouted, the frustration of the last forty-eight hours finally boiling over. "I want to go back to my stall. I want to fix converters. I don't want to be a 'key' or a 'messiah' or a 'brood-stallion.' I just want to be nothing!"
-
-The Empress’s face didn't just change; it transformed. The starlight-pale skin darkened, and the violet light in the room flared into a blinding, angry crimson.
-
-"NOTHING?"
-
-Her voice didn't just fill the room; it shook the foundations of the Ossuary. It was a sound of ancient, divine fury—the sound of a goddess who had spent eons waiting for a miracle, only to be told it wanted to be a technician.
-
-"YOU ARE BORN OF THE STARS AND THE DARKNESS, AND YOU BEG FOR THE MUD? YOU WOULD REJECT THE LEGACY OF DÈÆ.TH FOR THE SAKE OF A BROKEN TOASTER?"
-
-The ground beneath Jinwah’s feet began to crack. The Empress didn't move, but the sheer force of her anger felt like a physical hammer.
-
-Jinwah didn't think. He didn't plan. He simply broke.
-
-The "sweet and humane" young man vanished beneath a tidal wave of cosmic survival instinct. The Void within him responded to the Empress’s shout with an equal and opposite reaction.
-
-He didn't shapeshift—he erupted.
-
-The nebula skin didn't just flicker; it blazed. The black-hole eyes opened wide, and a shockwave of absolute un-making tore out from his chest. The obsidian doors of the Inner Circle didn't just open; they disintegrated into fine, black sand.
-
-"Jinwah, stop!" Vesper’s voice screamed from somewhere in the hallway, but he couldn't hear her.
-
-He ran.
-
-He didn't know how he was doing it. His feet barely touched the bone-mosaic floors. Every time a guard or a Voidan tried to step in his way, his power lashed out automatically, a shimmering veil of dark energy that simply pushed reality aside. He wasn't attacking them; he was denying them.
-
-He reached the Great Rib-Gate. The soldiers of the shadow raised their weapons, but Jinwah slammed his hands together in mid-air. The resulting boom was silent—a vacuum of sound that sucked the breath from the room and hurled the guards into the liquid shadow below.
-
-He burst through the entrance fissure and out into the Grey Zones.
-
-He didn't use the Shadow-Skiff. He ran. His legs moved with a speed that blurred the world into a smear of grey and violet. He was "OP" in the most terrifying way—a god-tier engine being driven by a panicked twenty-year-old who didn't know where the brakes were.
-
-The Void strain flared, a crown of dark energy burning around his head, lighting up the industrial wasteland like a falling star.
-
-I have to get away, his mind repeated in a frantic loop. Away from the Light. Away from the Empress. Just... away.
-
-Hours passed. Or maybe minutes. Time meant nothing when your blood was made of starlight.
-
-Eventually, the energy began to fade, leaving him as quickly as it had come. The nebula skin receded, the black energy lines vanished, and Jinwah collapsed face-first into the dirt.
-
-He was back in his human form—thin, exhausted, and utterly lost.
-
-The industrial spires of the High Cities were nowhere to be seen. The violet glow of the Ossuary was a memory. He was in a place where the air was thick with the smell of old stone and dead ivy.
-
-He pushed himself up, his muscles screaming in protest. He was in the middle of a massive, silent clearing.
-
-Surrounding him were the ruins of something ancient—something from before the shelters, before the "Split." It was a cathedral, its spires snapped like dry twigs, its stained glass replaced by curtains of thick, grey moss. Massive stone statues of forgotten kings lay toppled in the courtyard, their faces worn away by centuries of acidic rain.
-
-It was a ruin of the old human world.
-
-Jinwah crawled toward the shelter of a collapsed archway. He was alone, he was powerless, and for the first time in his life, he was truly in the middle of nowhere.
-
-He looked at his hands, now just normal, human hands covered in dirt.
-
-"I'm human," he whispered to the silence, as if trying to convince the ruins. "I'm still human."
-
-But deep in his marrow, the Void was still humming, waiting for him to wake up.`},
-
-/* —— CHAPTER SIX —— */
-{id:'ch6',kind:'chapter',num:'VI',tag:'Chapter Six',title:'The Bridge',sub:'The vault beneath the moss',
-text:`The ruins were cold, but for the first time in his life, Jinwah felt a strange sense of safety. There were no white-robed Disciples here, and no terrifying Empress. There was only the sound of the wind whistling through the hollow stone of the old cathedral.
-
-As he explored the collapsed archway, Jinwah’s foot caught on a metal ring in the floor. He cleared away the dirt and moss to find a heavy, reinforced hatch. It wasn't made of divine gold or Void-bone; it was made of thick, human steel.
-
-He pulled it open.
-
-Jinwah went down the stairs into a small room. A screen on the wall turned on. It started to explain the history.
-
-A long time ago, the world was a single, peaceful place. Humans and Gods lived together in the same cities. The Gods were not called "The Lights" or "The Voidans" back then. They were just powerful beings who used their abilities to help humans. Humans were very smart and used advanced technology. Together, the Gods and the Humans built a great civilization where everyone was equal.
-
-The Void did not belong in this world. It was a dark energy that came from deep space. It was not a person or a god; it was a type of cosmic energy that acted like a virus. When this energy reached the planet, it started to infect the Gods. Because the Gods were so powerful, the dark energy attached to their power and changed their bodies and their minds.
-
-DÈÆ.TH was the first and most powerful God to be infected by this dark energy. He did not choose to be changed, but once the Void touched him, he became the first "Voidan."
-
-The Gods who were not infected yet became very scared. They were afraid that if they stayed near the infected Gods or the humans, they would get sick too. To protect themselves, these "pure" Gods decided to split the world into pieces.
-
-They moved high up into the sky and built the High Cities. They started calling themselves "The Lights" and wore white clothes to show they were clean and pure. They forced the humans to live in "Shelters" on the ground. They told the humans this was for their protection, but really, they wanted the humans to act as a shield between the High Cities and the infected Voidans living in the dark.
-
-This was the start of the war. The Lights wanted to destroy the Voidans to stop the infection, and the Voidans wanted to get revenge for being kicked out of society.
-
-The human records also mention a legend. The legend says that one day, a "Hybrid" would be born. This child would be half-human and half-Voidan. Usually, a human dies instantly if they touch Void energy. A Voidan is powerful but loses their human kindness. The legend says the Hybrid is the only being who can have the full power of the Void while keeping a human heart and mind. The machine says this person is a "bridge" between the two worlds.
-
-However, the recording stopped there. The specific details of what the Hybrid is supposed to do to end the war were deleted or lost.
-
-The screen flickered and died, leaving the room in a heavy, dusty silence.
-
-Jinwah sat on the cold floor, his heart hammering against his ribs. The simple words of the machine had stripped away the lies of both factions. The Lights didn't want to save him; they wanted to study his immunity to the infection. The Empress didn't want to help him; she wanted to use his "clean" connection to the Void to finish DÈÆ.TH’s old war.
-
-He looked at his hands. In the dark of the vault, they didn't look like weapons. They looked like the hands of a technician—someone meant to put things back together.
-
-"The bridge," he whispered. The word felt heavy, a responsibility he hadn't asked for but finally understood.
-
-He stood up, the exhaustion of his flight replaced by a cold, sharp clarity. The "sweetness" he had tried to protect wasn't just a personality trait; it was the anchor that kept the Void from consuming his soul. It was the only reason he wasn't a monster like Reo Deathstroke.
-
-He climbed back up the stairs, stepping out from the hatch and into the grey light of the ruins. He looked up at the distant, shimmering glow of the High Cities, then down toward the direction of the Ossuary.
-
-"Neither of you knows the ending," Jinwah said to the empty air, his voice low and firm. "You're both fighting for a world that's already dead."
-
-He tightened his grip on the strap of his bag. He was a fugitive from the gods, a defector from the dark, and a mythic anomaly. But he wasn't lost anymore.
-
-"I'm going to find the rest of the legend," he vowed. The wind picked up, tugging at his hood, but he didn't flinch. "I'm going to find the truth about what I am. And then I’m going to decide how this story ends."
-
-For the first time since leaving Shelter-7, Jinwah Voidheart didn't feel like a victim. He felt like a protagonist.`},
-
-/* —— CHAPTER SEVEN —— */
-{id:'ch7',kind:'chapter',num:'VII',tag:'Chapter Seven',title:'The Court of Shadows',sub:'Vesper stands between wolf & lamb',
-text:`The Inner Circle of the Ossuary still smelled of burnt ozone and pulverized obsidian. The doors that Jinwah had disintegrated were gone, replaced by a shimmering, unstable veil of violet energy.
-
-The Empress of Death stood in the center of the wreckage, her silhouette dark and motionless. Opposite her stood the heavy hitters of her army—the ones who hadn't been present to witness the "humane" technician turn into a cosmic supernova.
-
-Reo Deathstroke stood at the front, his hand resting on the hilt of a jagged Void-blade. His skin, hardened like volcanic rock from his time in Ion, seemed to absorb the dim light of the room. Beside him, Gorthok the Unyielding crossed his massive arms, his breathing sounding like a slow-motion rockslide.
-
-"You let him walk out," Reo said, his voice a low, raspy challenge. "A boy. A half-breed who spent his life fixing toasters in a human rat-hole."
-
-"He did not 'walk' out, Reo," the Empress replied, her voice cold enough to frost the air. "He tore the reality of this chamber apart."
-
-Reo spat on the bone-mosaic floor. "Because we weren't here. If I’d been at that gate, I would have snapped his neck before he could blink. You’re obsessed with this 'Hybrid' legend, Empress. It’s making you soft. He's just a fluke. A biological error."
-
-Gorthok nodded, his voice deep and gravelly. "The boy is a coward. He ran to the ruins like a wounded dog. We do not need a 'bridge.' We have the Void. We have the strength."
-
-The atmosphere in the room turned razor-sharp. Among the lieutenants, the sentiment was clear but unspoken: they thought the Empress was becoming a "funny woman"—an eccentric dreamer who was chasing a myth instead of finishing the war.
-
-"The Lights are stagnant," Reo continued, pacing the wreckage. "They cannot reproduce. Their blood grows thin. In another century, they will be ghosts. And the humans? Their 'disgusting technology' is a joke. Steel and wires against the dark? We don't need a boy who can have children to win. We just need to keep killing until there’s nothing left to bury."
-
-The Empress turned slowly, her eclipse-eyes burning with a dangerous, white-fire ring. The violet veil behind her flared, reflecting her rising anger. The lieutenants went still, realizing they had pushed the goddess too far.
-
-Just as the tension reached a breaking point, a soft, mocking whistle echoed from the shadows of the arched ceiling.
-
-Vesper Blackwood dropped down, landing perfectly between Reo and the Empress. Her light-bending robes flickered, showing a glimpse of her emerald eyes and a playful, sharp-toothed grin.
-
-"Wow," Vesper said, clapping her hands slowly. "The ego in this room is actually thicker than the Void strain. I’m surprised the floor hasn't collapsed under the weight of Reo’s self-esteem."
-
-Reo glared at her. "Get out of the way, Vesper. This is a matter of strategy."
-
-"Strategy?" Vesper laughed, leaning back against a jagged pillar as if she didn't have a care in the world. "You call 'just keep killing' a strategy? That’s not a plan, Reo, that’s a hobby. A boring one, actually."
-
-She turned to the Empress, her charisma acting like a lightning rod, pulling the heavy, suffocating tension out of the air.
-
-"Look, the kid got scared. Can you blame him? He went from fixing power converters to being told he's a cosmic messiah in twenty minutes. Most people would have fainted; he just blew up a door. I’d call that a successful first interview."
-
-Vesper winked at Gorthok, who looked confused, and then stepped closer to the Empress, her tone turning slightly more serious but remaining catchy and light.
-
-"He’s out there in the ruins, probably crying over a broken rock. He’s humane, remember? He’s not going to the Lights—he hates their hypocrisy. And he’s not coming back here yet because, frankly, Reo is kind of a jerk. But he’s still ours."
-
-The Empress’s fire dimmed slightly. Vesper was the only one who could talk to her like this—the only one who could treat a goddess like a person.
-
-"Go find him," the Empress commanded, her gaze sweeping over all of them. "Reo, Gorthok—take the hunters. But if you touch a hair on his head without my order, I will show you why DÈÆ.TH called me his friend."
-
-Reo grunted, a sign of reluctant obedience, and stomped out of the room. Gorthok followed.
-
-Once they were gone, Vesper sighed and looked at the Empress. "You know Reo’s going to try and 'test' him, right? He doesn't believe in the Third Path."
-
-"I know," the Empress whispered, looking out toward the entrance to the Grey Zones. "But if Jinwah is truly the Bridge, he will have to survive the Void before he can save the world."
-
-Vesper adjusted her cloak, her emerald eyes flashing. "Don't worry, Boss. I'll make sure the kid doesn't get his heart broken... or his head removed. I’ve always liked a good mystery."
-
-With a shimmer of her robes, Vesper vanished into the dark, leaving the Empress alone in her ruined sanctuary.`},
-
-/* —— CHAPTER EIGHT —— */
-{id:'ch8',kind:'chapter',num:'VIII',tag:'Chapter Eight',title:'The Iron Hall',sub:'Where the legions drink & plot',
-text:`Reo Deathstroke didn’t follow Jinwah into the ruins. Not yet. Instead, he marched into the Iron Hall, a place where the air was thick with the smell of scorched metal and old blood. This was the true heart of the Void world. While the Empress stayed in her tower dreaming of prophecies, these were the people who actually commanded the legions.
-
-In this room, the Empress was called a "fanny woman"—a crazy dreamer who had gone soft. Without Vesper Blackwood around to listen, the talk was even meaner. They saw Vesper as a "snitch" and a "bootlicker," a girl who only stayed important because she acted like the Empress’s personal assistant. Ever since DÈÆ.TH vanished, they believed Vesper had been sucking up to the Empress just to keep a seat at the table.
-
-Reo stood at the head of the stone table. Standing right behind his shoulder was Gorthok the Unyielding, his loyal sideman. Gorthok was a terrifying behemoth, a mountain of grey muscle and scarred skin who never left Reo’s side. He didn't speak much; he was the hammer that Reo used to crush anyone who disagreed.
-
-The rest of the council was a collection of lethal beauty and dark power.
-
-Khaos Nightshade sat to the left, looking like a dark goddess. She was breathtakingly beautiful, with long, ink-black hair that seemed to have a life of its own, swirling around her porcelain-pale shoulders. She wore a dress made of living shadows that clung tightly to her curves, shifting and moving like smoke. Her power was gravity. With a wave of her hand, she could crush a human soldier into a tiny ball of meat.
-
-Next to her was Arachne Darkweaver. She was the seductive one, leaning back with a graceful, silver-haired elegance that made her look like a queen. Her eyes were glowing purple, and her voice was a hypnotic purr. She wore light, flowing silks that showed off her slim waist and long legs. She didn't use brute force; she used illusions to trap men in their own minds until they begged for death.
-
-Across from them was Lumina Frostbite, and she was the weird one of the group. Despite being a deadly ice warrior, she was surprisingly friendly and bubbly. She had short, spiky blue hair and a very athletic, toned body that looked like it was carved from marble. She gave a cheerful wave to Reo as he sat down. She could freeze a person’s blood with a touch, but she was the only one in the room who actually looked like she enjoyed life.
-
-Finally, there was Xandros Shadowreaver. He was the Necromancer. Pale, thin, and spooky, he sat in the corner like a skeleton in fine robes. He was the reason the Voidans never lost. Every human or Light that fell in battle became a shadow-soldier for his army.
-
-"The Empress has lost her mind," Reo growled, the volcanic heat of his skin making the air shimmer. "She thinks this Jinwah is special. A boy with an average technician brain. He spent twenty years fixing toasters! He’s a pesky human who got lucky because we weren't there to stop him."
-
-"He looked pretty powerful in the footage," Lumina chirped, her voice light and musical. She created a small ice-sculpture of a flower on the table just for fun. "He blew up half a market! I think he’s kind of cute. Maybe we should be his friend?"
-
-"We don't need friends," Khaos snapped, her porcelain face twisting into a sneer. "And we don't need a boy who can reproduce. Being 'humane' is a disease. We have Gorthok to break their bones and Xandros to raise their corpses. Why should we care about a hybrid?"
-
-"Because the Empress is obsessed," Arachne said, her purple eyes spinning with dark light. "And Vesper is whispering in her ear. That snitch wants the boy around because he’s her only ticket to staying important. She bootlicks the Empress every day just to make sure we don't kick her out of the Ossuary."
-
-"Vesper is nothing," Gorthok rumbled, his voice sounding like two boulders grinding together. It was the first time he had spoken, and the room went quiet. "The boy is scrap metal. We find him. We end him."
-
-The argument went on for hours. They discussed the political power they held—how the humans in the shelters feared them, not the Empress’s prophecies. To them, the "Third Path" was a joke. They believed the Lights were dying because they couldn't have children, and that the Voidans would eventually win through raw, bloody strength.
-
-"Let the fanny woman dream," Reo finally said, standing up. "We are the ones who fight. Gorthok and I will lead the hunt. If the technician is as 'average' as I think, I’ll let Gorthok sit on him. If he’s actually 'OP'... then I’ll show him what it’s like to fight a real god."
-
-Lumina sighed, looking a little sad for Jinwah, but she stood up with the others. The council was decided. They were going to the ruins, and they weren't going there to talk. They were going there to prove that in a world of gods and monsters, a human heart was just a target.`},
-
-/* —— CHAPTER NINE —— */
-{id:'ch9',kind:'chapter',num:'IX',tag:'Chapter Nine',title:'The Palace of Noon',sub:'Caelum · the mercy of cages',
-text:`While the Voidan Generals plotted in their dark halls, the High City of Caelum remained a place of eternal, golden peace. There were no shadows here, only white marble and the scent of fresh lilies. This was the home of the Lights—the gods who chose to stay "pure" and separated themselves from the world.
-
-At the highest point of the city sat the Palace of Noon. Inside, seated on a throne of woven sunbeams, was Lightspeed. She was the Holy Mother of Light. She was not a queen; she was a sacred figure of peace. She was a vision of blinding beauty, with golden hair that reached the floor and eyes that glowed like stars. She spoke with a voice that was soft and kind, like a mother talking to a child, but her word was the absolute law.
-
-Standing before her were the Disciples of RESURRECTION. They were the holy warriors of the Light. They were famous for being "angelic"—they were polite, beautiful, and they truly believed they were the heroes sent to save the world.
-
-Glint stood at the front. He was the "Charisma Leader." He possessed a power called "Shiny Charisma." When he spoke, people felt a warm, happy feeling in their chests that made them want to follow him blindly. He was the perfect holy hero, leading the group with a smile that made everyone feel safe.
-
-Beside him was Aurora Starblade, the "Celestial Warrior." She was their greatest fighter, a regal woman with a sword made of starlight. She had been the one sent to the market in Chapter 1, but she had failed to bring Jinwah back.
-
-Nova Spire was next. Her power was the "Manipulation of Metals and Air." She could bend steel with her mind and control the wind. She was quiet and serious, responsible for building the floating palaces and the golden rooms where "unpure" beings were kept.
-
-Windrunner Aetheria was the "Agile Runner." She was a scout who moved so fast she looked like a streak of white light. She was the one who could find anyone, anywhere, in the blink of an eye.
-
-Helios Firestorm was the "Pyromancer." He controlled holy fire. He didn't see fire as a weapon for hurting people, but as a way of "washing" them. To him, burning away the Void was a beautiful act of love.
-
-Finally, there was Quickblade. He was the "Lightning Fast Swordsman." He was a master of speed, able to strike a hundred times before a normal human could even draw a breath.
-
-"He has escaped us again," the Holy Mother of Light said. Her voice was soft, but it sounded like a sad sigh that filled the whole palace. "Aurora, you were so close at the market. How did a simple technician slip through your fingers?"
-
-Aurora Starblade knelt low, her head bowed in shame. "Holy Mother, his power was... unexpected. He did not just fight; he un-made the reality around him. He is more than a technician. The Void inside him is awake."
-
-"Then we must go again," Glint said, his shiny charisma making the room feel hopeful and righteous despite the failure. "We cannot let him stay in the dark. If he stays with the Voidans, he will become a monster. If he stays in the ruins, he will die. We are the only ones who can save him."
-
-"He is a sacred treasure," Aetheria added, her feet barely touching the ground. "He belongs here, where it is clean and safe. We will go back to the ruins and find him. This time, he will not escape."
-
-"We must capture him with love," the Holy Mother of Light spoke, her radiant voice echoing through the hall like a warm summer breeze. "He is confused by his human heart. We must be gentle until we can show him that he is meant to be the father of a new, perfect race. He belongs in a golden garden, away from the dirt and the dark."
-
-"I will prepare the air-lock sanctuary," Nova Spire said. "I will use the pressure of the wind to hold him gently this time so he cannot use his Void power to hurt himself or run away again."
-
-"I will wrap him in my holy fire," Helios added with a kind smile. "It will make him feel warm and sleepy. He will wake up here, safe in our arms."
-
-The Disciples truly believed they were the "good guys." They didn't want to hurt Jinwah; they wanted to "save" him by putting him in a beautiful, golden cage where they could control his power and his ability to have children. They were frustrated that he had gotten away the first time, and they were determined to succeed now.
-
-"Go, my Disciples," the Holy Mother said, her radiant glow filling the palace. "Find Jinwah Voidheart. Bring him back to me. Tell him his struggle is over. Tell him the Light is coming to take him home."
-
-The six Disciples turned and flew out of the palace, looking like six streaks of gold across the sky. They were heading for the ruins, and they were bringing a "peace" that was just as dangerous as any war.`},
-
-/* —— CHAPTER TEN —— */
-{id:'ch10',kind:'chapter',num:'X',tag:'Chapter Ten',title:'What Elara Knew',sub:'Shelter-7 · what the ashes remember',
-text:`Back in the smog-choked tunnels of Shelter-7, the market was a graveyard of broken dreams and scorched metal. The "Holy Light" of the Disciples had faded, leaving behind only the dim, flickering neon of a world that was trying to reboot itself.
-
-Elara sat on a crate in the middle of her ruined stall. Her glass eye whirred in a jagged, broken rhythm, unable to focus on the piles of melted data chips and shattered power converters. But her mind was focused on something else. She was thinking about the boy.
-
-She remembered the day he "spawned." That was what the people in the shelter called it when an orphan just appeared out of nowhere. Jinwah had been six years old, standing in the middle of the market with grease on his nose and a broken flashlight in his hand. He didn't know his parents. He didn't know his descent. He just knew that Shelter-7 was where the air was warm and the people were kind.
-
-"He was just a boy," Elara whispered to the empty air.
-
-She remembered watching him grow up. He was the "cute little technician" of the sector. While other kids were playing in the waste-vats, Jinwah was sitting at her counter, his small hands moving with a speed that shouldn't have been possible. He found joy in the hum of a working engine. He found peace in making things "right" again. He was the sweetest soul she had ever known—always sharing his credit chits, always fixing Elara’s whirring eye for free.
-
-She had loved him like a son. She thought she knew everything about him.
-
-But when the Lights came, the world she knew had shattered.
-
-She had been right there. She had seen Aurora Starblade call him by that name: Voidheart. She had seen the way his skin cracked like glass. She had seen the "un-making" wave that turned her neighbor’s stall into dust.
-
-It wasn't just the power that scared her. It was the face. For a second, the boy she had raised was gone. In his place was a creature of the Void—a being with black-hole eyes and a crown of dark, swirling stars. He looked like a god of death, standing in the middle of her home.
-
-Is that who he always was? she wondered, her hands trembling. Was the sweetness just a mask? Was the little technician just a lie he told to hide the monster?
-
-She remembered the look on Jinwah’s face right before he ran. He had looked at her with his cosmic eyes, and for a split second, she saw the boy again. He looked terrified. He looked like he wanted to apologize for existing.
-
-The other survivors in the shelter were screaming for his blood. They called him a demon. They cursed his name and thanked the Lights for "saving" them from the hybrid in their midst. They questioned how they could have let a monster live among them for twenty years without noticing.
-
-Elara couldn't join them. But she couldn't defend him, either.
-
-How do you defend someone who can erase reality with a touch? How do you love a boy who is the very thing that broke the world?
-
-She stood up slowly, her joints aching. She looked at the small power converter Jinwah had bought from her just before the fight. It was sitting in the dirt, untouched. She picked it up, feeling the cold metal against her palm.
-
-She couldn't decide. Her heart wanted to go find him, to tell him it was okay, to give him a hug and tell him to come home. But her mind kept replaying the image of his skin splitting open and the darkness spilling out.
-
-She didn't stay to help the others clean up the market. She didn't talk to the Council investigators. She just turned away from the ruins of her life and walked into the shadows of the lower levels. She left the situation behind, unable to choose between the son she loved and the god she feared.
-
-Jinwah Voidheart was a ghost now—a memory of a kind boy that had been swallowed by the dark. And Elara, the woman who knew him best, was the only one who realized that the most dangerous thing about him wasn't his power.
-
-It was his heart.`,
-note:'Yh the end till limah employs me 🫩'},
-
-/* —— CODEX I —— */
-{id:'lore-empress',kind:'lore',num:'❖',tag:'Codex Entry',title:'The Court of the Empress of Death',sub:'Keeper of every soul ever passed',chip:'The Infinite Archive',
-text:`Located in the "Infinite Archive," the Court of Death is not a place of punishment, but a place of memory. The Empress herself is an ancient entity who keeps the records of every soul that has ever passed. She views the "Third Path" prophecy not as a religious event, but as a disruption to her records that must be corrected. Her heralds travel through the shadows, wearing silks dyed in the color of dried blood.`},
-
-/* —— CODEX II —— */
-{id:'lore-jinwah',kind:'lore',num:'❖',tag:'Codex Entry',title:'Jinwah: The Voidheart',sub:'The living contradiction',chip:'Hybrid Anomaly',
-text:`Born of a forbidden union between a High Priestess of the Light Disciples and a rogue Void-Walker, Jinwah exists as a living contradiction. They possess the "Voidheart"—a rare metaphysical core that can absorb both blinding light and absolute darkness.
-
-While the factions see Jinwah as a weapon to be claimed or a mistake to be erased, Jinwah seeks "The Third Path," a legendary state of balance that could stop the cosmic war. Jinwah’s physical appearance shifts depending on their emotional state: their eyes glow with a cyan void-light when calm, but spark with volatile golden embers when pushed to the brink of survival.`},
-
-/* —— CODEX III —— */
-{id:'lore-ossuary',kind:'lore',num:'❖',tag:'Codex Entry',title:'The Voidan Ossuary',sub:'They worship the Perfect Stillness',chip:'Void-Walker Order',
-text:`A monastic order of "Void-Walkers" who believe that the universe was born from a silent scream. They do not worship death, but rather the "Perfect Stillness" that comes after it. Their architecture is made of bone-white stone that never reflects light. They were the first to identify Jinwah as the "Voidheart"—the bridge between the living world and the eternal silence.`}
-];
-
-const BY_ID = Object.fromEntries(BOOK.map(b=>[b.id,b]));
-const GROUPS = [
-  {kind:'front',   label:'Beginnings'},
-  {kind:'chapter', label:'The Chronicle'},
-  {kind:'lore',    label:'Codex of Factions'}
-];
-
-/* ─────────────── STATE & STORAGE ─────────────── */
-const store = {
-  get theme(){ try{return localStorage.getItem('vh:theme')}catch(e){return null} },
-  set theme(v){ try{localStorage.setItem('vh:theme',v)}catch(e){} },
-  get last(){ try{return localStorage.getItem('vh:last')}catch(e){return null} },
-  set last(v){ try{localStorage.setItem('vh:last',v)}catch(e){} },
-  get set(){ try{return JSON.parse(localStorage.getItem('vh:set'))||null}catch(e){return null} },
-  set set(v){ try{localStorage.setItem('vh:set',JSON.stringify(v))}catch(e){} }
-};
-
-const FS_MIN=15, FS_MAX=24;
-const LH_STEPS=[1.6,1.7,1.8,1.95,2.1];
-let cfg = Object.assign({fs:18, lhIdx:2, wide:false}, store.set || {});
-
-let current = null;
-
-/* ─────────────── TOAST ─────────────── */
-let toastTimer=null;
-function toast(html){
-  const t=$('#toast');
-  t.innerHTML=html;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),1900);
-}
-
-/* ─────────────── THEME ─────────────── */
-function applyTheme(t,silent){
-  document.documentElement.setAttribute('data-theme',t);
-  $('#metaTheme').setAttribute('content', t==='dark' ? '#0a0b0e' : '#edeff4');
-  $('#themeBtn').setAttribute('aria-label', t==='dark'?'Switch to Gloss Clean (light)':'Switch to Goth Smooth (dark)');
-  store.theme=t;
-  if(!silent) toast(t==='dark' ? '☾ <b>Goth Smooth</b> engaged' : '☀ <b>Gloss Clean</b> engaged');
-}
-
-/* ─────────────── SETTINGS ─────────────── */
-function applyCfg(){
-  const root=document.documentElement.style;
-  root.setProperty('--fs', cfg.fs+'px');
-  root.setProperty('--lh', LH_STEPS[cfg.lhIdx]);
-  document.body.classList.toggle('measure-wide', !!cfg.wide);
-  $('#fsVal').textContent=cfg.fs;
-  $('#lhVal').textContent=LH_STEPS[cfg.lhIdx].toFixed(2);
-  $('#fsMinus').disabled = cfg.fs<=FS_MIN;
-  $('#fsPlus').disabled  = cfg.fs>=FS_MAX;
-  $('#lhMinus').disabled = cfg.lhIdx<=0;
-  $('#lhPlus').disabled  = cfg.lhIdx>=LH_STEPS.length-1;
-  $('#mBook').classList.toggle('on',!cfg.wide);
-  $('#mWide').classList.toggle('on',!!cfg.wide);
-  store.set=cfg;
-}
-
-/* ─────────────── NAVIGATION MODEL ─────────────── */
-function parseHash(){
-  const h=location.hash.replace(/^#/,'');
-  return BY_ID[h] ? h : null;
-}
-function neighbors(id){
-  const i=BOOK.findIndex(b=>b.id===id);
-  return { prev: i>0 ? BOOK[i-1] : null, next: i<BOOK.length-1 ? BOOK[i+1] : null };
-}
-function readMinutes(text){
-  const w=text.trim().split(/\s+/).length;
-  return Math.max(1, Math.round(w/230));
-}
-
-/* ─────────────── RENDER ─────────────── */
-function render(id){
-  const item=BY_ID[id]; if(!item) return;
-  current=id;
-  store.last=id;
-
-  const art=$('#article');
-  art.className='prose pre'+(item.kind==='lore'?' lore':'');
-
-  /* — header — */
-  let html =
-    '<div class="kicker" style="--d:0ms">'+esc(item.tag)+'</div>'+
-    '<h1 class="title" style="--d:40ms">'+esc(item.title)+'</h1>'+
-    '<p class="subtitle" style="--d:80ms">'+esc(item.sub)+'</p>'+
-    '<div class="orn" style="--d:110ms" aria-hidden="true"><i></i></div>'+
-    '<div class="meta" style="--d:140ms">'+
-      (item.kind==='chapter' ? '<span>Chapter <b>'+esc(item.num)+'</b></span><span class="dot"></span>' :
-       item.kind==='lore'    ? '<span>Codex <b>'+esc(item.num)+'</b></span><span class="dot"></span>' :
-                               '<span><b>Overture</b></span><span class="dot"></span>')+
-      '<span>~'+readMinutes(item.text)+' min read</span>'+
-    '</div>';
-
-  /* — codex chrome — */
-  if(item.kind==='lore'){
-    html+='<div class="chips" style="--d:170ms"><span>'+esc(item.chip)+'</span><span>Faction Record</span><span>Verified</span></div>';
-    html+='<div class="plate" style="--d:200ms">';
-  }
-
-  /* — body paragraphs — */
-  const paras=item.text.trim().split(/(?:\r?
-){2,}/);
-  paras.forEach((p,i)=>{
-    html+='<p style="--d:'+Math.min(200+i*45, 900)+'ms">'+esc(p.trim())+'</p>';
-  });
-
-  if(item.kind==='lore'){
-    html+='<div class="archiveline">Filed · The Infinite Archive</div></div>';
-  }
-
-  if(item.note){
-    html+='<aside class="anote"><span>Marginalia</span>'+esc(item.note)+'</aside>';
-  }
-
-  html+='<div class="fin" style="--d:940ms" aria-hidden="true"><span>'+(item.kind==='lore'?'❖':'✦')+'</span></div>';
-
-  art.innerHTML=html;
-
-  /* staggered entrance */
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    art.classList.remove('pre'); art.classList.add('in');
-  }));
-
-  /* — chrome sync — */
-  document.title=item.title+' · VOIDHEART';
-  $('#crumb').innerHTML='<b>'+esc(item.num)+'</b>'+esc(item.kind==='chapter'?'Chapter '+item.num:item.tag)+' — '+esc(item.title);
-
-  const nb=neighbors(id);
-  setPager($('#pgPrev'), nb.prev, '← Previous');
-  setPager($('#pgNext'), nb.next, 'Next →');
-
-  $$('#navList .ni').forEach(a=>{
-    const on=a.dataset.id===id;
-    a.classList.toggle('active',on);
-    a.setAttribute('aria-current',on?'page':'false');
-    if(on) a.scrollIntoView({block:'nearest'});
-  });
-
-  updateResume();
-  window.scrollTo({top:0,left:0,behavior:'auto'});
-  updateProgress();
-}
-
-function setPager(el,item,label){
-  if(!item){ el.classList.add('ghost'); el.removeAttribute('href'); el.querySelector('small').textContent=label; el.querySelector('strong').textContent='—'; return; }
-  el.classList.remove('ghost');
-  el.setAttribute('href','#'+item.id);
-  el.querySelector('small').textContent=label;
-  el.querySelector('strong').textContent=(item.num!==''?item.num+' · ':'')+item.title;
-}
-
-/* canonicalise unknown hashes so the URL never points at a dead state */
-function go(rawId){
-  const id = BY_ID[rawId] ? rawId : FALLBACK;
-  if(id===current){ history.replaceState(null,'','#'+id); return; }
-  render(id);
-  if(parseHash()!==id) history.replaceState(null,'','#'+id);
-}
-
-/* ─────────────── BUILD SIDEBAR ─────────────── */
-function buildNav(){
-  const nav=$('#navList'); let html='';
-  GROUPS.forEach(g=>{
-    const items=BOOK.filter(b=>b.kind===g.kind);
-    if(!items.length) return;
-    html+='<section class="grp" data-kind="'+g.kind+'">';
-    html+='<div class="grp-label"><i>◈</i>'+g.label+'<span style="letter-spacing:.05em;opacity:.6">('+items.length+')</span></div>';
-    items.forEach(b=>{
-      html+='<a class="ni" href="#'+b.id+'" data-id="'+b.id+'" data-search="'+esc((b.num+' '+b.title).toLowerCase())+'">'+
-            '<span class="nn">'+esc(b.num)+'</span><span class="nt">'+esc(b.title)+'</span></a>';
-    });
-    html+='</section>';
-  });
-  html+='<div class="nores">No chapters echo that name.</div>';
-  nav.innerHTML=html;
-}
-
-/* ─────────────── RESUME CHIP ─────────────── */
-function updateResume(){
-  const saved=store.last;
-  const chip=$('#resume');
-  if(saved && BY_ID[saved] && saved!==current){
-    $('#resumeTxt').textContent='Continue — '+BY_ID[saved].title;
-    chip.hidden=false;
-  }else{
-    chip.hidden=true;
-  }
-}
-
-/* ─────────────── PROGRESS BAR ─────────────── */
-let progTick=false;
-function updateProgress(){
-  if(progTick) return; progTick=true;
-  requestAnimationFrame(()=>{
-    const max=document.documentElement.scrollHeight-innerHeight;
-    const p=max>0 ? Math.min(1, scrollY/max) : 0;
-    $('#progress i').style.transform='scaleX('+p+')';
-    progTick=false;
-  });
-}
-
-/* ─────────────── STARFIELD ─────────────── */
-function genStars(){
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const host=$('#stars'); const frag=document.createDocumentFragment();
-  for(let i=0;i<70;i++){
-    const s=document.createElement('span');
-    s.className='star';
-    const sz=Math.random()<.82?1:2;
-    s.style.width=s.style.height=sz+'px';
-    s.style.left=(Math.random()*100).toFixed(2)+'%';
-    s.style.top=(Math.random()*100).toFixed(2)+'%';
-    s.style.setProperty('--o',(0.15+Math.random()*0.55).toFixed(2));
-    s.style.setProperty('--dur',(2.6+Math.random()*4.4).toFixed(2)+'s');
-    s.style.setProperty('--del',(-Math.random()*6).toFixed(2)+'s');
-    frag.appendChild(s);
-  }
-  host.appendChild(frag);
-}
-
-/* ─────────────── EVENTS ─────────────── */
-function bind(){
-  /* routing */
-  addEventListener('hashchange',()=>go(parseHash()));
-
-  /* close drawer when a chapter is chosen (mobile) */
-  $('#navList').addEventListener('click',e=>{
-    const a=e.target.closest('.ni');
-    if(a) document.body.classList.remove('nav-open');
-  });
-  $('#pgPrev').addEventListener('click',()=>document.body.classList.remove('nav-open'));
-  $('#pgNext').addEventListener('click',()=>document.body.classList.remove('nav-open'));
-
-  /* drawer controls */
-  $('#menuBtn').addEventListener('click',()=>{
-    if(innerWidth>=1160) document.body.classList.toggle('rail-off');
-    else document.body.classList.toggle('nav-open');
-  });
-  $('#closeBtn').addEventListener('click',()=>document.body.classList.remove('nav-open'));
-  $('#scrim').addEventListener('click',()=>document.body.classList.remove('nav-open'));
-
-  /* theme */
-  $('#themeBtn').addEventListener('click',()=>{
-    applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
-  });
-
-  /* settings popover */
-  const pop=$('#pop');
-  $('#setBtn').addEventListener('click',e=>{ e.stopPropagation(); pop.classList.toggle('open'); });
-  document.addEventListener('click',e=>{
-    if(pop.classList.contains('open') && !e.target.closest('#pop') && !e.target.closest('#setBtn'))
-      pop.classList.remove('open');
-  });
-
-  $('#fsMinus').addEventListener('click',()=>{ cfg.fs=Math.max(FS_MIN,cfg.fs-1); applyCfg(); });
-  $('#fsPlus') .addEventListener('click',()=>{ cfg.fs=Math.min(FS_MAX,cfg.fs+1); applyCfg(); });
-  $('#lhMinus').addEventListener('click',()=>{ cfg.lhIdx=Math.max(0,cfg.lhIdx-1); applyCfg(); });
-  $('#lhPlus') .addEventListener('click',()=>{ cfg.lhIdx=Math.min(LH_STEPS.length-1,cfg.lhIdx+1); applyCfg(); });
-  $('#mBook').addEventListener('click',()=>{ cfg.wide=false; applyCfg(); });
-  $('#mWide').addEventListener('click',()=>{ cfg.wide=true; applyCfg(); });
-
-  /* nav filter */
-  $('#navFilter').addEventListener('input',e=>{
-    const q=e.target.value.trim().toLowerCase();
-    let hits=0;
-    $$('#navList .ni').forEach(a=>{
-      const show=!q || a.dataset.search.includes(q);
-      a.classList.toggle('hide',!show);
-      if(show) hits++;
-    });
-    $$('#navList .grp').forEach(g=>{
-      g.style.display=g.querySelectorAll('.ni:not(.hide)').length?'':'none';
-    });
-    $('.nores').style.display=hits?'none':'block';
-  });
-
-  /* resume chip */
-  $('#resume').addEventListener('click',()=>{ location.hash=store.last; });
-
-  /* scroll progress */
-  addEventListener('scroll',updateProgress,{passive:true});
-
-  /* resize guards */
-  addEventListener('resize',()=>{
-    if(innerWidth>=1160) document.body.classList.remove('nav-open');
-    updateProgress();
-  });
-
-  /* keyboard */
-  addEventListener('keydown',e=>{
-    if(e.metaKey||e.ctrlKey||e.altKey) return;
-    const t=e.target;
-    if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)){
-      if(e.key==='Escape') t.blur();
-      return;
-    }
-    switch(e.key){
-      case 'ArrowRight':{ const n=neighbors(current).next; if(n) location.hash=n.id; break; }
-      case 'ArrowLeft': { const p=neighbors(current).prev; if(p) location.hash=p.id; break; }
-      case 't': case 'T':
-        applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); break;
-      case 'c': case 'C':
-        if(innerWidth>=1160) document.body.classList.toggle('rail-off');
-        else document.body.classList.toggle('nav-open');
-        break;
-      case 'Escape':
-        document.body.classList.remove('nav-open');
-        $('#pop').classList.remove('open');
-        break;
-    }
-  });
-}
-
-/* ─────────────── BOOT ─────────────── */
-document.addEventListener('DOMContentLoaded',()=>{
-  history.scrollRestoration='manual';
-  buildNav();
-  applyCfg();
-  applyTheme(store.theme || 'dark', true);
-  genStars();
-  bind();
-
-  /* CRITICAL: never boot to a blank pane — resolve the deepest valid
-     target (hash → saved position → prologue) and paint it instantly. */
-  const initial = parseHash() || store.last && BY_ID[store.last] ? (parseHash() || store.last) : FALLBACK;
-  go(initial);
-});
-</script>
 </body>
 </html>
-```
