@@ -1,286 +1,486 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="void">
+```html
+<html lang="en" data-theme="void" data-view="nexus">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Jinwah Voidheart — a single-file reader for the complete serial: ten chapters and the lore archive.">
-<meta name="theme-color" content="#07070d">
-<title>Jinwah Voidheart — Reader</title>
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%230b0b14"/><path d="M32 10 54 32 32 54 10 32Z" fill="none" stroke="%23a78bfa" stroke-width="5"/><circle cx="32" cy="32" r="6" fill="%237dd3fc"/></svg>'>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VOIDHEART//NEXUS — Dark Fantasy Reader Artifact</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='3' y='19' font-size='19' fill='%238b5cf6'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+/* ══════════════════ VOIDHEART//NEXUS — rogue artifact stylesheet ══════════════════ */
+@property --h {syntax:'<number>';inherits:true;initial-value:265;}
 :root{
-  --topbar-h:62px; --sb-w:306px; --radius:14px;
-  --reader-size:18px; --measure:66ch;
-  --font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
-  --font-serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
-  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-  --ease:cubic-bezier(.22,.61,.36,1);
-  --bg:#07070d; --bg-soft:#0c0c15; --panel:#10101b; --card:#14141f;
-  --border:#22223a; --border-strong:#30304f;
-  --text:#e9e9f4; --muted:#9797ae; --faint:#64647c;
-  --accent:#a78bfa; --accent-ink:#0b0714; --accent-soft:rgba(167,139,250,.14);
-  --accent2:#7dd3fc; --mark:rgba(167,139,250,.30);
-  --shadow:0 18px 50px -12px rgba(0,0,0,.55);
-  --glow-a:rgba(139,92,246,.17); --glow-b:rgba(56,189,248,.09);
+  --h:265;
+  --serif:Cambria,'Hoefler Text','Palatino Linotype',Palatino,Georgia,serif;
+  --read:Charter,'Bitstream Charter','Iowan Old Style',Georgia,Cambria,serif;
+  --mono:ui-monospace,'SF Mono','Cascadia Code',Consolas,'Roboto Mono',Menlo,monospace;
+  --px:0;--py:0;--fs:17.5px;
 }
-html[data-theme="sepia"]{
-  --bg:#f3ead8; --bg-soft:#ece1c9; --panel:#f0e6cf; --card:#f7efdd;
-  --border:#dccfae; --border-strong:#c6b58c;
-  --text:#3a3222; --muted:#77694f; --faint:#a2937a;
-  --accent:#9a6a25; --accent-ink:#fff8ec; --accent-soft:rgba(154,106,37,.13);
-  --accent2:#7c5cc4; --mark:rgba(154,106,37,.26);
-  --shadow:0 18px 40px -18px rgba(90,70,30,.35);
-  --glow-a:rgba(180,130,50,.12); --glow-b:rgba(120,90,190,.08);
+html[data-theme="void"]{
+  --bg:#030508;--bg2:#070a12;--ink:#d6deee;--dim:#7d8aa5;--faint:#4a5570;
+  --glass:rgba(13,17,28,.55);--brd:rgba(140,152,220,.16);
+  --ac1:#8b5cf6;--ac2:#3fe0ff;--ac3:#ff4d6d;--gold:#e8c15a;
+  --vig:rgba(0,0,6,.6);--lbl:205,214,240;--shadow:0 12px 44px rgba(0,0,12,.5);
 }
-html[data-theme="dawn"]{
-  --bg:#f6f7fb; --bg-soft:#eef0f7; --panel:#ffffff; --card:#ffffff;
-  --border:#e4e7f0; --border-strong:#ccd2e2;
-  --text:#181c2c; --muted:#5b6278; --faint:#8b91a6;
-  --accent:#6a52e8; --accent-ink:#ffffff; --accent-soft:rgba(106,82,232,.10);
-  --accent2:#0e9bd8; --mark:rgba(106,82,232,.24);
-  --shadow:0 16px 40px -16px rgba(30,35,70,.18);
-  --glow-a:rgba(106,82,232,.10); --glow-b:rgba(14,155,216,.07);
+html[data-theme="ether"]{
+  --bg:#eef0f4;--bg2:#e2e6ee;--ink:#161b26;--dim:#59637a;--faint:#8b94ab;
+  --glass:rgba(255,255,255,.6);--brd:rgba(28,38,80,.16);
+  --ac1:#5b3df0;--ac2:#0d8ba4;--ac3:#c81e4a;--gold:#a1760f;
+  --vig:rgba(60,70,110,.18);--lbl:38,44,66;--shadow:0 12px 34px rgba(40,50,90,.18);
 }
-body{background:var(--bg);color:var(--text);font-family:var(--font-ui);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;min-height:100vh}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(720px 480px at 88% -12%,var(--glow-a),transparent 62%),
-             radial-gradient(820px 560px at -14% 112%,var(--glow-b),transparent 62%)}
-::selection{background:var(--accent);color:var(--accent-ink)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
-::-webkit-scrollbar{width:11px;height:11px}
-::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px;border:3px solid var(--bg)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:var(--mono);font-size:13px;
+  transition:background-color .8s ease,color .8s ease;
+}
+html.theming body,html.theming .glass,html.theming .dk,html.theming .hbtn,html.theming .cx-card,html.theming #dock,html.theming #hud{transition:background-color .8s ease,color .8s ease,border-color .8s ease,box-shadow .8s ease}
+::selection{background:color-mix(in srgb,var(--ac1) 45%,transparent);color:var(--ink)}
+:focus-visible{outline:1px dashed var(--ac2);outline-offset:3px}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--ac1) 35%,transparent);border-radius:8px}
 ::-webkit-scrollbar-track{background:transparent}
-*{scrollbar-color:var(--border-strong) transparent;scrollbar-width:thin}
-button{font-family:inherit}
-kbd{font:600 .62rem var(--font-mono);border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:var(--bg-soft);color:var(--muted)}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media(pointer:fine){body{cursor:none}button,input{cursor:none}}
+@media(pointer:coarse){#cursor{display:none!important}}
 
-/* ---------- progress ---------- */
-#progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:120;pointer-events:none;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));transform-origin:0 50%;transform:scaleX(0)}
-
-/* ---------- topbar ---------- */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);z-index:80;display:flex;align-items:center;gap:10px;
-  padding:0 14px;border-bottom:1px solid var(--border);
-  background:var(--bg);
-  background:color-mix(in srgb,var(--bg) 74%,transparent);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);white-space:nowrap;margin-right:4px}
-.brand .glyph{width:27px;height:27px;display:grid;place-items:center;border-radius:8px;font-size:.8rem;color:var(--accent-ink);
-  background:linear-gradient(135deg,var(--accent),var(--accent2))}
-.brand .bt{letter-spacing:.16em;font-weight:700;font-size:.78rem;text-transform:uppercase}
-.brand .sub{color:var(--faint);font-weight:500}
-.searchwrap{position:relative;flex:1;max-width:440px;margin-left:auto}
-.searchwrap>svg{position:absolute;left:11px;top:50%;translate:0 -50%;opacity:.5;pointer-events:none}
-#q{width:100%;height:38px;padding:0 34px;border-radius:11px;border:1px solid var(--border);background:var(--card);
-  color:var(--text);font:inherit;font-size:.86rem;transition:border-color .2s,box-shadow .2s}
-#q::placeholder{color:var(--faint)}
-#q:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none}
-.qclear{position:absolute;right:6px;top:50%;translate:0 -50%;width:26px;height:26px;border:none;border-radius:8px;
-  background:transparent;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1}
-.qclear:hover{background:var(--bg-soft);color:var(--text)}
-.ibtn{height:38px;min-width:38px;padding:0 10px;border-radius:11px;border:1px solid var(--border);background:transparent;
-  color:var(--text);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  font-size:.8rem;font-weight:600;transition:background .2s,border-color .2s,color .2s}
-.ibtn:hover{background:var(--card);border-color:var(--border-strong)}
-.burger{display:none}
-.aalbl{font:600 .8rem var(--font-ui);letter-spacing:.02em}
-
-/* ---------- popover ---------- */
-.pop-wrap{position:relative}
-.pop{position:absolute;top:calc(100% + 10px);right:0;width:268px;background:var(--panel);border:1px solid var(--border);
-  border-radius:16px;box-shadow:var(--shadow);padding:16px;z-index:90;opacity:0;visibility:hidden;translate:0 -6px;
-  transition:opacity .18s var(--ease),translate .18s var(--ease),visibility .18s}
-.pop.open{opacity:1;visibility:visible;translate:0 0}
-.pop h4{font:600 .6rem var(--font-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin:15px 0 8px}
-.pop h4:first-child{margin-top:0}
-.swatches{display:flex;gap:8px}
-.sw{flex:1;padding:9px 4px 7px;border-radius:10px;border:1px solid var(--border);background:var(--bg-soft);cursor:pointer;
-  font-size:.66rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:6px;transition:.18s}
-.sw i{width:15px;height:15px;border-radius:50%;display:block;border:1px solid rgba(128,128,128,.4)}
-.sw:hover{color:var(--text)}
-.sw.on{border-color:var(--accent);color:var(--text);background:var(--accent-soft)}
-.step{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;background:var(--bg-soft);padding:4px}
-.step button{width:34px;height:32px;border-radius:8px;border:none;background:transparent;color:var(--text);font-size:1.05rem;cursor:pointer}
-.step button:hover{background:var(--card)}
-.step output{font:600 .8rem var(--font-mono);color:var(--muted);min-width:52px;text-align:center}
-.seg{display:flex;border:1px solid var(--border);border-radius:10px;background:var(--bg-soft);padding:3px;gap:3px}
-.seg button{flex:1;height:30px;border:none;border-radius:8px;background:transparent;color:var(--muted);font-size:.74rem;cursor:pointer;transition:.15s}
-.seg button.on{background:var(--accent);color:var(--accent-ink);font-weight:600}
-
-/* ---------- shell ---------- */
-.shell{display:flex;min-height:100vh}
-.sidebar{width:var(--sb-w);flex-shrink:0;position:sticky;top:var(--topbar-h);height:calc(100vh - var(--topbar-h));
-  overflow-y:auto;padding:18px 14px 28px;border-right:1px solid var(--border);background:var(--bg)}
-.sb-head{display:flex;justify-content:space-between;align-items:center;padding:0 6px 6px}
-.sb-close{display:none}
-.toc-group{display:block;margin:20px 6px 8px;font:600 .62rem var(--font-mono);letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
-.toc-group:first-child{margin-top:2px}
-.toc-item{display:flex;gap:10px;align-items:baseline;width:100%;text-align:left;padding:9px 11px;border-radius:10px;
-  border:none;background:none;color:var(--muted);cursor:pointer;font-size:.86rem;line-height:1.4;transition:background .18s,color .18s}
-.toc-item:hover{background:var(--card);color:var(--text)}
-.toc-item.active{background:var(--accent-soft);color:var(--text);box-shadow:inset 2px 0 0 var(--accent)}
-.toc-num{font:600 .66rem var(--font-mono);color:var(--faint);min-width:24px;flex-shrink:0}
-.toc-item.active .toc-num{color:var(--accent)}
-.toc-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.toc-item.res{flex-direction:column;align-items:stretch;gap:4px}
-.res-head{display:flex;align-items:center;gap:8px;width:100%}
-.res-head .toc-title{white-space:normal;font-weight:600;color:var(--text);font-size:.83rem}
-.res-count{font:600 .58rem var(--font-mono);color:var(--accent);border:1px solid var(--border);border-radius:999px;padding:2px 7px;flex-shrink:0}
-.res-snippet{font-size:.74rem;color:var(--faint);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.empty{padding:20px 12px;color:var(--faint);font-size:.83rem;line-height:1.6}
-.keys{margin:26px 6px 0;padding:13px 14px;border:1px dashed var(--border-strong);border-radius:12px;font-size:.7rem;color:var(--faint);line-height:2.1}
-#scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:70;opacity:0;visibility:hidden;transition:.25s}
-body.drawer #scrim{opacity:1;visibility:visible}
-
-/* ---------- main / reader ---------- */
-.main{flex:1;min-width:0;display:flex;justify-content:center;padding:calc(var(--topbar-h) + 46px) 24px 110px}
-#reader{width:100%;max-width:780px;font-size:var(--reader-size)}
-.kicker{font:600 .66rem var(--font-mono);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-h1.title{font-family:var(--font-serif);font-weight:600;font-size:clamp(1.9rem,4.4vw,2.7rem);line-height:1.12;letter-spacing:-.01em;margin-bottom:10px}
-.subtitle{color:var(--muted);font-style:italic;font-size:1em;margin-bottom:16px;line-height:1.6}
-.meta{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0;padding-bottom:24px;border-bottom:1px solid var(--border)}
-.chip{font:500 .64rem var(--font-mono);letter-spacing:.08em;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:5px 11px;background:var(--bg-soft)}
-.epigraph{margin:30px 0 6px;padding:4px 0 4px 20px;border-left:2px solid var(--accent);color:var(--muted);font-style:italic}
-.epigraph p{margin:0 0 1em;font-size:.93em;line-height:1.78;font-family:var(--font-serif)}
-.epigraph p:last-child{margin-bottom:0}
-.prose{margin-top:32px}
-.prose p{margin:0 0 1.12em;line-height:1.82;font-family:var(--font-serif)}
-.prose p:first-child{font-size:1.05em}
-#reader[data-font="sans"] .prose p,#reader[data-font="sans"] .epigraph p{font-family:var(--font-ui)}
-.endmark{margin-top:2.8em!important;padding-top:26px;border-top:1px solid var(--border);text-align:center;
-  font:600 .66rem var(--font-mono)!important;letter-spacing:.32em;text-transform:uppercase;color:var(--faint)}
-mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
-.pnav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:64px}
-.pnav button{text-align:left;padding:16px 18px;border-radius:var(--radius);border:1px solid var(--border);
-  background:var(--bg-soft);color:var(--text);cursor:pointer;transition:transform .2s var(--ease),border-color .2s,box-shadow .2s}
-.pnav button:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
-.pnav .dir{font:600 .6rem var(--font-mono);letter-spacing:.24em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:7px}
-.pnav .t{font-family:var(--font-serif);font-size:.97rem;line-height:1.35}
-.pnav .nx{text-align:right}
-.pnav button:disabled{opacity:.32;pointer-events:none}
-
-/* ---------- home ---------- */
-.hero{padding:6vh 0 6px;max-width:660px}
-.hero-title{font-family:var(--font-serif);font-weight:600;font-size:clamp(2.5rem,7vw,4.1rem);line-height:1.03;letter-spacing:-.02em;margin:12px 0 18px}
-.grad{background:linear-gradient(92deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.tagline{color:var(--muted);font-size:1.05rem;line-height:1.68;max-width:56ch}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 28px}
-.cta-row{display:flex;gap:12px;flex-wrap:wrap}
-.btn{height:44px;padding:0 22px;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;border:1px solid transparent;
-  display:inline-flex;align-items:center;gap:9px;transition:transform .2s var(--ease),box-shadow .2s,filter .2s,border-color .2s,color .2s}
-.btn.primary{background:var(--accent);color:var(--accent-ink)}
-.btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:var(--shadow)}
-.btn.ghost{background:transparent;border-color:var(--border-strong);color:var(--text)}
-.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
-.sec-label{font:600 .64rem var(--font-mono);letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin:58px 0 16px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
-.card{text-align:left;padding:18px;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);
-  cursor:pointer;color:var(--text);display:flex;flex-direction:column;gap:9px;
-  transition:transform .2s var(--ease),border-color .2s,box-shadow .2s}
-.card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
-.card .tag{font:600 .58rem var(--font-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
-.card h3{font-family:var(--font-serif);font-size:1.02rem;font-weight:600;line-height:1.3}
-.card p{font-size:.79rem;color:var(--muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-.tile{padding:15px 16px;border:1px dashed var(--border-strong);border-radius:12px}
-.tile b{display:block;font-size:.8rem;margin-bottom:5px}
-.tile span{font-size:.73rem;color:var(--muted);line-height:1.6}
-
-/* ---------- responsive ---------- */
-@media (max-width:980px){
-  .burger{display:inline-flex}
-  .sidebar{position:fixed;left:0;top:var(--topbar-h);bottom:0;height:auto;z-index:75;width:min(330px,88vw);
-    transform:translateX(-103%);transition:transform .28s var(--ease);box-shadow:var(--shadow)}
-  body.drawer .sidebar{transform:none}
-  .sb-close{display:inline-flex}
-  .main{padding:calc(var(--topbar-h) + 30px) 18px 90px}
+/* ── environment layers ── */
+#fx{position:fixed;inset:0;z-index:0}
+#grid{position:fixed;inset:-60px;z-index:1;pointer-events:none;opacity:.7;
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--ac1) 9%,transparent) 1px,transparent 1px),
+    linear-gradient(90deg,color-mix(in srgb,var(--ac1) 9%,transparent) 1px,transparent 1px),
+    linear-gradient(color-mix(in srgb,var(--ac2) 7%,transparent) 1px,transparent 1px),
+    linear-gradient(90deg,color-mix(in srgb,var(--ac2) 7%,transparent) 1px,transparent 1px);
+  background-size:220px 220px,220px 220px,44px 44px,44px 44px;
+  -webkit-mask-image:radial-gradient(120% 90% at 50% 42%,#000 30%,transparent 90%);
+          mask-image:radial-gradient(120% 90% at 50% 42%,#000 30%,transparent 90%);
+  animation:gridDrift 70s linear infinite;
 }
-@media (max-width:600px){
-  .brand .sub{display:none}
-  .pnav{grid-template-columns:1fr}
-  .pnav .nx{text-align:left}
-  .hero{padding-top:3vh}
-  .main{padding-left:14px;padding-right:14px}
+@keyframes gridDrift{to{background-position:220px 220px,220px 220px,44px 44px,44px 44px}}
+#grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");}
+#scan{position:fixed;inset:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(127,127,160,.028) 2px 4px);}
+#scan::after{content:'';position:absolute;left:0;right:0;height:120px;top:-120px;
+  background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--ac2) 6%,transparent),transparent);
+  animation:scanMove 9s linear infinite}
+@keyframes scanMove{to{transform:translateY(calc(100vh + 240px))}}
+#vig{position:fixed;inset:0;z-index:4;pointer-events:none;background:radial-gradient(120% 100% at 50% 45%,transparent 52%,var(--vig))}
+
+/* ── shared glass / chroma ── */
+.glass{background:var(--glass);border:1px solid var(--brd);border-radius:14px;
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  box-shadow:var(--shadow)}
+.chroma{border:1px solid var(--brd);
+  background:
+    linear-gradient(135deg,color-mix(in srgb,var(--ac1) 55%,transparent),transparent 30%,color-mix(in srgb,var(--ac2) 40%,transparent) 58%,transparent 86%) border-box,
+    linear-gradient(var(--glass),var(--glass)) padding-box;
+  background-size:auto,300% 300%;
+  animation:bpan 8s ease-in-out infinite alternate}
+@keyframes bpan{from{background-position:0 0,0% 0}to{background-position:0 0,100% 100%}}
+
+/* ── glitch text ── */
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-t);position:absolute;inset:0;opacity:0;pointer-events:none}
+.glitch::before{color:var(--ac2);animation:gl1 7s infinite steps(1,end)}
+.glitch::after{color:var(--ac3);animation:gl2 9s infinite steps(1,end)}
+@keyframes gl1{0%,91%{opacity:0}92%{opacity:.75;transform:translate(-2px,1px);clip-path:inset(8% 0 62% 0)}95%{opacity:.75;transform:translate(2px,-1px);clip-path:inset(58% 0 10% 0)}97%,100%{opacity:0}}
+@keyframes gl2{0%,84%{opacity:0}85%{opacity:.6;transform:translate(2px,0);clip-path:inset(30% 0 40% 0)}87%{opacity:.6;transform:translate(-2px,0);clip-path:inset(70% 0 4% 0)}89%,100%{opacity:0}}
+.ver{animation:flick 9s infinite}
+@keyframes flick{0%,86%,90%,100%{opacity:.75}88%{opacity:.2}89%{opacity:.9}}
+
+/* ── HUD ── */
+#hud{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;user-select:none;
+  transform:translate(calc(var(--px)*-5px),calc(var(--py)*-4px))}
+.hud-l{display:flex;align-items:baseline;gap:12px}
+.brand{font-size:13px;letter-spacing:.22em;color:var(--ink)}
+.brand .sigil{color:var(--ac1);margin-right:8px;text-shadow:0 0 12px color-mix(in srgb,var(--ac1) 70%,transparent)}
+.ver{font-size:9px;letter-spacing:.18em;color:var(--dim)}
+.hud-r{display:flex;align-items:center;gap:14px}
+.metric{display:flex;align-items:center;gap:6px;font-size:9.5px;letter-spacing:.14em;color:var(--dim)}
+.metric i{font-style:normal;color:var(--faint)}
+.metric b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.metric.vx b{min-width:0}
+#spark{opacity:.9;margin-left:2px}
+.hbtn{width:34px;height:34px;display:grid;place-items:center;background:transparent;border:1px solid var(--brd);
+  border-radius:10px;color:var(--dim);transition:.25s}
+.hbtn:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ac2) 55%,transparent);transform:translateY(-1px);
+  box-shadow:0 0 14px color-mix(in srgb,var(--ac2) 25%,transparent)}
+.hbtn svg{width:16px;height:16px}
+#btn-sound.muted{color:var(--faint)}
+#btn-sound .slash{display:none}
+#btn-sound.muted .slash{display:block}
+#btn-sound.muted .wav{display:none}
+#prog{position:absolute;left:0;top:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,hsl(var(--h) 85% 58%),hsl(var(--h) 90% 70%));
+  box-shadow:0 0 10px hsl(var(--h) 85% 60% /.7);opacity:0;transition:opacity .4s}
+html[data-view="reader"] #prog{opacity:1}
+
+/* ── views ── */
+.view{position:fixed;inset:0;z-index:10;opacity:0;pointer-events:none;
+  transform:scale(.985) translateY(10px);transition:opacity .55s cubic-bezier(.5,0,.2,1),transform .55s cubic-bezier(.5,0,.2,1)}
+html[data-view="nexus"] #view-nexus,html[data-view="reader"] #view-reader,html[data-view="codex"] #view-codex{opacity:1;pointer-events:auto;transform:none}
+
+/* ── NEXUS ── */
+.nx-head{position:absolute;top:86px;left:50%;transform:translateX(-50%) translate(calc(var(--px)*8px),calc(var(--py)*6px));
+  text-align:center;pointer-events:none;width:min(92vw,760px)}
+.nx-title{font-family:var(--serif);font-weight:600;font-size:clamp(22px,3.4vw,34px);letter-spacing:.3em;color:var(--ink);
+  text-shadow:0 0 30px color-mix(in srgb,var(--ac1) 45%,transparent)}
+.nx-sub{margin-top:10px;font-size:9.5px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
+.nx-sub::after{content:'';display:block;width:120px;height:1px;margin:12px auto 0;
+  background:linear-gradient(90deg,transparent,var(--ac1),var(--ac2),transparent);
+  background-size:200% 100%;animation:shimmer 3.2s linear infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+#ret-x,#ret-y{position:fixed;z-index:9;pointer-events:none;background:color-mix(in srgb,var(--ac2) 30%,transparent);opacity:0;transition:opacity .4s}
+#ret-x{top:0;bottom:0;width:1px}
+#ret-y{left:0;right:0;height:1px}
+#ret-c{position:fixed;z-index:9;pointer-events:none;font-size:8.5px;letter-spacing:.14em;color:var(--dim);opacity:0;transition:opacity .4s;white-space:nowrap}
+html[data-view="nexus"] #ret-x,html[data-view="nexus"] #ret-y{opacity:.35}
+html[data-view="nexus"] #ret-c{opacity:.8}
+#nx-card{position:absolute;left:22px;bottom:96px;width:250px;padding:14px 16px;pointer-events:none;
+  animation:floaty 7s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.nc-type{font-size:8.5px;letter-spacing:.28em;color:var(--ac2)}
+.nc-name{font-family:var(--serif);font-size:16px;letter-spacing:.06em;margin:6px 0 4px;color:var(--ink)}
+.nc-meta{font-size:9.5px;letter-spacing:.1em;color:var(--dim);line-height:1.6}
+.nc-hint{margin-top:10px;font-size:8.5px;letter-spacing:.24em;color:var(--faint)}
+.nx-legend{position:absolute;right:22px;bottom:96px;padding:10px 14px;display:flex;gap:14px;font-size:8.5px;
+  letter-spacing:.2em;color:var(--dim);align-items:center;transform:translate(calc(var(--px)*5px),calc(var(--py)*4px))}
+.lg{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.lg-ch{background:var(--ac1);box-shadow:0 0 8px var(--ac1)}
+.lg-cx{background:var(--ac2);box-shadow:0 0 8px var(--ac2)}
+.lg-core{background:#fff;box-shadow:0 0 10px var(--ac2)}
+.nx-keys{position:absolute;right:22px;bottom:60px;font-size:8.5px;letter-spacing:.2em;color:var(--faint)}
+
+/* ── READER ── */
+#reader-scroll,#codex-scroll{height:100%;overflow-y:auto;overflow-x:hidden;padding:96px 22px 150px;scroll-behavior:smooth}
+#chapter-art{max-width:720px;margin:0 auto;position:relative}
+#view-reader::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 40% at 50% 0%,hsl(var(--h) 70% 55% /.08),transparent 70%)}
+.ch-head{text-align:center;margin-bottom:44px}
+.ch-kicker{font-size:10px;letter-spacing:.34em;color:hsl(var(--h) 80% 62%)}
+.ch-kicker .sep{color:var(--faint);margin:0 8px}
+.ch-head h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.6vw,44px);letter-spacing:.12em;
+  margin:16px 0 10px;text-shadow:0 0 26px hsl(var(--h) 80% 55% /.35)}
+#ch-sub{font-style:italic;color:var(--dim);font-family:var(--read);font-size:15px}
+.ch-meta{margin-top:18px;font-size:9px;letter-spacing:.22em;color:var(--faint)}
+#ch-body{font-family:var(--read);font-size:var(--fs);line-height:1.78;color:var(--ink)}
+#ch-body p{margin:0 0 1.15em;text-wrap:pretty}
+#ch-body p.dropcap::first-letter{float:left;font-family:var(--serif);font-weight:700;font-size:3.3em;line-height:.82;
+  padding:.05em .12em 0 0;color:hsl(var(--h) 80% 60%);text-shadow:0 0 18px hsl(var(--h) 80% 55% /.5)}
+.orn{display:flex;align-items:center;gap:16px;margin:2.2em 0;color:var(--faint);
+  font-family:var(--mono);font-size:9px;letter-spacing:.34em;white-space:nowrap}
+.orn::before,.orn::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--brd))}
+.orn::after{background:linear-gradient(90deg,var(--brd),transparent)}
+mark{background:color-mix(in srgb,var(--ac2) 30%,transparent);color:inherit;border-radius:3px;padding:0 2px;
+  border-bottom:1px solid color-mix(in srgb,var(--ac2) 70%,transparent)}
+#ch-note{margin-top:2.4em;padding:12px 16px;border-left:2px solid var(--ac3);font-size:10.5px;letter-spacing:.12em;
+  color:var(--dim);background:color-mix(in srgb,var(--ac3) 7%,transparent);border-radius:0 10px 10px 0}
+.ch-nav{display:flex;justify-content:space-between;align-items:center;margin-top:52px;gap:10px}
+.ch-nav button{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--dim);background:transparent;
+  border:1px solid var(--brd);border-radius:10px;padding:11px 18px;transition:.25s}
+.ch-nav button:hover:not(:disabled){color:var(--ink);border-color:var(--ac2);box-shadow:0 0 14px color-mix(in srgb,var(--ac2) 25%,transparent);transform:translateY(-1px)}
+.ch-nav button:disabled{opacity:.25}
+.teaser{margin-top:26px;padding:18px 20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--dim);
+  transition:.3s;border-left:2px solid hsl(var(--h) 80% 60%)}
+.teaser:hover{transform:translateX(6px);color:var(--ink)}
+.rd-hint{text-align:center;margin-top:34px;font-size:8.5px;letter-spacing:.26em;color:var(--faint)}
+
+/* ── CODEX ── */
+.cx-head{max-width:1180px;margin:0 auto 26px}
+.cx-head h2{font-family:var(--serif);font-size:clamp(24px,3.4vw,34px);letter-spacing:.26em;font-weight:600}
+.cx-sub{margin-top:8px;font-size:9.5px;letter-spacing:.26em;color:var(--dim);text-transform:uppercase}
+.cx-filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.cx-filters button{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--dim);background:transparent;
+  border:1px solid var(--brd);border-radius:20px;padding:7px 15px;transition:.25s}
+.cx-filters button:hover{color:var(--ink);border-color:var(--ac2)}
+.cx-filters button.on{color:var(--bg);background:var(--ac1);border-color:var(--ac1);box-shadow:0 0 16px color-mix(in srgb,var(--ac1) 45%,transparent)}
+#cx-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.cx-card{padding:18px;position:relative;transition:transform .3s,box-shadow .3s;animation:fadeUp .6s backwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.cx-card:hover{transform:translateY(-4px);box-shadow:0 16px 44px color-mix(in srgb,var(--ac1) 22%,transparent)}
+.cx-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cx-glyph{font-size:24px;color:var(--tc,var(--ac2));text-shadow:0 0 14px color-mix(in srgb,var(--tc,var(--ac2)) 60%,transparent)}
+.cx-type{font-size:8px;letter-spacing:.26em;color:var(--tc,var(--ac2));border:1px solid color-mix(in srgb,var(--tc,var(--ac2)) 45%,transparent);
+  border-radius:20px;padding:3px 9px}
+.cx-name{font-family:var(--serif);font-size:16.5px;letter-spacing:.05em;margin-bottom:8px}
+.cx-desc{font-family:var(--read);font-size:12.8px;line-height:1.62;color:var(--dim)}
+.frag{margin-top:10px;padding:10px 12px;border-left:2px solid var(--tc,var(--ac2));font-family:var(--read);
+  font-style:italic;font-size:12px;line-height:1.55;color:var(--dim);background:color-mix(in srgb,var(--tc,var(--ac2)) 6%,transparent);border-radius:0 8px 8px 0}
+.cx-threads{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.cx-chip{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--dim);background:transparent;
+  border:1px solid var(--brd);border-radius:6px;padding:4px 8px;transition:.2s}
+.cx-chip:hover{color:var(--bg);background:var(--ac2);border-color:var(--ac2)}
+.cx-src{position:absolute;right:14px;bottom:10px;font-size:7.5px;letter-spacing:.2em;color:var(--faint)}
+.t-ENT{--tc:var(--ac2)}.t-FAC{--tc:var(--ac1)}.t-LOC{--tc:var(--gold)}
+.t-CON{--tc:#ff6ad5}html[data-theme="ether"] .t-CON{--tc:#b0268f}
+.cx-card.pulse{animation:pulseOnce 1.6s ease}
+@keyframes pulseOnce{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ac2) 60%,transparent)}70%{box-shadow:0 0 0 22px transparent}100%{box-shadow:var(--shadow)}}
+
+/* ── DOCK + RADIAL ── */
+#dock{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translate(calc(var(--px)*6px),calc(var(--py)*5px));
+  z-index:20;display:flex;align-items:center;gap:4px;padding:8px;user-select:none}
+.dk{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:74px;padding:8px 12px;background:transparent;
+  border:1px solid transparent;border-radius:10px;color:var(--dim);transition:.25s;font-family:var(--mono)}
+.dk i{font-style:normal;font-size:15px}
+.dk span{font-size:7.5px;letter-spacing:.26em}
+.dk:hover{color:var(--ink);border-color:var(--brd);background:color-mix(in srgb,var(--ac1) 10%,transparent)}
+.dk.on{color:var(--ink);border-color:color-mix(in srgb,var(--ac1) 55%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--ac1) 30%,transparent)}
+#radial{position:relative;display:flex;align-items:center}
+#rad-orb{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:var(--ac2);font-size:18px;
+  background:var(--glass);border:1px solid color-mix(in srgb,var(--ac2) 50%,transparent);position:relative;z-index:2;transition:.3s;
+  box-shadow:0 0 20px color-mix(in srgb,var(--ac2) 35%,transparent)}
+#rad-orb::before{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ac2) 40%,transparent);
+  animation:orbPulse 2.6s ease-out infinite}
+@keyframes orbPulse{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+#rad-orb:hover{transform:scale(1.08)}
+.rad-item{position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;
+  display:grid;place-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);
+  background:var(--glass);border:1px solid var(--brd);z-index:1;opacity:0;pointer-events:none;
+  transform:translateY(10px) scale(.4);transition:transform .45s cubic-bezier(.34,1.5,.5,1),opacity .3s}
+#radial.open .rad-item{opacity:1;pointer-events:auto;
+  transform:rotate(var(--a)) translateY(-104px) rotate(calc(-1*var(--a))) scale(1);
+  transition-delay:calc(var(--i)*24ms)}
+#radial.open .rad-item.seen{color:var(--ac2);border-color:color-mix(in srgb,var(--ac2) 55%,transparent)}
+#radial.open .rad-item:hover{color:var(--bg);background:var(--ac1);border-color:var(--ac1)}
+@media(max-width:760px){#radial.open .rad-item{transform:rotate(var(--a)) translateY(-86px) rotate(calc(-1*var(--a))) scale(1)}}
+@media(max-width:760px){.dk span{display:none}.dk{min-width:48px}}
+
+/* ── TICKER / TOAST ── */
+#ticker{position:fixed;left:22px;bottom:26px;z-index:20;display:flex;align-items:center;gap:9px;
+  font-size:8.5px;letter-spacing:.2em;color:var(--faint);user-select:none}
+.tk-dot{width:6px;height:6px;border-radius:50%;background:var(--ac2);box-shadow:0 0 8px var(--ac2);animation:blinkDot 1.8s infinite}
+@keyframes blinkDot{0%,100%{opacity:1}50%{opacity:.25}}
+#tk-txt{transition:opacity .5s;max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#toast{position:fixed;bottom:92px;left:50%;transform:translate(-50%,16px);z-index:55;padding:11px 22px;
+  font-size:10px;letter-spacing:.22em;color:var(--ink);opacity:0;pointer-events:none;transition:.4s cubic-bezier(.3,1.4,.5,1)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ── TOOLTIP ── */
+#tip{position:fixed;z-index:30;pointer-events:none;padding:9px 12px;max-width:270px;opacity:0;transition:opacity .18s}
+#tip.show{opacity:1}
+.tp-t{font-size:8.5px;letter-spacing:.26em;color:var(--ac2)}
+.tp-n{font-family:var(--serif);font-size:14px;margin:4px 0 2px}
+.tp-m{font-size:9px;letter-spacing:.12em;color:var(--dim)}
+
+/* ── PALETTE ── */
+#palette{position:fixed;top:12vh;left:50%;transform:translateX(-50%) scale(.96);z-index:40;width:min(660px,93vw);
+  opacity:0;pointer-events:none;transition:.3s cubic-bezier(.3,1.3,.5,1)}
+#palette.open{opacity:1;pointer-events:auto;transform:translateX(-50%) scale(1)}
+.pal-in{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--brd)}
+.pal-ic{color:var(--ac2);font-size:16px}
+#pal-q{flex:1;background:transparent;border:0;outline:0;color:var(--ink);font-family:var(--mono);font-size:13.5px;letter-spacing:.06em}
+#pal-q::placeholder{color:var(--faint)}
+.pal-in kbd,#palette .pal-ft kbd,.pal-ft span{font-family:var(--mono)}
+.pal-in kbd{font-size:8.5px;color:var(--faint);border:1px solid var(--brd);border-radius:5px;padding:3px 7px;letter-spacing:.14em}
+#pal-res{max-height:46vh;overflow-y:auto;padding:8px}
+.pal-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;transition:.15s}
+.pal-item.sel{background:color-mix(in srgb,var(--ac1) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac1) 40%,transparent)}
+.pi-kind{flex:none;font-size:7.5px;letter-spacing:.22em;padding:3px 8px;border-radius:20px;border:1px solid}
+.pi-kind.k-ch{color:var(--ac1);border-color:color-mix(in srgb,var(--ac1) 50%,transparent)}
+.pi-kind.k-cx{color:var(--ac2);border-color:color-mix(in srgb,var(--ac2) 50%,transparent)}
+.pi-main{min-width:0;flex:1}
+.pi-main b{display:block;font-family:var(--serif);font-size:13.5px;font-weight:600;letter-spacing:.04em}
+.pi-main span{display:block;font-size:9.5px;color:var(--dim);letter-spacing:.06em;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-item>kbd{font-size:8.5px;color:var(--faint)}
+.pal-empty{padding:26px;text-align:center;font-size:10px;letter-spacing:.24em;color:var(--faint)}
+.pal-ft{display:flex;gap:18px;padding:10px 18px;border-top:1px solid var(--brd);font-size:8.5px;letter-spacing:.2em;color:var(--faint)}
+.pal-ft #pal-count{margin-left:auto;color:var(--dim)}
+
+/* ── WIPE / BOOT ── */
+#wipe{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:0}
+#boot{position:fixed;inset:0;z-index:60;background:#020306;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:34px;transition:opacity .9s,visibility .9s}
+#boot.out{opacity:0;visibility:hidden}
+#boot-log{width:min(640px,90vw);font-family:var(--mono);font-size:12px;line-height:2;letter-spacing:.06em;color:#79e6cf;min-height:230px}
+#boot-log .ln.warn{color:#ff6b81}
+#boot-log .ln.ok{color:#57d9a3}
+#boot-log .caret{display:inline-block;width:8px;height:14px;background:#79e6cf;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+#boot-enter{text-align:center;opacity:0;transform:translateY(12px);transition:.8s}
+#boot-enter.show{opacity:1;transform:none}
+.bt-sigil{font-size:42px;color:var(--ac1);text-shadow:0 0 34px var(--ac1);animation:sigilSpin 14s linear infinite;margin-bottom:22px}
+@keyframes sigilSpin{to{transform:rotate(360deg)}}
+#btn-enter{font-family:var(--mono);font-size:12px;letter-spacing:.4em;color:#cfd8ff;background:transparent;
+  border:1px solid #3b4a7a;border-radius:40px;padding:16px 40px;transition:.35s;animation:enterPulse 2.4s infinite}
+@keyframes enterPulse{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.4)}50%{box-shadow:0 0 26px 2px rgba(139,92,246,.35)}}
+#btn-enter:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.12)}
+.bt-note{margin-top:16px;font-size:9px;letter-spacing:.3em;color:#4a5570}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;inset:0;z-index:70;pointer-events:none}
+#cur-ring{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;
+  border:1px solid color-mix(in srgb,var(--ac2) 70%,transparent);transition:width .2s,height .2s,margin .2s,border-color .2s}
+#cursor.act #cur-ring{width:46px;height:46px;margin:-23px 0 0 -23px;border-color:var(--ac1)}
+#cur-dot{position:absolute;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--ac2);
+  box-shadow:0 0 8px var(--ac2)}
+
+/* ── responsive / motion ── */
+@media(max-width:900px){.metric{display:none}.metric.vx{display:flex}}
+@media(max-width:760px){
+  .nx-legend,.nx-keys{display:none}
+  #nx-card{left:14px;bottom:88px;width:210px}
+  #reader-scroll,#codex-scroll{padding:84px 16px 140px}
+  #cx-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .ver{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 </style>
 </head>
 <body>
-<div id="progress" aria-hidden="true"></div>
 
-<header class="topbar">
-  <button class="ibtn burger" id="burger" aria-label="Open contents" aria-expanded="false">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-  </button>
-  <a class="brand" href="#" id="brandHome" aria-label="Jinwah Voidheart — home">
-    <span class="glyph">◈</span>
-    <span class="bt">Voidheart<span class="sub">&nbsp;Reader</span></span>
-  </a>
-  <div class="searchwrap">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="q" type="search" placeholder="Search chapters &amp; lore…" autocomplete="off" spellcheck="false" aria-label="Search chapters and lore">
-    <button class="qclear" id="qClear" hidden aria-label="Clear search">×</button>
+<canvas id="fx"></canvas>
+<div id="grid"></div>
+<div id="grain"></div>
+<div id="scan"></div>
+<div id="vig"></div>
+
+<header id="hud">
+  <div class="hud-l">
+    <div class="brand"><span class="sigil">✦</span><span class="glitch" data-t="VOIDHEART//NEXUS">VOIDHEART//NEXUS</span></div>
+    <span class="ver">vΩ.3 · OSSUARY ARCHIVE BUILD</span>
   </div>
-  <div class="pop-wrap">
-    <button class="ibtn" id="apBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Appearance settings"><span class="aalbl">Aa</span></button>
-    <div class="pop" id="apPop" role="dialog" aria-label="Appearance settings">
-      <h4>Theme</h4>
-      <div class="swatches" id="swatches">
-        <button class="sw" data-set-theme="void"><i style="background:#0b0b14"></i>Void</button>
-        <button class="sw" data-set-theme="sepia"><i style="background:#f3ead8"></i>Sepia</button>
-        <button class="sw" data-set-theme="dawn"><i style="background:#f6f7fb"></i>Dawn</button>
-      </div>
-      <h4>Text size</h4>
-      <div class="step">
-        <button id="szDn" aria-label="Decrease text size">−</button>
-        <output id="szOut">18</output>
-        <button id="szUp" aria-label="Increase text size">+</button>
-      </div>
-      <h4>Typeface</h4>
-      <div class="seg" id="segFont">
-        <button data-v="serif">Serif</button><button data-v="sans">Sans</button>
-      </div>
-      <h4>Line width</h4>
-      <div class="seg" id="segW">
-        <button data-v="n">Normal</button><button data-v="w">Wide</button>
-      </div>
-    </div>
+  <div class="hud-r">
+    <div class="metric" title="session time"><i>T+</i><b id="m-time">00:00</b></div>
+    <div class="metric" title="archive depth — unique chapters touched"><i>DEPTH</i><b id="m-depth">0%</b></div>
+    <div class="metric" title="words absorbed"><i>WORDS</i><b id="m-read">0</b></div>
+    <div class="metric vx" title="reading velocity"><i>VX</i><canvas id="spark" width="64" height="18"></canvas></div>
+    <button class="hbtn" id="btn-palette" data-h title="search the archive [⌘K]" aria-label="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16.2 16.2 21 21"/></svg>
+    </button>
+    <button class="hbtn" id="btn-theme" data-h title="toggle ether light [T]" aria-label="toggle theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2z" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <button class="hbtn" id="btn-sound" data-h title="ambience [M]" aria-label="toggle sound">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 9.5v5h3.5L12 18V6L7.5 9.5H4z" fill="currentColor" stroke="none"/><path class="wav" d="M15.5 9a4.4 4.4 0 0 1 0 6"/><path class="wav" d="M18 6.6a8 8 0 0 1 0 10.8"/><path class="slash" d="M4 4l16 16"/></svg>
+    </button>
   </div>
+  <div id="prog"></div>
 </header>
 
-<div class="shell">
-  <aside class="sidebar" id="sidebar" aria-label="Contents">
-    <div class="sb-head">
-      <span class="toc-group" style="margin:0">Index</span>
-      <button class="ibtn sb-close" id="sbClose" aria-label="Close contents">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
+<main>
+  <!-- ══ NEXUS ══ -->
+  <section id="view-nexus" class="view" aria-label="quantum node graph">
+    <div class="nx-head">
+      <h1 class="nx-title glitch" data-t="THE VOIDHEART NEXUS">THE VOIDHEART NEXUS</h1>
+      <p class="nx-sub">ten chapters · forty codex threads · one impossible hybrid</p>
     </div>
-    <nav id="toc" aria-label="Table of contents"></nav>
-    <div class="keys">
-      <kbd>/</kbd>&nbsp; search&nbsp;&nbsp;<kbd>←</kbd><kbd>→</kbd>&nbsp; previous / next<br>
-      <kbd>Esc</kbd>&nbsp; close panels &amp; clear search
+    <div id="ret-x"></div><div id="ret-y"></div><div id="ret-c">x:0 · y:0</div>
+    <aside id="nx-card" class="glass chroma">
+      <div class="nc-type" id="nc-type">STANDBY</div>
+      <div class="nc-name" id="nc-name">AWAITING OPERATOR</div>
+      <div class="nc-meta" id="nc-meta">the archive is listening. hover a node to inspect its thread.</div>
+      <div class="nc-hint">CLICK NODE TO OPEN ↵</div>
+    </aside>
+    <div class="nx-legend glass">
+      <span><i class="lg lg-ch"></i>CHAPTER</span>
+      <span><i class="lg lg-cx"></i>CODEX</span>
+      <span><i class="lg lg-core"></i>CORE</span>
     </div>
-  </aside>
-  <div id="scrim" aria-hidden="true"></div>
-  <main class="main">
-    <article id="reader" data-font="serif">
-      <noscript><p style="color:var(--muted)">This reader requires JavaScript to render the archive.</p></noscript>
-    </article>
-  </main>
+    <div class="nx-keys">[⌘K] SEARCH · [1–0] CHAPTERS · [T] ETHER · [ESC] RETURN</div>
+  </section>
+
+  <!-- ══ READER ══ -->
+  <section id="view-reader" class="view" aria-label="chapter reader">
+    <div id="reader-scroll">
+      <article id="chapter-art">
+        <header class="ch-head">
+          <div class="ch-kicker"><span id="ch-num">CH·I</span><span class="sep">／</span><span>X TRANSMISSIONS</span></div>
+          <h2 id="ch-title"></h2>
+          <p id="ch-sub"></p>
+          <div class="ch-meta" id="ch-meta"></div>
+        </header>
+        <div id="ch-body"></div>
+        <div id="ch-note" hidden></div>
+        <nav class="ch-nav">
+          <button id="prev-ch" data-h>◂ PREV</button>
+          <button id="to-nexus" data-h>◈ NEXUS</button>
+          <button id="next-ch" data-h>NEXT ▸</button>
+        </nav>
+        <div id="teaser" class="teaser glass" data-h hidden></div>
+        <p class="rd-hint">[ [ ] ] TYPE SCALE · [←→] CHAPTERS · [ESC] NEXUS</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ CODEX ══ -->
+  <section id="view-codex" class="view" aria-label="lore codex">
+    <div id="codex-scroll">
+      <header class="cx-head">
+        <h2>LORE CODEX</h2>
+        <p class="cx-sub">matrix of threads — every name remembers its chapters</p>
+        <div class="cx-filters" id="cx-filters"></div>
+      </header>
+      <div id="cx-grid"></div>
+    </div>
+  </section>
+</main>
+
+<nav id="dock" class="glass chroma" aria-label="navigation dock">
+  <button class="dk on" id="dk-nexus" data-h><i>◈</i><span>NEXUS</span></button>
+  <button class="dk" id="dk-codex" data-h><i>▤</i><span>CODEX</span></button>
+  <div id="radial"><button id="rad-orb" data-h aria-label="chapter launcher"><span>✦</span></button></div>
+  <button class="dk" id="dk-reader" data-h><i>▸</i><span id="dk-reader-lbl">READER</span></button>
+</nav>
+
+<footer id="ticker"><span class="tk-dot"></span><span id="tk-txt">establishing link…</span></footer>
+
+<div id="tip" class="glass" hidden>
+  <div class="tp-t" id="tp-t"></div>
+  <div class="tp-n" id="tp-n"></div>
+  <div class="tp-m" id="tp-m"></div>
 </div>
+
+<div id="palette" class="glass chroma" role="dialog" aria-label="command palette">
+  <div class="pal-in"><span class="pal-ic">⌕</span>
+    <input id="pal-q" placeholder="query the archive — chapters, codex, concepts…" autocomplete="off" spellcheck="false">
+    <kbd>ESC</kbd>
+  </div>
+  <div id="pal-res"></div>
+  <div class="pal-ft"><span>↑↓ NAVIGATE</span><span>↵ OPEN</span><span id="pal-count"></span></div>
+</div>
+
+<div id="toast" class="glass"></div>
+<div id="wipe"></div>
+
+<div id="boot">
+  <pre id="boot-log"></pre>
+  <div id="boot-enter">
+    <div class="bt-sigil">✦</div>
+    <button id="btn-enter" data-h>ENTER THE NEXUS</button>
+    <p class="bt-note">AUDIO WILL AWAKEN — HEADPHONES RECOMMENDED</p>
+  </div>
+</div>
+
+<div id="cursor"><div id="cur-ring"></div><div id="cur-dot"></div></div>
+
+<noscript><p style="position:fixed;inset:0;display:grid;place-items:center;background:#030508;color:#d6deee;font-family:monospace;z-index:99">This artifact requires JavaScript to wake the Void.</p></noscript>
 
 <script>
 'use strict';
-/* ================================================================
-   EMBEDDED ARCHIVE — complete chapters & lore as structured state
-   ================================================================ */
+/* ═══════════════════════════ UTILITIES ═══════════════════════════ */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), lerp=(a,b,t)=>a+(b-a)*t;
+const rand=(a,b)=>a+Math.random()*(b-a);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const escRe=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const fmtN=n=>n.toLocaleString('en-US');
+const MOTION=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE=matchMedia('(pointer:fine)').matches;
+
+const STATE={view:'nexus',theme:'void',sound:true,booted:false,ch:null,hl:[],
+  visited:new Set(),lastCh:null,radial:false,pal:false,palSel:0,palItems:[],fs:17.5};
+try{const v=JSON.parse(localStorage.getItem('vh.visited')||'[]');v.forEach(i=>STATE.visited.add(i));}catch(e){}
+const persist=()=>{try{localStorage.setItem('vh.visited',JSON.stringify([...STATE.visited]));}catch(e){}};
+
+/* ═══════════════════════════ DATA — CHAPTERS (verbatim) ═══════════════════════════ */
+const ROM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 const CHAPTERS=[
-{id:'ch1',num:1,title:'Shelter-7',subtitle:'The rain was never real.',
-epigraph:`In the beginning, there were gods. But the gods broke.
+{n:1,title:'FRACTURE POINT',sub:'the rain that wasn’t real',hue:196,tags:['shelter-7','aurora starblade','un-making'],text:`In the beginning, there were gods. But the gods broke.
 
 Some held to their purity, becoming the cold, radiant Lights. Others fell, consumed by the dark energy of the Void... they became the Voidans.
 
@@ -292,8 +492,11 @@ From the chaos, an impossibility was born. A child of both worlds. Half Voidan. 
 
 His name is Jinwah Voidheart.
 
-Some see a key. Others, a catastrophe. But no one knows which side he will choose... Or if he will choose his own.`,
-content:`The rain over Shelter-7 wasn’t real. It fell in perfect intervals, a digital simulation piped through cracked domes, programmed to remind mortals what storms used to feel like. Still, it made the under-market smell of ozone and damp metal, the scent of life pretending not to be synthetic.
+Some see a key. Others, a catastrophe. But no one knows which side he will choose... Or if he will choose his own.
+
+Chapter One
+
+The rain over Shelter-7 wasn’t real. It fell in perfect intervals, a digital simulation piped through cracked domes, programmed to remind mortals what storms used to feel like. Still, it made the under-market smell of ozone and damp metal, the scent of life pretending not to be synthetic.
 
 Holographic carp swam through the air above the stalls, their translucent scales flickering between advertisement scripts for recycled tech and vat-grown noodles. Beneath that shifting light, Jinwah Voidheart kept his head down, hood drawn low, another ghost moving through the press of bodies.
 
@@ -395,8 +598,7 @@ He looked at his trembling hands—human again, yet stained by something infinit
 
 End of Chapter One`},
 
-{id:'ch2',num:2,title:'The Envoy & the Ossuary',subtitle:'An envoy in the dark; a door made of bone.',
-content:`The envoy’s face remained a cavern of shadow beneath his hood, but his presence was heavy, a gravitational pull that made the oxygen in the station feel thin.
+{n:2,title:'THE THROAT OF THE WORLD',sub:'negotiated, not born',hue:264,tags:['the envoy','shadow-skiff','vesper'],text:`The envoy’s face remained a cavern of shadow beneath his hood, but his presence was heavy, a gravitational pull that made the oxygen in the station feel thin.
 
 Jinwah didn't move. His hands were shaking—not from the cold, but from the phantom sensation of the market stalls dissolving under his touch. The "sweetness" he’d spent twenty years cultivating felt like a shattered porcelain mask.
 
@@ -456,8 +658,7 @@ Vesper’s expression softened, just a fraction. It wasn't kindness—it was rec
 
 She turned and began walking into the heart of the bone-city. Jinwah looked back at the Skiff, then at his hands. He took a breath, adjusted his hood, and followed her into the dark.`},
 
-{id:'ch3',num:3,title:'The Bone-Chorale',subtitle:'Where the Void learns your name.',
-content:`If the shelters were a lie told in neon and pixels, the Ossuary was a truth written in calcium and shadow.
+{n:3,title:'THE OSSUARY',sub:'architecture of bone',hue:276,tags:['rib-gate','bone-chorale','liquid shadow'],text:`If the shelters were a lie told in neon and pixels, the Ossuary was a truth written in calcium and shadow.
 
 As Jinwah followed Vesper Blackwood deeper into the subterranean throat of the world, the air changed. It lost the artificial ozone crispness of Shelter-7’s recycled atmosphere. Here, it tasted of ancient dust, cold minerals, and a faint, metallic tang that Jinwah realized, with a shiver, was the scent of dried blood and old magic.
 
@@ -515,8 +716,7 @@ The obsidian doors began to grind open, and a wave of absolute, terrifying silen
 
 End of Chapter Three`},
 
-{id:'ch4',num:4,title:'The Empress of Death',subtitle:'Two futures, and the thread that breaks them.',
-content:`The silence behind the obsidian doors wasn’t the absence of sound; it was the presence of something so vast that sound died in its wake.
+{n:4,title:'TWIN ECLIPSES',sub:'she dreamed of your heartbeat',hue:290,tags:['the empress','three visions','third path'],text:`The silence behind the obsidian doors wasn’t the absence of sound; it was the presence of something so vast that sound died in its wake.
 
 As the doors ground shut behind Jinwah, the Bone-Chorale of the outer city vanished. He was left in a chamber of absolute, velvety darkness, broken only by a single, vertical sliver of violet light that seemed to fall from infinity.
 
@@ -568,12 +768,9 @@ He didn't know how to be a god or a monster. But he knew how to fix things.
 
 "What happens if I fail?" he asked.
 
-The Empress turned away, her silhouette merging back into the shadows. "Then the Third Path closes, and the world chooses for you. And trust me, Jinwah... the world is not as humane as you are."
+The Empress turned away, her silhouette merging back into the shadows. "Then the Third Path closes, and the world chooses for you. And trust me, Jinwah... the world is not as humane as you are."`},
 
-End of Chapter Four`},
-
-{id:'ch5',num:5,title:'The Unmaking Run',subtitle:'The technician erupts.',
-content:`"I don't want your paths."
+{n:5,title:'ERUPTION',sub:'the boy who said no',hue:24,tags:['eruption','grey zones','the ruins'],text:`"I don't want your paths."
 
 Jinwah’s voice was small, but it cut through the heavy silence of the Empress’s chamber like a blade. He was shaking, his hands balled into fists so tight his knuckles were white.
 
@@ -635,12 +832,9 @@ He looked at his hands, now just normal, human hands covered in dirt.
 
 "I'm human," he whispered to the silence, as if trying to convince the ruins. "I'm still human."
 
-But deep in his marrow, the Void was still humming, waiting for him to wake up.
+But deep in his marrow, the Void was still humming, waiting for him to wake up.`},
 
-End of Chapter Five`},
-
-{id:'ch6',num:6,title:'The Bridge',subtitle:'A vault beneath the moss; a legend half-erased.',
-content:`The ruins were cold, but for the first time in his life, Jinwah felt a strange sense of safety. There were no white-robed Disciples here, and no terrifying Empress. There was only the sound of the wind whistling through the hollow stone of the old cathedral.
+{n:6,title:'THE BRIDGE PROTOCOL',sub:'the truth under the hatch',hue:172,tags:['buried vault','the bridge','defection'],text:`The ruins were cold, but for the first time in his life, Jinwah felt a strange sense of safety. There were no white-robed Disciples here, and no terrifying Empress. There was only the sound of the wind whistling through the hollow stone of the old cathedral.
 
 As he explored the collapsed archway, Jinwah’s foot caught on a metal ring in the floor. He cleared away the dirt and moss to find a heavy, reinforced hatch. It wasn't made of divine gold or Void-bone; it was made of thick, human steel.
 
@@ -686,8 +880,7 @@ For the first time since leaving Shelter-7, Jinwah Voidheart didn't feel like a 
 
 End of Chapter Six`},
 
-{id:'ch7',num:7,title:'The Court Divided',subtitle:'The court that dreams of war.',
-content:`The Inner Circle of the Ossuary still smelled of burnt ozone and pulverized obsidian. The doors that Jinwah had disintegrated were gone, replaced by a shimmering, unstable veil of violet energy.
+{n:7,title:'COURT OF SHADOWS',sub:'the only one who talks to goddesses',hue:322,tags:['inner circle','reo',"vesper's gambit"],text:`The Inner Circle of the Ossuary still smelled of burnt ozone and pulverized obsidian. The doors that Jinwah had disintegrated were gone, replaced by a shimmering, unstable veil of violet energy.
 
 The Empress of Death stood in the center of the wreckage, her silhouette dark and motionless. Opposite her stood the heavy hitters of her army—the ones who hadn't been present to witness the "humane" technician turn into a cosmic supernova.
 
@@ -741,8 +934,7 @@ With a shimmer of her robes, Vesper vanished into the dark, leaving the Empress 
 
 End of Chapter Seven`},
 
-{id:'ch8',num:8,title:'The Iron Hall',subtitle:'Generals of the dark convene.',
-content:`Reo Deathstroke didn’t follow Jinwah into the ruins. Not yet. Instead, he marched into the Iron Hall, a place where the air was thick with the smell of scorched metal and old blood. This was the true heart of the Void world. While the Empress stayed in her tower dreaming of prophecies, these were the people who actually commanded the legions.
+{n:8,title:'THE IRON HALL',sub:'where wars are actually run',hue:356,tags:['iron hall','six generals','war council'],text:`Reo Deathstroke didn't follow Jinwah into the ruins. Not yet. Instead, he marched into the Iron Hall, a place where the air was thick with the smell of scorched metal and old blood. This was the true heart of the Void world. While the Empress stayed in her tower dreaming of prophecies, these were the people who actually commanded the legions.
 
 In this room, the Empress was called a "fanny woman"—a crazy dreamer who had gone soft. Without Vesper Blackwood around to listen, the talk was even meaner. They saw Vesper as a "snitch" and a "bootlicker," a girl who only stayed important because she acted like the Empress’s personal assistant. Ever since DÈÆ.TH vanished, they believed Vesper had been sucking up to the Empress just to keep a seat at the table.
 
@@ -772,10 +964,11 @@ The argument went on for hours. They discussed the political power they held—h
 
 "Let the fanny woman dream," Reo finally said, standing up. "We are the ones who fight. Gorthok and I will lead the hunt. If the technician is as 'average' as I think, I’ll let Gorthok sit on him. If he’s actually 'OP'... then I’ll show him what it’s like to fight a real god."
 
-Lumina sighed, looking a little sad for Jinwah, but she stood up with the others. The council was decided. They were going to the ruins, and they weren't going there to talk. They were going there to prove that in a world of gods and monsters, a human heart was just a target.`},
+Lumina sighed, looking a little sad for Jinwah, but she stood up with the others. The council was decided. They were going to the ruins, and they weren't going there to talk. They were going there to prove that in a world of gods and monsters, a human heart was just a target.
 
-{id:'ch9',num:9,title:'The Palace of Noon',subtitle:'Six streaks of gold across the sky.',
-content:`While the Voidan Generals plotted in their dark halls, the High City of Caelum remained a place of eternal, golden peace. There were no shadows here, only white marble and the scent of fresh lilies. This was the home of the Lights—the gods who chose to stay "pure" and separated themselves from the world.
+End of Chapter Eight`},
+
+{n:9,title:'PALACE OF NOON',sub:'capture him with love',hue:44,tags:['palace of noon','disciples','golden cage'],text:`While the Voidan Generals plotted in their dark halls, the High City of Caelum remained a place of eternal, golden peace. There were no shadows here, only white marble and the scent of fresh lilies. This was the home of the Lights—the gods who chose to stay "pure" and separated themselves from the world.
 
 At the highest point of the city sat the Palace of Noon. Inside, seated on a throne of woven sunbeams, was Lightspeed. She was the Holy Mother of Light. She was not a queen; she was a sacred figure of peace. She was a vision of blinding beauty, with golden hair that reached the floor and eyes that glowed like stars. She spoke with a voice that was soft and kind, like a mother talking to a child, but her word was the absolute law.
 
@@ -811,10 +1004,11 @@ The Disciples truly believed they were the "good guys." They didn't want to hurt
 
 "Go, my Disciples," the Holy Mother said, her radiant glow filling the palace. "Find Jinwah Voidheart. Bring him back to me. Tell him his struggle is over. Tell him the Light is coming to take him home."
 
-The six Disciples turned and flew out of the palace, looking like six streaks of gold across the sky. They were heading for the ruins, and they were bringing a "peace" that was just as dangerous as any war.`},
+The six Disciples turned and flew out of the palace, looking like six streaks of gold across the sky. They were heading for the ruins, and they were bringing a "peace" that was just as dangerous as any war.
 
-{id:'ch10',num:10,title:'What Elara Knew',subtitle:'The woman who knew him best.',
-content:`Back in the smog-choked tunnels of Shelter-7, the market was a graveyard of broken dreams and scorched metal. The "Holy Light" of the Disciples had faded, leaving behind only the dim, flickering neon of a world that was trying to reboot itself.
+End of Chapter Nine`},
+
+{n:10,title:'WHAT ELARA SAW',sub:'the most dangerous thing about him',hue:206,tags:['elara','aftermath','the heart'],text:`Back in the smog-choked tunnels of Shelter-7, the market was a graveyard of broken dreams and scorched metal. The "Holy Light" of the Disciples had faded, leaving behind only the dim, flickering neon of a world that was trying to reboot itself.
 
 Elara sat on a crate in the middle of her ruined stall. Her glass eye whirred in a jagged, broken rhythm, unable to focus on the piles of melted data chips and shattered power converters. But her mind was focused on something else. She was thinking about the boy.
 
@@ -852,338 +1046,199 @@ Jinwah Voidheart was a ghost now—a memory of a kind boy that had been swallowe
 
 It was his heart.
 
-End of Chapter Ten`}
+End of Chapter Ten`,
+note:'<Yh the end till limah employs me 🫩>'}
 ];
+CHAPTERS.forEach(c=>{c.wc=c.text.trim().split(/\s+/).length;c.min=Math.max(1,Math.round(c.wc/230));});
 
-const LORE=[
-{id:'lore-empress',title:'The Court of the Empress of Death',tag:'Faction · The Infinite Archive',
-content:`Located in the "Infinite Archive," the Court of Death is not a place of punishment, but a place of memory. The Empress herself is an ancient entity who keeps the records of every soul that has ever passed. She views the "Third Path" prophecy not as a religious event, but as a disruption to her records that must be corrected. Her heralds travel through the shadows, wearing silks dyed in the color of dried blood.`},
-
-{id:'lore-jinwah',title:'Jinwah: The Voidheart',tag:'Character · The Hybrid',
-content:`Born of a forbidden union between a High Priestess of the Light Disciples and a rogue Void-Walker, Jinwah exists as a living contradiction. They possess the "Voidheart"—a rare metaphysical core that can absorb both blinding light and absolute darkness.
-
-While the factions see Jinwah as a weapon to be claimed or a mistake to be erased, Jinwah seeks "The Third Path," a legendary state of balance that could stop the cosmic war. Jinwah’s physical appearance shifts depending on their emotional state: their eyes glow with a cyan void-light when calm, but spark with volatile golden embers when pushed to the brink of survival.`},
-
-{id:'lore-ossuary',title:'The Voidan Ossuary',tag:'Faction · Monastic Order',
-content:`A monastic order of "Void-Walkers" who believe that the universe was born from a silent scream. They do not worship death, but rather the "Perfect Stillness" that comes after it. Their architecture is made of bone-white stone that never reflects light. They were the first to identify Jinwah as the "Voidheart"—the bridge between the living world and the eternal silence.`}
+/* ═══════════════════════════ DATA — CODEX (39 threads) ═══════════════════════════ */
+const TYPE={ENT:'ENTITY',FAC:'FACTION',LOC:'LOCUS',CON:'CONCEPT'};
+const CODEX=[
+{id:'jinwah',t:'ENT',g:'✦',name:'Jinwah Voidheart',src:'lore//Jinwah.txt',refs:[1,2,3,4,5,6,7,8,9,10],al:['Jinwah','Voidheart'],
+ desc:'Born of a forbidden union between a High Priestess of the Light and a rogue Void-Walker. A living contradiction: the Voidheart core absorbs both blinding light and absolute darkness. Eyes burn cyan when calm, spark golden at the brink. Neither faction’s asset — the only truly free thread in the weave.',
+ frag:'They possess the "Voidheart"—a rare metaphysical core that can absorb both blinding light and absolute darkness. While the factions see Jinwah as a weapon to be claimed or a mistake to be erased, Jinwah seeks "The Third Path," a legendary state of balance that could stop the cosmic war.'},
+{id:'deat',t:'ENT',g:'☉',name:'DÈÆ.TH',src:'compiled',refs:[1,2,3,4,6,7,8],al:['DÈÆ.TH','DEÆ.TH'],
+ desc:'The name that predates the fracture. First god to embrace the Void — not fallen, but turned. To the Voidans he is not a god; he is the god. Now vanished, leaving an empty throne and a friend who still waits.'},
+{id:'empress',t:'ENT',g:'☾',name:'The Empress of Death',src:'lore//Empress.txt',refs:[1,2,3,4,5,7],al:['Empress'],
+ desc:'She walked beside DÈÆ.TH when the world was young; she saw the first god break. Eclipse eyes ringed in white fire. She dreamed of Jinwah’s heartbeat for twenty years — and saw a third path where fate showed only two.',
+ frag:'Located in the "Infinite Archive," the Court of Death is not a place of punishment, but a place of memory. The Empress herself is an ancient entity who keeps the records of every soul that has ever passed. She views the "Third Path" prophecy not as a religious event, but as a disruption to her records that must be corrected. Her heralds travel through the shadows, wearing silks dyed in the color of dried blood.'},
+{id:'aurora',t:'ENT',g:'⚔',name:'Aurora Starblade',src:'compiled',refs:[1,9],al:['Aurora Starblade','Aurora'],
+ desc:'Disciple of RESURRECTION. Hair like molten fire, grace weaponized, blade forged of starlight. She named him ‘asset’ with a pitying smile — and learned terror when reality folded around her shield.'},
+{id:'vesper',t:'ENT',g:'❖',name:'Vesper Blackwood',src:'compiled',refs:[2,3,7],al:['Vesper Blackwood','Vesper'],
+ desc:'Light-bending scout of the Ossuary; velvet voice over gravel. The only soul alive who treats a goddess like a person — and the boy like a mystery worth keeping alive.'},
+{id:'reo',t:'ENT',g:'▲',name:'Reo Deathstroke',src:'compiled',refs:[6,7,8],al:['Reo Deathstroke','Reo'],
+ desc:'Volcanic skin, jagged Void-blade, contempt for prophecy. Commander of the Iron Hall’s hard line: why breed legends when you can bury enemies?'},
+{id:'gorthok',t:'ENT',g:'⬢',name:'Gorthok the Unyielding',src:'compiled',refs:[7,8],al:['Gorthok'],
+ desc:'Reo’s shadow and hammer. A mountain of grey scar-muscle whose rare words land like rockslides. Believes the boy is scrap metal awaiting disposal.'},
+{id:'khaos',t:'ENT',g:'◉',name:'Khaos Nightshade',src:'compiled',refs:[8],al:['Khaos Nightshade','Khaos'],
+ desc:'Dark goddess of gravity; porcelain cruelty wrapped in a dress of living smoke. A wave of her hand turns soldiers into meat-dust.'},
+{id:'arachne',t:'ENT',g:'✶',name:'Arachne Darkweaver',src:'compiled',refs:[8],al:['Arachne Darkweaver','Arachne'],
+ desc:'Silver-haired illusionist. Her silks promise heaven; her webs trap minds until they beg for the exit that isn’t there.'},
+{id:'lumina',t:'ENT',g:'❄',name:'Lumina Frostbite',src:'compiled',refs:[8],al:['Lumina Frostbite','Lumina'],
+ desc:'Ice warrior with a bubbly grin and a blood-freezing touch. The only general who sculpted a flower mid-war-council — and meant it kindly.'},
+{id:'xandros',t:'ENT',g:'†',name:'Xandros Shadowreaver',src:'compiled',refs:[8],al:['Xandros Shadowreaver','Xandros'],
+ desc:'The necromancer. Every corpse the war produces joins his silent legion. The reason the Void never loses a battle — it only buries one.'},
+{id:'glint',t:'ENT',g:'☀',name:'Glint',src:'compiled',refs:[9],al:['Glint'],
+ desc:'Charisma Leader of the Disciples. His Shiny Charisma pours warmth into chests and certainty into heads. Leads crusades with a smile you want to trust.'},
+{id:'nova',t:'ENT',g:'◇',name:'Nova Spire',src:'compiled',refs:[9],al:['Nova Spire'],
+ desc:'Manipulator of metals and air. Architect of the floating palaces; designer of the gentle pressure that holds hybrids like flies in amber.'},
+{id:'aetheria',t:'ENT',g:'»',name:'Windrunner Aetheria',src:'compiled',refs:[9],al:['Windrunner Aetheria','Aetheria'],
+ desc:'Scout beyond sight. A streak of white on the horizon means you have already been found.'},
+{id:'helios',t:'ENT',g:'✸',name:'Helios Firestorm',src:'compiled',refs:[9],al:['Helios Firestorm','Helios'],
+ desc:'Pyromancer of holy fire. Does not burn to harm — burns to wash. Cleansing, he insists, is an act of love.'},
+{id:'quickblade',t:'ENT',g:'⚡',name:'Quickblade',src:'compiled',refs:[9],al:['Quickblade'],
+ desc:'Lightning-fast swordsman. A hundred cuts arrive before your breath decides to leave.'},
+{id:'lightspeed',t:'ENT',g:'♛',name:'Lightspeed, Holy Mother of Light',src:'compiled',refs:[9],al:['Lightspeed','Holy Mother'],
+ desc:'Throned on woven sunbeams in the Palace of Noon. Voice like a lullaby; law like gravity. She wants Jinwah captured with love — in a garden with invisible bars.'},
+{id:'elara',t:'ENT',g:'✿',name:'Elara',src:'compiled',refs:[1,10],al:['Elara'],
+ desc:'One organic eye, one whirring glass one. Sold converters, raised a ghost, and could not choose between the son she loved and the god she feared. She walked into the lower levels rather than decide.'},
+{id:'envoy',t:'ENT',g:'◌',name:'The Hooded Envoy',src:'compiled',refs:[1,2],al:['envoy'],
+ desc:'Robes of smoke and obsidian. No reflection in puddles; no signature in any sense. Speaks for the one who saw Jinwah when the gods did not.'},
+{id:'lights',t:'FAC',g:'△',name:'The Lights',src:'compiled',refs:[1,2,6,9],al:['The Lights','Lights'],
+ desc:'Gods who held purity when the world broke. Eternal noon, sterile radiance, a bloodline that cannot reproduce — which makes the last hybrid their most precious asset. Their love is a cage gilded on every side.'},
+{id:'voidans',t:'FAC',g:'▽',name:'The Voidans',src:'compiled',refs:[1,2,3,7,8],al:['Voidans','Voidan'],
+ desc:'Gods infected by the Void’s arriving dark — changed in body and mind, then exiled by the pure. Grim, scarred, diverse; they speak in vibrations felt in marrow. They do not worship death. They wait for reunion.'},
+{id:'disciples',t:'FAC',g:'✚',name:'Disciples of RESURRECTION',src:'compiled',refs:[1,9],al:['Disciples of RESURRECTION','Disciples','RESURRECTION'],
+ desc:'Angelic zealots: polite, beautiful, certain. They descend on shelters in shafts of merciless light, kneeling crowds below, believing to the last that they are the heroes of this story.'},
+{id:'ironhall',t:'FAC',g:'⚒',name:'The Iron Hall',src:'compiled',refs:[7,8],al:['Iron Hall'],
+ desc:'Where the Voidan legions actually answer. Generals of gravity, frost, illusion, speed and death. Here the Empress is called a dreamer, Vesper a snitch — and strategy means ‘keep killing.’'},
+{id:'ossuary',t:'FAC',g:'▩',name:'The Voidan Ossuary',src:'lore//Ossuary.txt',refs:[2,3,7,8],al:['Ossuary'],
+ desc:'Stronghold and order both. The first to identify Jinwah as the bridge between the living world and the eternal silence.',
+ frag:'A monastic order of "Void-Walkers" who believe that the universe was born from a silent scream. They do not worship death, but rather the "Perfect Stillness" that comes after it. Their architecture is made of bone-white stone that never reflects light.'},
+{id:'shelter7',t:'LOC',g:'⌂',name:'Shelter-7',src:'compiled',refs:[1,2,10],al:['Shelter-7'],
+ desc:'Digital rain in perfect intervals, piped through cracked domes so mortals remember storms. Under-market of ozone, holographic carp and vat noodles. Twenty years of Jinwah’s life — erased in one shaft of light.'},
+{id:'greyzones',t:'LOC',g:'≈',name:'The Grey Zones',src:'compiled',refs:[2,5,6],al:['Grey Zones'],
+ desc:'Industrial twilight of rust and acidic mist; canyons deep enough to hide a skiff from god-swept skies. The throat of the world.'},
+{id:'caelum',t:'LOC',g:'✧',name:'The High Cities — Caelum',src:'compiled',refs:[2,5,6,9],al:['Caelum','High Cities'],
+ desc:'Eternal noon, marble and lilies, spires glittering far above the smog. Home of the Lights — and of the air-lock sanctuaries where treasures are kept ‘safe.’'},
+{id:'ruins',t:'LOC',g:'⌗',name:'The Cathedral Ruins',src:'compiled',refs:[5,6],al:['ruins','cathedral'],
+ desc:'Old-human bones: snapped spires, moss-stained glass, faceless kings toppled by acid rain. Beneath the collapsed arch, a steel hatch guards the truth both factions buried.'},
+{id:'archive',t:'LOC',g:'▤',name:'The Infinite Archive',src:'compiled',refs:[4],al:['Infinite Archive'],
+ desc:'The Court of Death: not punishment but memory. Every soul ever passed, recorded. The Empress reads the Third Path not as prophecy but as a disruption to her catalog — one she intends to correct.'},
+{id:'noon',t:'LOC',g:'◐',name:'Palace of Noon',src:'compiled',refs:[9],al:['Palace of Noon'],
+ desc:'Throne hall of woven sunbeams atop Caelum. Where failure kneels in shame and crusades launch as six streaks of gold across the sky.'},
+{id:'void',t:'CON',g:'∅',name:'The Void',src:'compiled',refs:[1,3,4,5,6],al:['the Void'],
+ desc:'Not a god: a cosmic virus from deep space that infects power itself. It attached to the strongest gods first. It does not hate Jinwah — it wants reunion. Homeostasis.'},
+{id:'strain',t:'CON',g:'✺',name:'The Void Strain',src:'compiled',refs:[1,2,3,5],al:['Void strain'],
+ desc:'The curse that should have killed him. Branching circuitry under the skin; a tuning fork finding its match near liquid shadow. Pain, then crown.'},
+{id:'bridge',t:'CON',g:'⊕',name:'The Bridge',src:'compiled',refs:[1,2,4,6],al:['bridge','Hybrid'],
+ desc:'Human flesh dies on contact with Void energy; Voidans lose kindness. Legend says the hybrid alone holds full Void power with a human heart intact. The machine’s recording ends where the instructions should begin — deleted or lost.'},
+{id:'thirdpath',t:'CON',g:'∴',name:'The Third Path',src:'compiled',refs:[4,5,7],al:['Third Path'],
+ desc:'Neither gilded brood-stallion nor second coming. A glitch in prophecy: violet static and flesh-tones where destiny should show a picture. Even the Empress cannot see it. That is what makes it free.'},
+{id:'fracture',t:'CON',g:'※',name:'The Fracture',src:'compiled',refs:[1,6],al:['fracture','the Split'],
+ desc:'When gods broke, they chose sides and tore reality apart. Humans inherited the ashes, the shelters, and skies where their makers still fight overhead.'},
+{id:'unmake',t:'CON',g:'⊘',name:'Un-Making',src:'compiled',refs:[1,5,8],al:['un-making','un-made'],
+ desc:'No explosion. No fire. Absence. Molecules forget how to exist; light folds inward; stalls collapse silently. Jinwah doesn’t attack — he denies.'},
+{id:'chorale',t:'CON',g:'≋',name:'The Bone-Chorale',src:'compiled',refs:[3],al:['Bone-Chorale','Chorale'],
+ desc:'A million whispers in the Ossuary walls — not words but intentions: hunger, grief, ancient cold fury. Newcomers think they’re going deaf. Veterans call it home learning your name.'},
+{id:'rain',t:'CON',g:'∷',name:'Digital Rain',src:'compiled',refs:[1],al:['rain'],
+ desc:'Programmed weather in perfect intervals. It froze mid-fall when the Light breached Shelter-7 — suspended pixels trembling before vanishing. Real rain, when it finally came, was acid.'},
+{id:'skiff',t:'CON',g:'▷',name:'Shadow-Skiff',src:'compiled',refs:[2],al:['Shadow-Skiff','Skiff'],
+ desc:'Low-profile transport humming at a frequency that aches in the teeth. Rides the waste-canyons beneath Council sky-beams. The quiet way into the dark.'}
 ];
+const TOTAL_WC=CHAPTERS.reduce((a,c)=>a+c.wc,0);
 
-/* ================================================================
-   APPLICATION STATE & HELPERS
-   ================================================================ */
-const ENTRIES=[
-  ...CHAPTERS.map(c=>({...c,kind:'chapter'})),
-  ...LORE.map(l=>({...l,kind:'lore'}))
-];
-const NAV=ENTRIES;
-const BY_ID=Object.fromEntries(ENTRIES.map(e=>[e.id,e]));
+/* ═══════════════════════════ FLAVOR DATA ═══════════════════════════ */
+const TICKER=['ossuary chorale: amplitude nominal','aurora vector: unresolved — rerouting','empress dream-thread: active · 20yr',
+'digital rain: rebooting in intervals','third path: undefined · thread free','void strain: humming at 52hz',
+'high cities: eternal noon detected','iron hall: ego mass exceeding load limits','shelter-7: ghosts in the neon',
+'archive integrity: 99.97%','hybrid heartbeat: two worlds · one drum','elara’s choice: pending','vesper signal: flickering · amused'];
+const BOOTLINES=[
+['> VOIDHEART KERNEL vΩ.3.7 — cold boot',''],
+['> mount /dev/soul ................. OK','ok'],
+['> hydrate ossuary archive ......... OK','ok'],
+['> index chapters [10] ............. OK','ok'],
+['> index codex threads [39] ........ OK','ok'],
+['> calibrate void strain ........... UNSTABLE','warn'],
+['> warn :: hybrid signature detected','warn'],
+['> establish nexus link ............ ',''],
+['> awaiting operator_','']];
 
-const state={
-  currentId:null,
-  query:'',
-  hl:'',
-  theme:'void',
-  size:18,
-  font:'serif',
-  width:'n'
-};
+/* ═══════════════════════════ AUDIO ENGINE (pure WebAudio) ═══════════════════════════ */
+const AUDIO={ctx:null,on:true,master:null,filter:null,bus:null,nbp:null,shim:null,voices:[],lastHov:0,
+init(){if(this.ctx)return;try{const AC=window.AudioContext||window.webkitAudioContext;this.ctx=new AC();}catch(e){return;}
+ const c=this.ctx;this.master=c.createGain();this.master.gain.value=0;
+ const comp=c.createDynamicsCompressor();this.master.connect(comp);comp.connect(c.destination);
+ this.filter=c.createBiquadFilter();this.filter.type='lowpass';this.filter.frequency.value=260;this.filter.Q.value=.6;
+ this.bus=c.createGain();this.bus.gain.value=.9;this.filter.connect(this.bus);this.bus.connect(this.master);
+ const defs=[['sine',48,.16],['sine',72.4,.085],['triangle',96.2,.05],['sine',144.8,.03]];
+ this.voices=defs.map(([t,f,g])=>{const o=c.createOscillator();o.type=t;o.frequency.value=f;
+  const vg=c.createGain();vg.gain.value=g;o.connect(vg);vg.connect(this.filter);o.start();return{o,f};});
+ const lfo=c.createOscillator();lfo.frequency.value=.05;const lg=c.createGain();lg.gain.value=110;
+ lfo.connect(lg);lg.connect(this.filter.frequency);lfo.start();
+ const lfo2=c.createOscillator();lfo2.frequency.value=.11;const lg2=c.createGain();lg2.gain.value=.07;
+ lfo2.connect(lg2);lg2.connect(this.bus.gain);lfo2.start();
+ const len=2*c.sampleRate,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);
+ for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+ const ns=c.createBufferSource();ns.buffer=buf;ns.loop=true;
+ this.nbp=c.createBiquadFilter();this.nbp.type='bandpass';this.nbp.frequency.value=420;this.nbp.Q.value=.7;
+ const ng=c.createGain();ng.gain.value=.02;ns.connect(this.nbp);this.nbp.connect(ng);ng.connect(this.master);ns.start();
+ const sh=c.createOscillator();sh.type='sine';sh.frequency.value=1174.66;
+ this.shim=c.createGain();this.shim.gain.value=0;sh.connect(this.shim);this.shim.connect(this.master);sh.start();
+ const tl=c.createOscillator();tl.frequency.value=4.2;const tg=c.createGain();tg.gain.value=0;
+ tl.connect(tg);tg.connect(this.shim.gain);tl.start();
+ this.setMode(STATE.theme,true);},
+setOn(v){this.on=v;if(!this.ctx)return;const t=this.ctx.currentTime;this.master.gain.cancelScheduledValues(t);
+ this.master.gain.setValueAtTime(this.master.gain.value,t);
+ this.master.gain.linearRampToValueAtTime(v?.7:0,t+(v?.6:.25));if(v)this.ctx.resume();else setTimeout(()=>{if(!this.on&&this.ctx)this.ctx.suspend();},350);},
+setMode(m,instant){if(!this.ctx)return;const t=this.ctx.currentTime+(instant?0:.05);
+ const r=(p,v)=>{p.cancelScheduledValues(t);p.setValueAtTime(Math.max(p.value,.001),t);p.exponentialRampToValueAtTime(Math.max(v,.001),t+1.4);};
+ const k=m==='ether'?1.4983:1/1.4983;
+ this.voices.forEach(v=>r(v.o.frequency,v.f*k));
+ r(this.filter.frequency,m==='ether'?850:260);r(this.nbp.frequency,m==='ether'?780:420);r(this.shim.gain,m==='ether'?.007:.0001);},
+blip(kind){if(!this.ctx||!this.on||!STATE.booted)return;const c=this.ctx,t=c.currentTime;
+ const now=performance.now();
+ if(kind==='hov'){if(now-this.lastHov<90)return;this.lastHov=now;}
+ const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(this.master);
+ if(kind==='hov'){o.type='triangle';o.frequency.value=1244;g.gain.setValueAtTime(.012,t);g.gain.exponentialRampToValueAtTime(.0001,t+.06);o.start(t);o.stop(t+.07);}
+ else if(kind==='ok'){o.type='sine';o.frequency.setValueAtTime(540,t);o.frequency.exponentialRampToValueAtTime(240,t+.12);g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.0001,t+.15);o.start(t);o.stop(t+.16);}
+ else if(kind==='tick'){o.type='square';o.frequency.value=1800;g.gain.setValueAtTime(.008,t);g.gain.exponentialRampToValueAtTime(.0001,t+.03);o.start(t);o.stop(t+.04);}
+ else if(kind==='err'){o.type='sawtooth';o.frequency.value=108;g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.0001,t+.2);o.start(t);o.stop(t+.22);}
+ else if(kind==='open'){[392,587.33].forEach((f,i)=>{const oo=c.createOscillator(),gg=c.createGain();oo.type='sine';
+  oo.frequency.value=f;oo.connect(gg);gg.connect(this.master);const tt=t+i*.08;
+  gg.gain.setValueAtTime(.0001,tt);gg.gain.linearRampToValueAtTime(.045,tt+.03);gg.gain.exponentialRampToValueAtTime(.0001,tt+.55);
+  oo.start(tt);oo.stop(tt+.6);});}},
+riser(){if(!this.ctx)return;const c=this.ctx,t=c.currentTime;
+ const o=c.createOscillator(),g=c.createGain();o.type='sawtooth';
+ o.frequency.setValueAtTime(70,t);o.frequency.exponentialRampToValueAtTime(720,t+.9);
+ g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.05,t+.5);g.gain.exponentialRampToValueAtTime(.0001,t+1);
+ o.connect(g);g.connect(this.master);o.start(t);o.stop(t+1.05);}};
 
-const $=s=>document.querySelector(s);
-const $$=s=>Array.from(document.querySelectorAll(s));
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const escRe=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-const pad=n=>String(n).padStart(2,'0');
-const wc=t=>t.split(/\s+/).filter(Boolean).length;
-const mins=w=>Math.max(1,Math.round(w/225));
-const paras=t=>t.split(/
-\s*
-/).map(p=>p.trim()).filter(Boolean);
-const countOcc=(h,q)=>h.split(q).length-1;
+/* ═══════════════════════════ THEME / WIPE / TOAST ═══════════════════════════ */
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');
+ clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2600);}
+function toggleTheme(ev){const next=STATE.theme==='void'?'ether':'void';
+ const x=ev&&ev.clientX?ev.clientX:innerWidth/2,y=ev&&ev.clientY?ev.clientY:innerHeight*.4;
+ const w=$('#wipe'),R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))+40;
+ w.style.background=next==='ether'?'#eef0f4':'#030508';
+ w.animate([{clipPath:`circle(0px at ${x}px ${y}px)`},{clipPath:`circle(${R}px at ${x}px ${y}px)`}],
+  {duration:MOTION?700:10,easing:'cubic-bezier(.65,0,.25,1)',fill:'forwards'});
+ document.documentElement.classList.add('theming');
+ setTimeout(()=>{document.documentElement.dataset.theme=next;STATE.theme=next;CANVAS.retarget();AUDIO.setMode(next);},MOTION?240:0);
+ setTimeout(()=>{w.animate([{opacity:1},{opacity:0}],{duration:420,fill:'forwards'});},MOTION?760:60);
+ setTimeout(()=>document.documentElement.classList.remove('theming'),1300);
+ AUDIO.blip('ok');}
 
-function hl(text){
-  const q=(state.hl||'').trim();
-  if(!q) return text;
-  try{return text.replace(new RegExp('('+escRe(q)+')','gi'),'<mark>$1</mark>');}
-  catch(_){return text;}
-}
-function excerpt(t,n=170){
-  const flat=t.replace(/\s+/g,' ').trim();
-  return flat.length>n?flat.slice(0,flat.lastIndexOf(' ',n))+'…':flat;
-}
-function snippetFor(e,q){
-  const hay=e.content.toLowerCase(),ql=q.toLowerCase();
-  const i=hay.indexOf(ql);
-  if(i<0) return excerpt(e.content,150);
-  const s=Math.max(0,i-55),en=Math.min(e.content.length,i+q.length+95);
-  return (s>0?'…':'')+e.content.slice(s,en).replace(/\s+/g,' ')+(en<e.content.length?'…':'');
-}
-function searchLib(q){
-  const ql=q.toLowerCase(),out=[];
-  for(const e of ENTRIES){
-    const hay=(e.title+' '+(e.tag||'')+' '+(e.subtitle||'')+' '+e.content).toLowerCase();
-    if(!hay.includes(ql))continue;
-    out.push({e,count:countOcc(hay,ql),snippet:snippetFor(e,q)});
-  }
-  return out;
-}
-
-/* ---------- persistence ---------- */
-const LS={theme:'vh-theme',size:'vh-size',font:'vh-font',width:'vh-width',last:'vh-last'};
-function savePref(k,v){try{localStorage.setItem(k,v);}catch(_){}}
-function readPref(k){try{return localStorage.getItem(k);}catch(_){return null;}}
-
-/* ---------- appearance ---------- */
-function applyPrefs(){
-  document.documentElement.dataset.theme=state.theme;
-  document.documentElement.style.setProperty('--reader-size',state.size+'px');
-  document.documentElement.style.setProperty('--measure',state.width==='w'?'82ch':'66ch');
-  $('#reader').dataset.font=state.font;
-  $('#szOut').textContent=state.size;
-  $$('#swatches .sw').forEach(b=>b.classList.toggle('on',b.dataset.setTheme===state.theme));
-  $$('#segFont button').forEach(b=>b.classList.toggle('on',b.dataset.v===state.font));
-  $$('#segW button').forEach(b=>b.classList.toggle('on',b.dataset.v===state.width));
-}
-
-/* ---------- sidebar / search ---------- */
-function tocItem(e){
-  const badge=e.kind==='chapter'?pad(e.num):'◈';
-  const sub=e.kind==='chapter'?'Chapter '+pad(e.num):(e.tag||'Lore');
-  return `<button class="toc-item" data-open="${e.id}" ${state.currentId===e.id?'aria-current="true"':''}>
-    <span class="toc-num">${badge}</span>
-    <span class="toc-title">${esc(e.title)}<span style="display:block;font-size:.68rem;color:var(--faint);letter-spacing:.06em">${esc(sub)}</span></span>
-  </button>`;
-}
-function renderTOC(){
-  const toc=$('#toc');
-  const q=state.query.trim();
-  if(!q){
-    toc.innerHTML=
-      `<span class="toc-group">Chapters · ${CHAPTERS.length}</span>`+
-      CHAPTERS.map(tocItem).join('')+
-      `<span class="toc-group">Lore Archive · ${LORE.length}</span>`+
-      LORE.map(tocItem).join('');
-  }else{
-    const res=searchLib(q);
-    toc.innerHTML=
-      `<span class="toc-group">Results · ${res.length}</span>`+
-      (res.length?res.map(r=>
-        `<button class="toc-item res" data-open="${r.e.id}" data-hl="${esc(q)}">
-          <span class="res-head">
-            <span class="toc-num">${r.e.kind==='chapter'?'CH·'+pad(r.e.num):'LORE'}</span>
-            <span class="toc-title">${esc(r.e.title)}</span>
-            <span class="res-count">${r.count}</span>
-          </span>
-          <span class="res-snippet">${hl(esc(r.snippet))}</span>
-        </button>`).join('')
-      :`<div class="empty">No matches for “${esc(q)}”.<br>Try a name — <em>Vesper</em>, <em>Aurora</em>, <em>Ossuary</em>, <em>Third Path</em>…</div>`);
-  }
-  updateActive();
-}
-function updateActive(){
-  $$('#toc .toc-item').forEach(b=>{
-    const on=b.dataset.open===state.currentId;
-    b.classList.toggle('active',on);
-    if(on)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
-  });
-}
-
-/* ---------- views ---------- */
-function metaChips(e){
-  const w=wc((e.epigraph||'')+' '+e.content),m=mins(w);
-  const chips=e.kind==='chapter'
-    ?[`Chapter ${pad(e.num)} / ${CHAPTERS.length}`,`${w.toLocaleString()} words`,`≈ ${m} min read`]
-    :[(e.tag||'Lore'),`${w.toLocaleString()} words`,`≈ ${m} min read`];
-  return chips.map(c=>`<span class="chip">${esc(c)}</span>`).join('');
-}
-function pnavHTML(){
-  const i=NAV.findIndex(x=>x.id===state.currentId);
-  if(i<0)return'';
-  const p=NAV[i-1],n=NAV[i+1];
-  return `<div class="pnav">
-    <button data-open="${p?p.id:''}" ${p?'':'disabled'}><span class="dir">← Previous</span><span class="t">${p?esc(p.title):'—'}</span></button>
-    <button class="nx" data-open="${n?n.id:''}" ${n?'':'disabled'}><span class="dir">Next →</span><span class="t">${n?esc(n.title):'—'}</span></button>
-  </div>`;
-}
-function openEntry(id,opts={}){
-  const e=BY_ID[id];if(!e)return;
-  state.currentId=id;
-  state.hl=(opts.highlight||'').trim();
-  closeDrawer();closePop();
-  const y=window.scrollY;
-  let html=`<div class="kicker">${e.kind==='chapter'?'Chapter '+pad(e.num):'Lore Archive'}</div>
-    <h1 class="title">${esc(e.title)}</h1>`+
-    (e.subtitle?`<p class="subtitle">${esc(e.subtitle)}</p>`:'')+
-    `<div class="meta">${metaChips(e)}</div>`;
-  if(e.epigraph){
-    html+=`<div class="epigraph">${paras(e.epigraph).map(p=>`<p>${hl(esc(p))}</p>`).join('')}</div>`;
-  }
-  html+=`<div class="prose">`+paras(e.content).map(p=>{
-    if(/^End of Chapter/i.test(p))return`<p class="endmark">${esc(p)}</p>`;
-    return`<p>${hl(esc(p))}</p>`;
-  }).join('')+`</div>`+pnavHTML();
-  const r=$('#reader');
-  r.innerHTML=html;
-  document.title=`${e.title} — Jinwah Voidheart`;
-  savePref(LS.last,id);
-  updateActive();
-  if(opts.keepScroll){window.scrollTo(0,y);}
-  else if(state.hl){
-    requestAnimationFrame(()=>{
-      const m=r.querySelector('mark');
-      if(m)m.scrollIntoView({behavior:'smooth',block:'center'});
-      else window.scrollTo(0,0);
-    });
-  }else{window.scrollTo(0,0);}
-}
-function renderHome(){
-  state.currentId=null;state.hl='';
-  closeDrawer();closePop();
-  const last=readPref(LS.last);
-  const lastE=last&&BY_ID[last]?BY_ID[last]:null;
-  const totalW=ENTRIES.reduce((a,e)=>a+wc((e.epigraph||'')+e.content),0);
-  const totalM=mins(totalW);
-  const cards=LORE.map(l=>
-    `<button class="card" data-open="${l.id}">
-      <span class="tag">${esc(l.tag||'Lore')}</span>
-      <h3>${esc(l.title)}</h3>
-      <p>${esc(excerpt(l.content,180))}</p>
-    </button>`).join('');
-  $('#reader').innerHTML=`
-    <div class="hero">
-      <div class="kicker">The Voidheart Archive · Complete Serial</div>
-      <h1 class="hero-title">Jinwah <span class="grad">Voidheart</span></h1>
-      <p class="tagline">Half Voidan. Half human. A hybrid who should not exist — hunted by the Lights as a key, coveted by the Void as a legacy, and free to forge a third path no prophecy has ever seen.</p>
-      <div class="chips">
-        <span class="chip">${CHAPTERS.length} Chapters</span>
-        <span class="chip">${LORE.length} Lore Archives</span>
-        <span class="chip">≈ ${totalM} min read</span>
-        <span class="chip">3 Themes</span>
-      </div>
-      <div class="cta-row">
-        ${lastE
-          ?`<button class="btn primary" data-action="continue">↩ Continue — ${esc(lastE.title)}</button>
-            <button class="btn ghost" data-action="start">Start from Chapter One</button>`
-          :`<button class="btn primary" data-action="start">▶ Begin Chapter One</button>
-            <button class="btn ghost" data-open="lore-jinwah">Meet the Voidheart</button>`}
-      </div>
-    </div>
-    <h2 class="sec-label">Lore Archive</h2>
-    <div class="cards">${cards}</div>
-    <h2 class="sec-label">Reader Guide</h2>
-    <div class="tiles">
-      <div class="tile"><b>⌕ Search everything</b><span>Press <kbd>/</kbd> and type to filter chapters &amp; lore instantly — results show match counts and live snippets.</span></div>
-      <div class="tile"><b>Aa Make it yours</b><span>Three themes, adjustable text size, serif or sans typefaces, and comfortable or wide line width.</span></div>
-      <div class="tile"><b>← → Move fast</b><span>Arrow keys flip between entries; the index remembers where you stopped reading.</span></div>
-    </div>`;
-  document.title='Jinwah Voidheart — Reader';
-  updateActive();
-  window.scrollTo(0,0);
-}
-
-/* ---------- panels ---------- */
-function closeDrawer(){document.body.classList.remove('drawer');$('#burger').setAttribute('aria-expanded','false');}
-function openDrawer(){document.body.classList.add('drawer');$('#burger').setAttribute('aria-expanded','true');}
-function closePop(){$('#apPop').classList.remove('open');$('#apBtn').setAttribute('aria-expanded','false');}
-
-/* ---------- events ---------- */
-$('#burger').addEventListener('click',()=>document.body.classList.contains('drawer')?closeDrawer():openDrawer());
-$('#sbClose').addEventListener('click',closeDrawer);
-$('#scrim').addEventListener('click',closeDrawer);
-$('#brandHome').addEventListener('click',e=>{e.preventDefault();renderHome();});
-
-const qInput=$('#q'),qClear=$('#qClear');
-let hadQuery=false;
-qInput.addEventListener('input',()=>{
-  state.query=qInput.value;
-  qClear.hidden=!state.query;
-  renderTOC();
-  if(hadQuery&&!state.query.trim()&&state.currentId){openEntry(state.currentId,{keepScroll:true});}
-  hadQuery=!!state.query.trim();
-});
-qInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    const first=$('#toc [data-open]');
-    if(first)openEntry(first.dataset.open,{highlight:state.query});
-  }
-});
-qClear.addEventListener('click',()=>{qInput.value='';qInput.dispatchEvent(new Event('input'));qInput.focus();});
-
-$('#apBtn').addEventListener('click',e=>{
-  e.stopPropagation();
-  const p=$('#apPop'),open=p.classList.toggle('open');
-  $('#apBtn').setAttribute('aria-expanded',open);
-});
-$('#swatches').addEventListener('click',e=>{
-  const b=e.target.closest('[data-set-theme]');if(!b)return;
-  state.theme=b.dataset.setTheme;savePref(LS.theme,state.theme);applyPrefs();
-});
-$('#szDn').addEventListener('click',()=>{state.size=Math.max(15,state.size-1);savePref(LS.size,state.size);applyPrefs();});
-$('#szUp').addEventListener('click',()=>{state.size=Math.min(24,state.size+1);savePref(LS.size,state.size);applyPrefs();});
-$('#segFont').addEventListener('click',e=>{
-  const b=e.target.closest('[data-v]');if(!b)return;
-  state.font=b.dataset.v;savePref(LS.font,state.font);applyPrefs();
-});
-$('#segW').addEventListener('click',e=>{
-  const b=e.target.closest('[data-v]');if(!b)return;
-  state.width=b.dataset.v;savePref(LS.width,state.width);applyPrefs();
-});
-
-document.addEventListener('click',e=>{
-  const act=e.target.closest('[data-action]');
-  if(act){
-    if(act.dataset.action==='start')openEntry(CHAPTERS[0].id);
-    if(act.dataset.action==='continue'){const l=readPref(LS.last);openEntry(l&&BY_ID[l]?l:CHAPTERS[0].id);}
-    return;
-  }
-  const op=e.target.closest('[data-open]');
-  if(op&&op.dataset.open){openEntry(op.dataset.open,{highlight:op.dataset.hl||''});return;}
-  if(!e.target.closest('.pop-wrap'))closePop();
-});
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){
-    closePop();closeDrawer();
-    if(document.activeElement===qInput&&state.query){qInput.value='';qInput.dispatchEvent(new Event('input'));}
-    qInput.blur();
-    return;
-  }
-  const typing=/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
-  if(e.key==='/'&&!typing){e.preventDefault();qInput.focus();qInput.select();return;}
-  if(typing)return;
-  if(e.key==='ArrowRight')go(1);
-  if(e.key==='ArrowLeft')go(-1);
-});
-function go(d){
-  const i=NAV.findIndex(x=>x.id===state.currentId);
-  if(i<0){openEntry(NAV[0].id);return;}
-  const j=Math.min(NAV.length-1,Math.max(0,i+d));
-  openEntry(NAV[j].id);
-}
-
-/* ---------- progress bar ---------- */
-const bar=$('#progress');
-let ticking=false;
-window.addEventListener('scroll',()=>{
-  if(ticking)return;ticking=true;
-  requestAnimationFrame(()=>{
-    const h=document.documentElement;
-    const p=h.scrollTop/Math.max(1,h.scrollHeight-h.clientHeight);
-    bar.style.transform=`scaleX(${Math.min(1,Math.max(0,p))})`;
-    ticking=false;
-  });
-},{passive:true});
-
-/* ---------- init ---------- */
-(function init(){
-  state.theme=readPref(LS.theme)||'void';
-  state.size=Math.min(24,Math.max(15,parseInt(readPref(LS.size)||'18',10)||18));
-  state.font=readPref(LS.font)==='sans'?'sans':'serif';
-  state.width=readPref(LS.width)==='w'?'w':'n';
-  applyPrefs();
-  renderTOC();
-  const last=readPref(LS.last);
-  if(last&&BY_ID[last])openEntry(last);else renderHome();
-})();
-</script>
-</body>
-</html>
+/* ═══════════════════════════ CANVAS — dust + palette ═══════════════════════════ */
+const PAL={
+ void:{dust:[168,188,255],ch:[150,110,250],cx:[70,215,255],core:[235,232,255],edge:[112,122,212]},
+ ether:{dust:[70,80,120],ch:[98,70,235],cx:[10,130,160],core:[52,52,98],edge:[72,82,150]}};
+function mkSprite(rgb,size){const c=document.createElement('canvas');c.width=c.height=size;const x=c.getContext('2d');
+ const g=x.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+ g.addColorStop(0,`rgba(${rgb},.9)`);g.addColorStop(.22,`rgba(${rgb},.32)`);g.addColorStop(.55,`rgba(${rgb},.08)`);g.addColorStop(1,`rgba(${rgb},0)`);
+ x.fillStyle=g;x.fillRect(0,0,size,size);return c;}
+const CANVAS={cv:null,ctx:null,W:0,H:0,DPR:1,dust:[],cur:null,tgt:null,spr:{},t:0,
+init(){this.cv=$('#fx');this.ctx=this.cv.getContext('2d');
+ this.cur=JSON.parse(JSON.stringify(PAL[STATE.theme]));this.tgt=PAL[STATE.theme];
+ this.resize();addEventListener('resize',()=>this.resize());this.buildSpr();this.seed();},
+resize(){this.DPR=Math.min(devicePixelRatio||1,2);this.W=innerWidth;this.H=innerHeight;
+ this.cv.width=this.W*this.DPR;this.cv.height=this.H*this.DPR;
+ this.cv.style.width=this.W+'px';this.cv.style.height=this.H+'px';this.ctx.setTransform(this.DPR,0,0,this.DPR,0,0);GRAPH.layout();},
+retarget(){this.tgt=PAL[STATE.theme];},
+buildSpr(){['ch','cx','core'].forEach(k=>this.spr[k]=mkSprite(this.cur[k].join(','),160));},
+seed(){const n=MOTION?clamp(Math.round(this.W*this.H/16000),40,140):26;this.dust=[];
+ for(let i=0;i<n;i++)this.dust.push({x:rand(0,this.W),y:rand(0,this.H),z:rand(.3,1),tw:rand(.4,2.2),ph:rand(0,TAU)});},
+lerpPal(){const c=this.cur,t=this.tgt;['dust','ch','cx','core','edge'].forEach(k=>{for(let i=0;i<3;i++)c[k][i]=lerp(c[k][i],t[k][i],.045);});
+ this.spr.ch=mkSprite(c.ch.join(','),160);this.spr.cx=mkSprite(c.cx.join(','),160);this.spr.core=mkSprite(c.core.join(','),160);},
+draw(dt){const x=this.ctx
+```
